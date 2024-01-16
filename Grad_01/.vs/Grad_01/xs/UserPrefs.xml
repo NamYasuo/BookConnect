@@ -1,0 +1,28 @@
+﻿<Properties StartupConfiguration="{C586E026-464E-4EC2-A7C1-1DAC119B9280}|https">
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <DisabledProjects>
+    <String>Client/Client.csproj</String>
+  </DisabledProjects>
+  <MonoDevelop.Ide.ItemProperties.APIs PreferredExecutionTarget="/Applications/Safari.app" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.Workbench ActiveDocument="DataAccess/DAO/CartDAO.cs">
+    <Files>
+      <File FileName="APIs/Services/Payment/VnPayService.cs" Line="215" Column="1" />
+      <File FileName="APIs/Controllers/PaymentController.cs" Line="31" Column="67" />
+      <File FileName="BusinessObjects/DTO/Payment/PaymentDTO.cs" Line="13" Column="6" />
+      <File FileName="DataAccess/DAO/CartDAO.cs" Line="6" Column="32" />
+      <File FileName="DataAccess/DAO/BookDAO.cs" Line="84" Column="1" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="Grad_01" expanded="True" selected="True" />
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+</Properties>

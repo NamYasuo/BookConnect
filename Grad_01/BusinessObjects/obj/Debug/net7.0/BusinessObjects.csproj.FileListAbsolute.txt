@@ -1,0 +1,28 @@
+/Users/phamhung/Documents/S8/Grad/Project/Me/Prototype_00/Grad_01_net7/Grad_01/BusinessObjects/obj/Debug/net7.0/BusinessObjects.csproj.AssemblyReference.cache
+/Users/phamhung/Documents/S8/Grad/Project/Me/Prototype_00/Grad_01_net7/Grad_01/BusinessObjects/obj/Debug/net7.0/BusinessObjects.GeneratedMSBuildEditorConfig.editorconfig
+/Users/phamhung/Documents/S8/Grad/Project/Me/Prototype_00/Grad_01_net7/Grad_01/BusinessObjects/obj/Debug/net7.0/BusinessObjects.AssemblyInfoInputs.cache
+/Users/phamhung/Documents/S8/Grad/Project/Me/Prototype_00/Grad_01_net7/Grad_01/BusinessObjects/obj/Debug/net7.0/BusinessObjects.AssemblyInfo.cs
+/Users/phamhung/Documents/S8/Grad/Project/Me/Prototype_00/Grad_01_net7/Grad_01/BusinessObjects/obj/Debug/net7.0/BusinessObjects.csproj.CoreCompileInputs.cache
+/Users/phamhung/Documents/S8/Grad/Project/Me/Prototype_00/Grad_01_net7/Grad_01/BusinessObjects/bin/Debug/net7.0/BusinessObjects.deps.json
+/Users/phamhung/Documents/S8/Grad/Project/Me/Prototype_00/Grad_01_net7/Grad_01/BusinessObjects/bin/Debug/net7.0/BusinessObjects.runtimeconfig.json
+/Users/phamhung/Documents/S8/Grad/Project/Me/Prototype_00/Grad_01_net7/Grad_01/BusinessObjects/bin/Debug/net7.0/BusinessObjects.dll
+/Users/phamhung/Documents/S8/Grad/Project/Me/Prototype_00/Grad_01_net7/Grad_01/BusinessObjects/bin/Debug/net7.0/BusinessObjects.pdb
+/Users/phamhung/Documents/S8/Grad/Project/Me/Prototype_00/Grad_01_net7/Grad_01/BusinessObjects/obj/Debug/net7.0/BusinessObjects.dll
+/Users/phamhung/Documents/S8/Grad/Project/Me/Prototype_00/Grad_01_net7/Grad_01/BusinessObjects/obj/Debug/net7.0/refint/BusinessObjects.dll
+/Users/phamhung/Documents/S8/Grad/Project/Me/Prototype_00/Grad_01_net7/Grad_01/BusinessObjects/obj/Debug/net7.0/BusinessObjects.pdb
+/Users/phamhung/Documents/S8/Grad/Project/Me/Prototype_00/Grad_01_net7/Grad_01/BusinessObjects/obj/Debug/net7.0/BusinessObjects.genruntimeconfig.cache
+/Users/phamhung/Documents/S8/Grad/Project/Me/Prototype_00/Grad_01_net7/Grad_01/BusinessObjects/obj/Debug/net7.0/ref/BusinessObjects.dll
+/Users/phamhung/Documents/S8/Grad/Project/Me/Prototype_00/Grad_01_net7 copy/Grad_01/BusinessObjects/bin/Debug/net7.0/BusinessObjects.deps.json
+/Users/phamhung/Documents/S8/Grad/Project/Me/Prototype_00/Grad_01_net7 copy/Grad_01/BusinessObjects/bin/Debug/net7.0/BusinessObjects.runtimeconfig.json
+/Users/phamhung/Documents/S8/Grad/Project/Me/Prototype_00/Grad_01_net7 copy/Grad_01/BusinessObjects/bin/Debug/net7.0/BusinessObjects.dll
+/Users/phamhung/Documents/S8/Grad/Project/Me/Prototype_00/Grad_01_net7 copy/Grad_01/BusinessObjects/bin/Debug/net7.0/BusinessObjects.pdb
+/Users/phamhung/Documents/S8/Grad/Project/Me/Prototype_00/Grad_01_net7 copy/Grad_01/BusinessObjects/obj/Debug/net7.0/BusinessObjects.csproj.AssemblyReference.cache
+/Users/phamhung/Documents/S8/Grad/Project/Me/Prototype_00/Grad_01_net7 copy/Grad_01/BusinessObjects/obj/Debug/net7.0/BusinessObjects.GeneratedMSBuildEditorConfig.editorconfig
+/Users/phamhung/Documents/S8/Grad/Project/Me/Prototype_00/Grad_01_net7 copy/Grad_01/BusinessObjects/obj/Debug/net7.0/BusinessObjects.AssemblyInfoInputs.cache
+/Users/phamhung/Documents/S8/Grad/Project/Me/Prototype_00/Grad_01_net7 copy/Grad_01/BusinessObjects/obj/Debug/net7.0/BusinessObjects.AssemblyInfo.cs
+/Users/phamhung/Documents/S8/Grad/Project/Me/Prototype_00/Grad_01_net7 copy/Grad_01/BusinessObjects/obj/Debug/net7.0/BusinessObjects.csproj.CoreCompileInputs.cache
+/Users/phamhung/Documents/S8/Grad/Project/Me/Prototype_00/Grad_01_net7 copy/Grad_01/BusinessObjects/obj/Debug/net7.0/BusinessObjects.dll
+/Users/phamhung/Documents/S8/Grad/Project/Me/Prototype_00/Grad_01_net7 copy/Grad_01/BusinessObjects/obj/Debug/net7.0/refint/BusinessObjects.dll
+/Users/phamhung/Documents/S8/Grad/Project/Me/Prototype_00/Grad_01_net7 copy/Grad_01/BusinessObjects/obj/Debug/net7.0/BusinessObjects.pdb
+/Users/phamhung/Documents/S8/Grad/Project/Me/Prototype_00/Grad_01_net7 copy/Grad_01/BusinessObjects/obj/Debug/net7.0/BusinessObjects.genruntimeconfig.cache
+/Users/phamhung/Documents/S8/Grad/Project/Me/Prototype_00/Grad_01_net7 copy/Grad_01/BusinessObjects/obj/Debug/net7.0/ref/BusinessObjects.dll
