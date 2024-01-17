@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace BusinessObjects.Models
 {
-	public class ListProducts
+	public class Basket
 	{
 		//product_id UNIQUEIDENTIFIER foreign key references Books(ProductId) null,
 		public Guid ProductId { get; set; }

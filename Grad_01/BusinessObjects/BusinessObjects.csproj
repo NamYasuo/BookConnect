@@ -28,11 +28,15 @@
     <None Remove="Models\E-com\" />
     <None Remove="Models\E-com\Payment\" />
     <None Remove="DTO\" />
+    <None Remove="Models\E-com\Base\" />
+    <None Remove="Models\E-com\Rating\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
     <Folder Include="Models\E-com\" />
     <Folder Include="Models\E-com\Payment\" />
     <Folder Include="DTO\" />
+    <Folder Include="Models\E-com\Base\" />
+    <Folder Include="Models\E-com\Rating\" />
   </ItemGroup>
 </Project>

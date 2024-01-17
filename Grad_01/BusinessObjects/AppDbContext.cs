@@ -1,9 +1,8 @@
-﻿using System;
-using System.Reflection.Emit;
-using APIs.DTO.Ecom;
-using BusinessObjects.Models;
+﻿using BusinessObjects.Models;
 using BusinessObjects.Models.Creative;
 using BusinessObjects.Models.Ecom;
+using BusinessObjects.Models.Ecom.Rating;
+using BusinessObjects.Models.Utils;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -22,9 +21,11 @@ namespace BusinessObjects
         public virtual DbSet<Cart> Carts { get; set; } = null!;
         public virtual DbSet<Order> Orders { get; set; } = null!;
         public virtual DbSet<Category> Categories { get; set; }
-        public virtual DbSet<ProductDetail> ProductDetails { get; set; } = null!;
-        public virtual DbSet<ListProducts> ListProducts { get; set; } = null!;
+        public virtual DbSet<Inventory> Inventories { get; set; } = null!;
+        public virtual DbSet<Basket> Baskets { get; set; } = null!;
         public virtual DbSet<TokenInfo> TokenInfos { get; set; } = null!;
+        public virtual DbSet<RatingRecord> RatingRecords { get; set; } = null!;
+        public virtual DbSet<CategoryList> CategoryLists { get; set; } = null!;
 
 
         //Creative services DbSet
@@ -44,8 +45,9 @@ namespace BusinessObjects
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder); ;
-            builder.Entity<ProductDetail>().HasNoKey();
-            builder.Entity<ListProducts>().HasNoKey();
+            builder.Entity<Inventory>().HasNoKey();
+            builder.Entity<Basket>().HasNoKey();
+            builder.Entity<RatingRecord>().HasNoKey();
         }
     }
 }

@@ -39,7 +39,7 @@ namespace DataAccess.DAO
                     foreach(Guid id in productIds)
                     {
                         int result = context.Database.ExecuteSqlRaw
-                        ($"exec AddProductToCart '{id}', '{cartId}', null , {quantity} ,'{DateTime.Now}' , null");
+                        ($"exec AddProductToCart '{id}', '{cartId}', null , {quantity}, {DateTime.Now} , null");
                     }
                 }
             }
@@ -56,7 +56,7 @@ namespace DataAccess.DAO
                 using (var context = new AppDbContext())
                 {
                     var queryResult = from c in context.Carts
-                                 join lp in context.ListProducts on c.CartId equals lp.CartId
+                                 join lp in context.Baskets on c.CartId equals lp.CartId
                                  join b in context.Books on lp.ProductId equals b.ProductId
                                  where c.CustomerId == userId
                                  select new

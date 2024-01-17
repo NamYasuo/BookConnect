@@ -17,14 +17,14 @@ namespace BusinessObjects.Models.Ecom
 		public int Quantity { get; set; }
 		public string? Notes { get; set; }
 		public DateTime CreatedDate { get; set; }
-		public Guid PaymentMethodId { get; set; }
-        public Guid? AddressId { get; set; }
+		//public Guid PaymentMethodId { get; set; }
+        //public Guid? AddressId { get; set; }
 
 		//[ForeignKey("PaymenMethodId"), JsonIgnore]
-        //public virtual PaymentMethod PaymentMethod { get; set; }
-        //[ForeignKey("AddressId"), JsonIgnore]
-        //public virtual Address Address { get; set; }
+		//public virtual PaymentMethod PaymentMethod { get; set; }
+		//[ForeignKey("AddressId"), JsonIgnore]
+		//public virtual Address Address { get; set; }
 
-    }
+	}
 }
 

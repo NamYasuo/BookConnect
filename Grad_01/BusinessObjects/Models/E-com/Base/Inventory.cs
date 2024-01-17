@@ -5,14 +5,11 @@ using Newtonsoft.Json;
 
 namespace BusinessObjects.Models
 {
-	public class ProductDetail
+	public class Inventory
 	{
 		public Guid AgencyId { get; set; }
 		public Guid BookId { get; set; }
 		public int Quantity { get; set; }
-		public float Price { get; set; }
-		public DateTime CreatedDate { get; set; }
-		public DateTime PublishDate { get; set; }
 
 		[ForeignKey("AgencyId"), JsonIgnore]
 		public virtual Agency Agency { get; set; } = null!;

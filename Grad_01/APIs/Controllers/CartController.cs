@@ -17,28 +17,6 @@ namespace APIs.Controllers
 			_cartRepo = cartRepository;
 		}
 
-		//[HttpPost]
-		//[Route("add-product-to-cart")]
-		//public IActionResult AddProductToCart([FromBody] ProductToCartDTO data)
-		//{
-		//	if (ModelState.IsValid)
-		//	{
-  //              try
-  //              {
-		//			int result = _cartRepo.AddProductToCart(data.ProductId, data.CartId, data.Quantity);
-
-		//			if (result == 1) return Ok("Add successfully!");
-  //                  else return BadRequest("Fail to add!!!");
-  //              }
-  //              catch (Exception e)
-  //              {
-  //                  throw new Exception(e.Message);
-  //              }
-  //          }
-		//	return BadRequest("Model state unvalid");
-		//}
-
-
         [HttpPost]
         [Route("add-products-to-cart")]
         public IActionResult AddListProductToCart([FromBody] List<ProductToCartDTO> data)
