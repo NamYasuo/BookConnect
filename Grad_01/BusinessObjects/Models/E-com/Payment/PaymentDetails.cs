@@ -5,23 +5,22 @@ using Newtonsoft.Json;
 
 namespace BusinessObjects.Models.Ecom.Payment
 {
-	public class Payment
+	public class PaymentDetails
 	{
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Guid PaymentId { get; set; }
-		public string? Content { get; set; }
-		public string Currency { get; set; } = null!;
-		//public string? ref_id { get; set; }
-		public decimal RequiredAmount { get; set; }
-		public DateTime PaidDate { get; set; }
-		public DateTime ExpireDate { get; set; }
-		public string Language { get; set; } = null!;
+		public string Content { get; set; } = null!;
+		public string? Currency { get; set; }
+		public decimal? RequiredAmount { get; set; }
+		public DateTime? PaidDate { get; set; }
+		//public DateTime ExpireDate { get; set; } ?
+		public string? Language { get; set; } 
 		public Guid MerchantId { get; set; }
 		//public Guid Payment_destination_id { get; set; }
-		public decimal PaidAmount { get; set; }
-		public string Status { get; set; } = null!;
-		public string LastMessage { get; set; } = null!;
+		public string? PaymentGate { get; set; } 
+		public string? Status { get; set; } 
+		public string? LastMessage { get; set; }
 
 		[ForeignKey("MerchantId"), JsonIgnore]
 		public virtual AppUser? Merchant { get; set; } 

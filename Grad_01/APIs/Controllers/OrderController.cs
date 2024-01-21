@@ -1,44 +1,47 @@
 ﻿using System;
 using APIs.Repositories.Interfaces;
+using APIs.Services.Intefaces;
+using BusinessObjects.DTO;
 using Microsoft.AspNetCore.Mvc;
 
 namespace APIs.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class OrderController: ControllerBase
+	[Route("api/[controller]")]
+	[ApiController]
+	public class OrderController : ControllerBase
 	{
-		public IBookRepository _bookRepo;
-
-		public OrderController(IBookRepository bookRepo)
+		private readonly IOrderService _orderService;
+		public OrderController(IOrderService orderService)
 		{
-			_bookRepo = bookRepo;
+			_orderService = orderService;
 		}
 
-		//View items in cart
-		[HttpGet]
-		[Route("get-items-in-cart")]
-		public IActionResult GetItemsInCart([FromBody] List<string> bookIds)
+		[HttpPost]
+		[Route("create-order")]
+		public IActionResult CreateOrder([FromBody] PaymentReturnDTO data, Guid customerId, Guid addressId)
 		{
-                List<Guid> guids = new List<Guid>();
-                foreach (string s in bookIds)
-                {
-                    guids.Add(Guid.Parse(s));
-                }
-                try
-                {
-                    return Ok(_bookRepo.GetBookListById(guids));
-                }
-                catch (Exception e)
-                {
-                    throw new Exception(e.Message);
-                }
+			Guid orderId = Guid.NewGuid();
+			NewOrderDTO dto = new NewOrderDTO()
+			{
+				OrderId = orderId,
+				CustomerId = customerId,
+				Status = data.PaymentStatus,
+				Notes = data.PaymentMessage,
+				PaymentId = Guid.Parse(data.PaymentId),
+				AddressId = addressId,
+			};
+            string result = _orderService.CreateNewOrder(dto);
+
+            if (result == "Successfully!")
+			{
+                //string result2 = _orderService.TakeProductFromCart(customerId, orderId);
+
+    //            if (result2 == "Successfully!")
+				//{
+					return Ok("Successfully!");
+				//} return BadRequest(result2);
+			} return BadRequest(result);
 		}
-
-
-		//
-		//Create order (CartToOrderDTO)
-		//
 
 	}
 }

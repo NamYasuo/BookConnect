@@ -39,8 +39,6 @@ namespace APIs.Controllers
             return BadRequest("Model state unvalid");
         }
 
-
-
         [HttpGet]
 		[Route("view-cart-details")]
 		public IActionResult ViewCartDetails(Guid userId)

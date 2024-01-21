@@ -4,6 +4,7 @@ using BusinessObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusinessObjects.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240118042910_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,36 +24,6 @@ namespace BusinessObjects.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("BusinessObjects.Models.Address", b =>
-                {
-                    b.Property<Guid>("AddressId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("City_Province")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Default")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("District")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Rendezvous")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SubDistrict")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("AddressId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Addresses");
-                });
 
             modelBuilder.Entity("BusinessObjects.Models.Agency", b =>
                 {
@@ -107,7 +80,7 @@ namespace BusinessObjects.Migrations
                     b.Property<DateTime>("AddedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("CartId")
+                    b.Property<Guid>("CartId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("OrderId")
@@ -119,8 +92,8 @@ namespace BusinessObjects.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<decimal?>("Stored_Price")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double?>("Stored_Price")
+                        .HasColumnType("float");
 
                     b.HasIndex("CartId");
 
@@ -275,9 +248,6 @@ namespace BusinessObjects.Migrations
                     b.Property<Guid>("OrderId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("AddressId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
@@ -293,54 +263,12 @@ namespace BusinessObjects.Migrations
                     b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal?>("Total_Price")
+                    b.Property<decimal>("Total_Price")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("OrderId");
 
-                    b.HasIndex("AddressId");
-
                     b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("BusinessObjects.Models.Ecom.Payment.PaymentDetails", b =>
-                {
-                    b.Property<Guid>("PaymentId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Currency")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Language")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastMessage")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("MerchantId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("PaidDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("PaymentGate")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal?>("RequiredAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("PaymentId");
-
-                    b.HasIndex("MerchantId");
-
-                    b.ToTable("PaymentDetails");
                 });
 
             modelBuilder.Entity("BusinessObjects.Models.Ecom.Rating.Rating", b =>
@@ -456,17 +384,6 @@ namespace BusinessObjects.Migrations
                     b.ToTable("CategoryLists");
                 });
 
-            modelBuilder.Entity("BusinessObjects.Models.Address", b =>
-                {
-                    b.HasOne("BusinessObjects.Models.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AppUser");
-                });
-
             modelBuilder.Entity("BusinessObjects.Models.Agency", b =>
                 {
                     b.HasOne("BusinessObjects.Models.AppUser", "Owner")
@@ -493,7 +410,9 @@ namespace BusinessObjects.Migrations
                 {
                     b.HasOne("BusinessObjects.Models.Ecom.Cart", "Cart")
                         .WithMany()
-                        .HasForeignKey("CartId");
+                        .HasForeignKey("CartId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("BusinessObjects.Models.Ecom.Order", "Order")
                         .WithMany()
@@ -552,26 +471,6 @@ namespace BusinessObjects.Migrations
                         .IsRequired();
 
                     b.Navigation("AppUser");
-                });
-
-            modelBuilder.Entity("BusinessObjects.Models.Ecom.Order", b =>
-                {
-                    b.HasOne("BusinessObjects.Models.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId");
-
-                    b.Navigation("Address");
-                });
-
-            modelBuilder.Entity("BusinessObjects.Models.Ecom.Payment.PaymentDetails", b =>
-                {
-                    b.HasOne("BusinessObjects.Models.AppUser", "Merchant")
-                        .WithMany()
-                        .HasForeignKey("MerchantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Merchant");
                 });
 
             modelBuilder.Entity("BusinessObjects.Models.Ecom.Rating.RatingRecord", b =>

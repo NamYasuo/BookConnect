@@ -36,6 +36,7 @@
     <None Remove="Utils\Base\" />
     <None Remove="Utils\Base\Models\" />
     <None Remove="Utils\Extensions\" />
+    <None Remove="Utils\VnPay\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Mapper\" />
@@ -49,5 +50,6 @@
     <Folder Include="Utils\Base\" />
     <Folder Include="Utils\Base\Models\" />
     <Folder Include="Utils\Extensions\" />
+    <Folder Include="Utils\VnPay\" />
   </ItemGroup>
 </Project>

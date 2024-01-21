@@ -5,13 +5,14 @@ using System.Security.Cryptography;
 using APIs.Services.Intefaces;
 using APIs.Config;
 using Microsoft.Extensions.Options;
-using APIs.DTO.Payment;
 using APIs.Utils.Base.Models;
 using Microsoft.Extensions.Configuration.UserSecrets;
 using Azure;
 using Azure.Core;
 using Azure.Messaging;
 using Microsoft.Data.SqlClient;
+using BusinessObjects.DTO;
+using APIs.Utils.VnPay;
 
 namespace APIs.Services
 {
@@ -23,7 +24,7 @@ namespace APIs.Services
             _vnPayConfig = vnPayConfig.Value;
         }
 
-        public string NewTransaction(PaymentDTO paymentInfo)
+        public string NewTransaction(NewTransactionDTO paymentInfo)
         {
             VnPayRequestDTO requestDTO = new VnPayRequestDTO
             {
@@ -70,49 +71,49 @@ namespace APIs.Services
         {
             string returnUrl = string.Empty;
             var result = new BaseResultWithData<(PaymentReturnDTO, string)>();
-
             try
             {
                 var resultData = new PaymentReturnDTO();
                 var isValidSignature = IsValidSignature(_vnPayConfig.HashSecret, request);
 
-                if (isValidSignature)
+            if (isValidSignature)
+            {
+                if (request.vnp_ResponseCode == "00")
                 {
-                    if (request.vnp_ResponseCode == "00")
-                    {
-                        resultData.PaymentStatus = "00";
-                        //resultData.PaymentId = payment.Id;
-                        ///TODO: Make signature
-                        resultData.Signature = Guid.NewGuid().ToString();
-                    }
-                    else
-                    {
-                        resultData.PaymentStatus = "10";
-                        resultData.PaymentMessage = "Payment process failed";
-                    }
-
-                    result.Success = true;
-                    result.Message = "OK";
-                    result.Data = (resultData, returnUrl);
+                    resultData.PaymentStatus = "00";
+                    resultData.PaymentId = Guid.NewGuid().ToString();
+                    resultData.Signature = Guid.NewGuid().ToString();
+                    resultData.Amount = request.vnp_Amount / 100;
+                    resultData.PaymentDate = request.vnp_PayDate;
+                    resultData.PaymentMessage = request.vnp_OrderInfo;
                 }
                 else
                 {
-                    resultData.PaymentStatus = "99";
-                    resultData.PaymentMessage = "Invalid signature in response";
+                    resultData.PaymentStatus = "10";
+                    resultData.PaymentMessage = "Payment process failed";
                 }
-
-
+                result.Success = true;
+                result.Message = "OK";
+                result.Data = (resultData, returnUrl);
             }
+            else
+            {
+                resultData.PaymentStatus = "99";
+                resultData.PaymentMessage = "Invalid signature in response";
+                result.Data = (resultData, "blank");
+            }
+        }
             catch (Exception ex)
             {
                 result.Set(false, "Error");
                 result.Errors.Add(new BaseError()
-                {
-                    Code = "Exeption",
+        {
+            Code = "Exeption",
                     Message = ex.Message,
                 });
             }
 
+            //result.Data = (resultData, isValidSignature);
             return result;
         }
 
@@ -128,13 +129,29 @@ namespace APIs.Services
                 }
             }
             CreateSecureHash(Encoding.UTF8.GetBytes(secretKey),
-                data.ToString().Remove(data.Length - 1, 1), out string checkSum);
+                data.ToString().Remove(data.Length - 1, 1), out var checkSum);
             return checkSum.Equals(responseDTO.vnp_SecureHash, StringComparison.InvariantCultureIgnoreCase);
         }
 
+        //private string IsValidSignature2(string secretKey, VnPayResponseDTO responseDTO)
+        //{
+        //    SortedList<string, string> responseData = MakeResponseData(responseDTO);
+        //    StringBuilder data = new StringBuilder();
+        //    foreach (KeyValuePair<string, string> kv in responseData)
+        //    {
+        //        if (!String.IsNullOrEmpty(kv.Value))
+        //        {
+        //            data.Append(WebUtility.UrlEncode(kv.Key) + "=" + WebUtility.UrlEncode(kv.Value) + "&");
+        //        }
+        //    }
+        //    CreateSecureHash(Encoding.UTF8.GetBytes(secretKey),
+        //        data.ToString().Remove(data.Length - 1, 1), out var checkSum);
+        //    return data.ToString().Remove(data.Length - 1, 1);
+        //}
+
         private SortedList<string, string> MakeRequestData(VnPayRequestDTO requestDto)
         {
-            SortedList<string, string> requestData = new SortedList<string, string>();
+            SortedList<string, string> requestData = new SortedList<string, string>(new VnpayCompare());
             if (requestDto.vnp_Amount != null)
                 requestData.Add("vnp_Amount", requestDto.vnp_Amount.ToString() ?? string.Empty);
             if (requestDto.vnp_Command != null)
@@ -168,30 +185,42 @@ namespace APIs.Services
 
         private SortedList<string, string> MakeResponseData(VnPayResponseDTO responseDto)
         {
-            SortedList<string, string> responseData = new SortedList<string, string>
+            SortedList<string, string> responseData = new SortedList<string, string>(new VnpayCompare());
+            //vnp_Amount = 1000000 
+            if (responseDto.vnp_Amount != null)
             {
-                { "vnp_Amount", responseDto.vnp_Amount.ToString() ?? string.Empty }
-            };
-            if (!string.IsNullOrEmpty(responseDto.vnp_TmnCode))
-                responseData.Add("vnp_TmnCode", responseDto.vnp_TmnCode.ToString() ?? string.Empty);
+                responseData.Add("vnp_Amount", responseDto.vnp_Amount.ToString() ?? string.Empty);
+            }
+            //vnp_BankCode = NCB
             if (!string.IsNullOrEmpty(responseDto.vnp_BankCode))
                 responseData.Add("vnp_BankCode", responseDto.vnp_BankCode.ToString() ?? string.Empty);
+            //vnp_BankTranNo = VNP14287864
             if (!string.IsNullOrEmpty(responseDto.vnp_BankTranNo))
                 responseData.Add("vnp_BankTranNo", responseDto.vnp_BankTranNo.ToString() ?? string.Empty);
+            //vnp_CardType = ATM 
             if (!string.IsNullOrEmpty(responseDto.vnp_CardType))
                 responseData.Add("vnp_CardType", responseDto.vnp_CardType.ToString() ?? string.Empty);
+            //vnp_OrderInfo = thanh + toan + 01
             if (!string.IsNullOrEmpty(responseDto.vnp_OrderInfo))
                 responseData.Add("vnp_OrderInfo", responseDto.vnp_OrderInfo.ToString() ?? string.Empty);
-            if (!string.IsNullOrEmpty(responseDto.vnp_TransactionNo))
-                responseData.Add("vnp_TransactionNo", responseDto.vnp_TransactionNo.ToString() ?? string.Empty);
-            if (!string.IsNullOrEmpty(responseDto.vnp_TransactionStatus))
-                responseData.Add("vnp_TransactionStatus", responseDto.vnp_TransactionStatus.ToString() ?? string.Empty);
-            if (!string.IsNullOrEmpty(responseDto.vnp_TxnRef))
-                responseData.Add("vnp_TxnRef", responseDto.vnp_TxnRef.ToString() ?? string.Empty);
+            //vnp_PayDate = 20240120005406 
             if (!string.IsNullOrEmpty(responseDto.vnp_PayDate))
                 responseData.Add("vnp_PayDate", responseDto.vnp_PayDate.ToString() ?? string.Empty);
+            //& vnp_ResponseCode = 00
             if (!string.IsNullOrEmpty(responseDto.vnp_ResponseCode))
                 responseData.Add("vnp_ResponseCode", responseDto.vnp_ResponseCode ?? string.Empty);
+            //vnp_TmnCode = MSHOSDSV 
+            if (!string.IsNullOrEmpty(responseDto.vnp_TmnCode))
+                responseData.Add("vnp_TmnCode", responseDto.vnp_TmnCode.ToString() ?? string.Empty);
+            //& vnp_TransactionNo = 14287864
+            if (!string.IsNullOrEmpty(responseDto.vnp_TransactionNo))
+                responseData.Add("vnp_TransactionNo", responseDto.vnp_TransactionNo.ToString() ?? string.Empty);
+            //vnp_TransactionStatus = 00
+            if (!string.IsNullOrEmpty(responseDto.vnp_TransactionStatus))
+                responseData.Add("vnp_TransactionStatus", responseDto.vnp_TransactionStatus.ToString() ?? string.Empty);
+            //vnp_TxnRef = f20c12be - 33a5 - 41a7 - 961f - 6d457c317646
+            if (!string.IsNullOrEmpty(responseDto.vnp_TxnRef))
+                responseData.Add("vnp_TxnRef", responseDto.vnp_TxnRef.ToString() ?? string.Empty);
             return responseData;
         }
 
@@ -208,7 +237,6 @@ namespace APIs.Services
                     hash.Append(theByte.ToString("x2"));
                 }
             }
-
             secureHash = hash.ToString();
         }
 

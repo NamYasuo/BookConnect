@@ -123,7 +123,7 @@ namespace DataAccess.DAO
             return salt;
         }
 
-        public Role? GetRolesDetails(string roleName)
+        public Role GetRolesDetails(string roleName)
         {
             Role? role = new Role();
             try

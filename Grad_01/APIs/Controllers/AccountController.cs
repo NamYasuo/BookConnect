@@ -114,6 +114,25 @@ namespace APIs.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("get-default-address")]
+        public IActionResult GetDefaultAddress(Guid userId)
+        {
+            try
+            {
+                Address? address = accService.GetDefaultAddress(userId);
+                if (address != null)
+                {
+                    return Ok(address);
+                }
+                else return BadRequest("Default Address' not set!!!");
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+        
     }
 }
 

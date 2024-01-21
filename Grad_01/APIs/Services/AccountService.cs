@@ -13,19 +13,18 @@ namespace APIs.Repositories.Intefaces
 {
     public class AccountService : IAccountService
     {
-        private readonly ITokenService tokenService;
+        //private readonly ITokenService tokenService;
         private readonly IConfiguration config;
 
-        private AccountDAO accountDAO;
-        private TokenInfoDAO tokenInfoDAO;
+        private AccountDAO? accountDAO;
 
         public AccountService(ITokenService tokenService, IConfiguration config)
         {
-            this.tokenService = tokenService;
+            //this.tokenService = tokenService;
             this.config = config;
         }
 
-
+        //User services
         public Task<IdentityResult> ChangePassword(PasswordChangeDTO model)
         {
             throw new NotImplementedException();
@@ -114,6 +113,12 @@ namespace APIs.Repositories.Intefaces
         public void AddNewRole(Role role) => new AccountDAO().AddNewRole(role);
 
         public Role GetRoleDetails(string roleName) => new AccountDAO().GetRolesDetails(roleName);
+
+        //Address services
+        public List<Address> GetAllUserAdderess(Guid userId) => new AddressDAO().GetAllUserAddress(userId);
+
+        public Address GetDefaultAddress(Guid userId) => new AddressDAO().GetUserDefaultAddress(userId);
+       
     }
 }
 

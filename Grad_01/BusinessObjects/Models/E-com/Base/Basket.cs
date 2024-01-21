@@ -9,8 +9,8 @@ namespace BusinessObjects.Models
 	{
 		//product_id UNIQUEIDENTIFIER foreign key references Books(ProductId) null,
 		public Guid ProductId { get; set; }
-		//cart_id UNIQUEIDENTIFIER foreign key references Carts(CartId),
-		public Guid CartId { get; set; }
+		//cart_id UNIQUEIDENTIFIER foreign key references Carts(CartId) null,
+		public Guid? CartId { get; set; }
 		//order_id UNIQUEIDENTIFIER foreign key references Orders(OrderId) null,
 		public Guid? OrderId { get; set; }
 		//quantity int,
@@ -18,7 +18,7 @@ namespace BusinessObjects.Models
 		//added_date datetime,
 		public DateTime AddedDate { get; set; }
 		//stored_price money NULL,
-		public double? Stored_Price { get; set; }
+		public decimal? Stored_Price { get; set; }
 
 		[ForeignKey("ProductId"), JsonIgnore]
 		public virtual Book Book { get; set; } = null!;
