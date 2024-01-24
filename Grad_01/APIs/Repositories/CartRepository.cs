@@ -16,8 +16,7 @@ namespace APIs.Repositories
 
         public List<CartDetailsDTO> GetCartDetails(Guid userId)
             => new CartDAO().GetCartDetails(userId);
-
-
+        public string GetUserCartId(Guid userId) => new CartDAO().GetUserCartId(userId);
     }
 }
 

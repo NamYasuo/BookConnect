@@ -35,6 +35,7 @@ namespace BusinessObjects
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<CategoryList> CategoryLists { get; set; } = null!;
         public virtual DbSet<Address> Addresses { get; set; } = null!;
+        public virtual DbSet<CICMedia> CICMedias { get; set; } = null!;
 
 
         //Creative services DbSet
@@ -58,6 +59,7 @@ namespace BusinessObjects
             builder.Entity<Basket>().HasNoKey();
             builder.Entity<RatingRecord>().HasNoKey();
             builder.Entity<CategoryList>().HasNoKey();
+            builder.Entity<CICMedia>().HasNoKey();
         }
     }
 }

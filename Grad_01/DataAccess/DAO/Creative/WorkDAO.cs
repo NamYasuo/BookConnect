@@ -63,14 +63,23 @@ namespace DataAccess.DAO
         }
 
         //Add new Work
-        public void AddNewWork(Work work)
+        public string AddNewWork(Work work)
         {
             try
             {
                 using (var context = new AppDbContext())
                 {
-                    context.Add(work);
-                    context.SaveChanges();
+                    //Dupllicate work
+                    Work? duplicate = context.Works.Where(w => w.Titile == work.Titile).FirstOrDefault();
+                    if(duplicate == null)
+                    {
+                        context.Add(work);
+                        int result = context.SaveChanges();
+                        if (result > 0) return "Successfully!";
+                        else return "Fail to update to database";
+                    }
+                    return "Work existed!";
+                   
                 }
             }
             catch (Exception e)

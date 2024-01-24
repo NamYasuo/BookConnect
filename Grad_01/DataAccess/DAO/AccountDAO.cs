@@ -1,5 +1,6 @@
 ﻿using System;
 using BusinessObjects;
+using BusinessObjects.DTO;
 using BusinessObjects.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -155,6 +156,22 @@ namespace DataAccess.DAO
                 throw new Exception(e.Message);
             }
         }
+
+        //public UserProfile GetUserProfile(Guid userId)
+        //{
+        //    try
+        //    {
+        //        UserProfile profile = new UserProfile();
+        //        using (var context = new AppDbContext())
+        //        {
+                   
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        throw new Exception(e.Message);
+        //    }
+        //}
     }
 }
 

@@ -3,10 +3,12 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using APIs.Services.Intefaces;
+using BusinessObjects.DTO;
 using BusinessObjects.Models;
 using DataAccess.DAO;
 using DataAccess.DTO;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.IdentityModel.Tokens;
 
 namespace APIs.Repositories.Intefaces
@@ -54,13 +56,17 @@ namespace APIs.Repositories.Intefaces
             List<Claim> claims = new List<Claim>()
             {
                 new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.Role, "BaseUser")
+                new Claim(ClaimTypes.Role, "BaseUser"),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim("userId", user.UserId.ToString()),
             };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config.GetSection("JWT:Pepper").Value));
 
             var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
             var token = new JwtSecurityToken(
+                issuer: "Book connect",
+                audience: "Pikachu",
                 claims: claims,
                 expires: DateTime.Now.AddMinutes(30),
                 signingCredentials: cred
@@ -107,7 +113,7 @@ namespace APIs.Repositories.Intefaces
                 iterations,
                 hashAlgorithm,
                 keySize);
-             pwdHash = hash;
+            pwdHash = hash;
         }
 
         public void AddNewRole(Role role) => new AccountDAO().AddNewRole(role);
@@ -118,7 +124,19 @@ namespace APIs.Repositories.Intefaces
         public List<Address> GetAllUserAdderess(Guid userId) => new AddressDAO().GetAllUserAddress(userId);
 
         public Address GetDefaultAddress(Guid userId) => new AddressDAO().GetUserDefaultAddress(userId);
-       
+
+        //public UserProfile? GetUserProfile(string token)
+        //{
+        //    UserProfile? profile = new UserProfile();
+        //    try
+        //    {
+               
+        //    }
+        //    catch(Exception e)
+        //    {
+        //        throw new Exception(e.Message);
+        //    }
+        //}
     }
 }
 

@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using APIs.DTO.Ecom;
 using BusinessObjects;
 using BusinessObjects.Models;
 using BusinessObjects.Models.Ecom;
+using DataAccess.DTO;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.DAO
@@ -83,6 +85,40 @@ namespace DataAccess.DAO
                 }
             }
             catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public string GetUserCartId(Guid userId)
+        {
+            try
+            {
+                using(var context = new AppDbContext())
+                {
+                    Cart? userCart = context.Carts.Where(c => c.CustomerId == userId).FirstOrDefault();
+                    if (userCart == null)
+                    {
+                        Cart newCart = new Cart()
+                        {
+                            CartId = Guid.NewGuid(),
+                            CustomerId = userId,
+                            Status = null,
+                            CreateDate = DateTime.Now,
+                            LastUpdatedDate = DateTime.Now,
+                            Total_Quantity = null,
+                            Total_Price = null,
+                            ExpiredDate = DateTime.Now.AddDays(1)
+                        };
+                        context.Carts.Add(newCart);
+                        int result = context.SaveChanges();
+                        if (result > 0) return newCart.CartId.ToString();
+                        else return "Fail to create cart";
+                    }
+                    else return userCart.CartId.ToString();
+                }
+            }
+            catch(Exception e)
             {
                 throw new Exception(e.Message);
             }

@@ -2,7 +2,6 @@
 using APIs.DTO.Ecom;
 using APIs.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace APIs.Controllers
 {
@@ -57,8 +56,19 @@ namespace APIs.Controllers
             }
         }
 
-
-
+        [HttpGet]
+        [Route("get-cart-id")]
+        public IActionResult GetCartId(Guid userId)
+        {
+            try
+            {
+                return Ok(_cartRepo.GetUserCartId(userId));
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
 	}
 }
 

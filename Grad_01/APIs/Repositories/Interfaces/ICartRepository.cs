@@ -8,7 +8,7 @@ namespace APIs.Repositories.Interfaces
 		public int AddProductToCart(Guid productId, Guid cartId, int quantity);
 		public List<CartDetailsDTO> GetCartDetails(Guid userId);
 		public void AddListProductToCart(List<Guid> productIds, Guid cartId, int quantity);
-
+		public string GetUserCartId(Guid userId);
     }
 }
 

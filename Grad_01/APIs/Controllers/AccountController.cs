@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Net.NetworkInformation;
+using System.Security.Claims;
 using System.Text;
 using APIs.DTO;
 using APIs.Services.Intefaces;
+using BusinessObjects.DTO;
 using BusinessObjects.Models;
 using DataAccess.DTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -132,7 +135,69 @@ namespace APIs.Controllers
                 throw new Exception(e.Message);
             }
         }
-        
+
+        [HttpPost]
+        [Route("upload-cic")]
+        public async Task<IActionResult> OnPostUploadAsync(List<IFormFile> files, Guid userId)
+        {
+            long size = files.Sum(f => f.Length);
+
+            foreach (var formFile in files)
+            {
+                if (formFile.Length > 0)
+                {
+                    var filePath = Path.GetTempFileName();
+
+                    using (var stream = System.IO.File.Create(filePath))
+                    {
+                        await formFile.CopyToAsync(stream);
+                    }
+                }
+            }
+
+            // Process uploaded files
+            // Don't rely on or trust the FileName property without validation.
+
+            return Ok(new { count = files.Count, size });
+        }
+
+        [HttpGet, Authorize]
+        [Route("get-user-profile")]
+        public async Task<IActionResult> GetUserProfile()
+        {
+            try
+            {
+                var userIdClaim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "userId");
+                var roleClaim = HttpContext.User.FindFirst(ClaimTypes.Role);
+                var usernameClaim = HttpContext.User.FindFirst(ClaimTypes.Name);
+                var emailClaim = HttpContext.User.FindFirst(ClaimTypes.Email);
+                if (userIdClaim != null)
+                {
+                    var userId = Guid.Parse(userIdClaim.Value);
+                    if (roleClaim != null)
+                    {
+                        if (usernameClaim != null)
+                        {
+                          Address address = accService.GetDefaultAddress(userId);
+                            UserProfile profile = new UserProfile()
+                            {
+                                UserId = userId,
+                                Username = usernameClaim.Value,
+                                Role = roleClaim.Value,
+                                Address = address.Rendezvous,
+                                Email = emailClaim.Value
+                            };
+                            return Ok(profile);
+                        }
+                        else return BadRequest("Username claim not found!!!");
+                    } else return BadRequest("Role claim not found!!!");
+                } else return BadRequest("User ID claim not found!!!");
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
     }
 }
 

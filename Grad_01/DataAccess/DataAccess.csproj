@@ -13,4 +13,12 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.15" />
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="DAO\E-com\" />
+    <None Remove="DAO\Creative\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DAO\E-com\" />
+    <Folder Include="DAO\Creative\" />
+  </ItemGroup>
 </Project>
