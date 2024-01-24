@@ -1,0 +1,16 @@
+D:\GitHub\BookConnect\Grad_01\DataAccess\bin\Debug\net7.0\DataAccess.deps.json
+D:\GitHub\BookConnect\Grad_01\DataAccess\bin\Debug\net7.0\DataAccess.dll
+D:\GitHub\BookConnect\Grad_01\DataAccess\bin\Debug\net7.0\DataAccess.pdb
+D:\GitHub\BookConnect\Grad_01\DataAccess\bin\Debug\net7.0\BusinessObjects.dll
+D:\GitHub\BookConnect\Grad_01\DataAccess\bin\Debug\net7.0\BusinessObjects.pdb
+D:\GitHub\BookConnect\Grad_01\DataAccess\obj\Debug\net7.0\DataAccess.csproj.AssemblyReference.cache
+D:\GitHub\BookConnect\Grad_01\DataAccess\obj\Debug\net7.0\DataAccess.GeneratedMSBuildEditorConfig.editorconfig
+D:\GitHub\BookConnect\Grad_01\DataAccess\obj\Debug\net7.0\DataAccess.AssemblyInfoInputs.cache
+D:\GitHub\BookConnect\Grad_01\DataAccess\obj\Debug\net7.0\DataAccess.AssemblyInfo.cs
+D:\GitHub\BookConnect\Grad_01\DataAccess\obj\Debug\net7.0\DataAccess.csproj.CoreCompileInputs.cache
+D:\GitHub\BookConnect\Grad_01\DataAccess\obj\Debug\net7.0\DataAccess.sourcelink.json
+D:\GitHub\BookConnect\Grad_01\DataAccess\obj\Debug\net7.0\DataAccess.csproj.CopyComplete
+D:\GitHub\BookConnect\Grad_01\DataAccess\obj\Debug\net7.0\DataAccess.dll
+D:\GitHub\BookConnect\Grad_01\DataAccess\obj\Debug\net7.0\refint\DataAccess.dll
+D:\GitHub\BookConnect\Grad_01\DataAccess\obj\Debug\net7.0\DataAccess.pdb
+D:\GitHub\BookConnect\Grad_01\DataAccess\obj\Debug\net7.0\ref\DataAccess.dll

@@ -1,0 +1,153 @@
+﻿using System;
+using System.Collections.Generic;
+using APIs.DTO.Ecom;
+using BusinessObjects;
+using BusinessObjects.Models;
+using BusinessObjects.Models.Ecom;
+using DataAccess.DTO;
+using Microsoft.EntityFrameworkCore;
+
+namespace DataAccess.DAO
+{
+	public class CartDAO
+	{
+        //Add Product to Cart
+        public int AddProductToCart(Guid productId, Guid cartId, int quantity)
+        {
+            try
+            {
+                using (var context = new AppDbContext())
+                {
+                    /*int result = context.Database.ExecuteSqlRaw
+                    ($"exec AddProductToCart '{id}', '{cartId}', null , {quantity}, {DateTime.Now} , null");*/
+                    if (context.Baskets.Any(b => b.ProductId == productId && b.CartId == cartId))
+                    {
+                        // check if existed, if it does, increase quantity by new quantity added
+                        var basket = context.Baskets
+                            .Where(b => b.ProductId == productId && b.CartId == cartId)
+                            .SingleOrDefault();
+
+                        basket.Quantity += quantity;
+                        basket.AddedDate = DateTime.Now;
+                        /*				basket.AddedDate = DateTime.ParseExact(DateTime.Now.ToString("yyyy-MM-dd"), "yyyy-MM-dd", CultureInfo.InvariantCulture);*/
+                    }
+                    else
+                    {
+                        // if not, add a new record
+                        var newBasket = new Basket
+                        {
+                            ProductId = productId,
+                            CartId = cartId,
+                            OrderId = null,
+                            Quantity = quantity,
+                            AddedDate = DateTime.Now,
+                            /*AddedDate = DateTime.ParseExact(DateTime.Now.ToString("yyyy-MM-dd"), "yyyy-MM-dd", CultureInfo.InvariantCulture),*/
+                            Stored_Price = null
+                        };
+
+                        context.Baskets.Add(newBasket);
+                    }
+                    int result = context.SaveChanges();
+                    return result;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public void AddListProductToCart(List<Guid> productIds, Guid cartId , int quantity)
+        {
+            try
+            {
+                using (var context = new AppDbContext())
+                {
+                    foreach(Guid id in productIds)
+                    {
+                        int result = context.Database.ExecuteSqlRaw
+                        ($"exec AddProductToCart '{id}', '{cartId}', null , {quantity}, {DateTime.Now} , null");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+		public List<CartDetailsDTO> GetCartDetails(Guid userId)
+		{
+            try
+            {
+                using (var context = new AppDbContext())
+                {
+                    var queryResult = from c in context.Carts
+                                 join lp in context.Baskets on c.CartId equals lp.CartId
+                                 join b in context.Books on lp.ProductId equals b.ProductId
+                                 where c.CustomerId == userId
+                                 select new
+                                 {
+                                     b.ProductId,
+                                     b.Price,
+                                     Stock = b.Quantity,
+                                     b.Name,
+                                     Quantity = lp.Quantity,
+                                     c.CartId
+                                 };
+
+                    var resultList = queryResult.Select(r => new CartDetailsDTO
+                    {
+                        ProductId = r.ProductId,
+                        Price = r.Price,
+                        Stock = r.Stock,
+                        Name = r.Name,
+                        Quantity = r.Quantity,
+                        CartId = r.CartId
+                    }
+                    ).ToList();
+                    return resultList;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public string GetUserCartId(Guid userId)
+        {
+            try
+            {
+                using(var context = new AppDbContext())
+                {
+                    Cart? userCart = context.Carts.Where(c => c.CustomerId == userId).FirstOrDefault();
+                    if (userCart == null)
+                    {
+                        Cart newCart = new Cart()
+                        {
+                            CartId = Guid.NewGuid(),
+                            CustomerId = userId,
+                            Status = null,
+                            CreateDate = DateTime.Now,
+                            LastUpdatedDate = DateTime.Now,
+                            Total_Quantity = null,
+                            Total_Price = null,
+                            ExpiredDate = DateTime.Now.AddDays(1)
+                        };
+                        context.Carts.Add(newCart);
+                        int result = context.SaveChanges();
+                        if (result > 0) return newCart.CartId.ToString();
+                        else return "Fail to create cart";
+                    }
+                    else return userCart.CartId.ToString();
+                }
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+    }
+}
+
