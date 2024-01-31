@@ -1,5 +1,6 @@
 ﻿using System;
 using BusinessObjects;
+using BusinessObjects.DTO;
 using BusinessObjects.Models;
 using BusinessObjects.Models.Creative;
 
@@ -25,14 +26,14 @@ namespace DataAccess.DAO
 			return works;
 		}
         //Get work by id
-        public Work GetWorkById(Guid WorkId)
+        public Work GetWorkById(Guid workId)
         {
             Work? Work = new Work();
             try
             {
                 using (var context = new AppDbContext())
                 {
-                    Work = context.Works.Where(b => b.WorkId == WorkId).FirstOrDefault();
+                    Work = context.Works.Where(b => b.WorkId == workId).FirstOrDefault();
                 }
             }
             catch (Exception e)
@@ -124,6 +125,32 @@ namespace DataAccess.DAO
             {
                 throw new Exception(e.Message);
             }
+        }
+
+        public List<WorkIdTitleDTO>? GetTitleAndIdByAuthorId(Guid authorId)
+        {
+            try
+            {
+                List<WorkIdTitleDTO>? results = new List<WorkIdTitleDTO>();
+                using(var context = new AppDbContext())
+                {
+                   List<Work> works = context.Works.Where(w => w.AuthorId == authorId).ToList();
+                   foreach(Work w in works)
+                    {
+                        results.Add(new WorkIdTitleDTO
+                        {
+                            Title = w.Titile,
+                            WorkId = w.WorkId
+                        });
+                    }
+                }
+                return results;
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            
         }
 
     }

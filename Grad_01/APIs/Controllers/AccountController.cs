@@ -51,7 +51,6 @@ namespace APIs.Controllers
         public async Task<IActionResult> SignIn([FromBody] LoginDTO model)
         {
             var status = new Status();
-            AppUser user = new AppUser();
 
             if (!ModelState.IsValid)
             {
@@ -59,7 +58,7 @@ namespace APIs.Controllers
                 status.Message = "Please pass all the required fields";
                 return Ok(status);
             }
-            user = accService.FindUserByEmailAsync(model.Email);
+            AppUser? user = accService.FindUserByEmailAsync(model.Email);
             if (user == null)
             {
                 return BadRequest("User not found!");
@@ -68,7 +67,7 @@ namespace APIs.Controllers
             byte[] salt = Convert.FromHexString(user.Salt);
             if (!accService.VerifyPassword(model.Password, user.Password, salt, out byte[] result))
             {
-                return BadRequest("Wrong password" + Convert.ToHexString(result));
+                return BadRequest("Wrong password");
             }
             string token = accService.CreateToken(user);
             var refreshToken = accService.GenerateRefreshToken();

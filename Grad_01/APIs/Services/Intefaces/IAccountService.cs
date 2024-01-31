@@ -10,7 +10,7 @@ namespace APIs.Services.Intefaces
     {
         //User services
         public Task<IdentityResult> ChangePassword(PasswordChangeDTO model);
-        public AppUser FindUserByEmailAsync(string email);
+        public AppUser? FindUserByEmailAsync(string email);
         public AppUser Register(RegisterDTO model);
         public bool VerifyPassword(string pwd, string hash, byte[] salt, out byte[] result);
         public string CreateToken(AppUser user);

@@ -49,7 +49,7 @@ namespace APIs.Repositories.Intefaces
             return user;
         }
 
-        public AppUser FindUserByEmailAsync(string email) => new AccountDAO().FindUserByEmailAsync(email);
+        public AppUser? FindUserByEmailAsync(string email) => new AccountDAO().FindUserByEmailAsync(email);
 
         public string CreateToken(AppUser user)
         {

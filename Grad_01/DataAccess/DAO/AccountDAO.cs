@@ -87,9 +87,9 @@ namespace DataAccess.DAO
         }
 
         //Find user by email then return user object
-        public AppUser FindUserByEmailAsync(string email)
+        public AppUser? FindUserByEmailAsync(string email)
         {
-            AppUser? user = new AppUser();
+            AppUser? user = null;
             try
             {
                 using (var context = new AppDbContext())
