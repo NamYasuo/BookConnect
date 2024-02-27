@@ -1,35 +1,52 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using BusinessObjects;
+using BusinessObjects.DTO;
+using BusinessObjects.Models;
+using APIs.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using APIs.Services.Intefaces;
 
 namespace APIs.Controllers
 {
     [ApiController]
     [Route("api/products")]
-    public class ProductsController : ControllerBase
+    public class BooksController : ControllerBase
     {
-        private readonly AppDbContext _dbContext;
+        private readonly IBookService _bookService;
 
-        public ProductsController(AppDbContext dbContext)
+        public BooksController(IBookService bookService)
         {
-            _dbContext = dbContext;
+            _bookService = bookService;
         }
 
         [HttpGet("search")]
-        public IActionResult SearchProductsByName(string searchTerm)
+        public IActionResult SearchProductsByName()
         {
-            if (string.IsNullOrEmpty(searchTerm))
-            {
-                return BadRequest("Search term is required.");
+            try{
+                List<SEODTO> result = _bookService.ListSEO();
+                return Ok(result);
             }
-
-            var result = _dbContext.Books
-                .Where(p => p.Name != null && p.Name.ToLower().Contains(searchTerm.ToLower()))
-                .ToList();
-
-            return Ok(result);
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+               
         }
+    /*    [HttpGet("search all")]
+        public IActionResult SearchAll()
+        {
+            try
+            {
+                List<Book> result = _bookService.GetAllBook();
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }*/
+
     }
 }

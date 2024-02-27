@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "YlyZCAGOn1WWe/hxNUXZSqYJvNd6tCmlzLxij8cgMhr02FLabmNY2yjLPPTOzb1tFEorsHchO3jtel6wD2Uwww==",
+  "dgSpecHash": "Tmj2o/VWOSKM6auky9uu09ZNGmD8cBM+6afnBcEqd9/mCOfnyJKBXPItp0yoLc3MFA1KNJrTo9+e7pydTqAbWA==",
   "success": true,
-  "projectFilePath": "D:\\GitHub\\BookConnect\\Grad_01\\BusinessObjects\\BusinessObjects.csproj",
+  "projectFilePath": "D:\\BookCo\\BookConnect\\Grad_01\\BusinessObjects\\BusinessObjects.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\HI\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\HI\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",

@@ -3871,11 +3871,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\GitHub\\BookConnect\\Grad_01\\APIs\\APIs.csproj",
+      "projectUniqueName": "D:\\BookCo\\BookConnect\\Grad_01\\APIs\\APIs.csproj",
       "projectName": "APIs",
-      "projectPath": "D:\\GitHub\\BookConnect\\Grad_01\\APIs\\APIs.csproj",
+      "projectPath": "D:\\BookCo\\BookConnect\\Grad_01\\APIs\\APIs.csproj",
       "packagesPath": "C:\\Users\\HI\\.nuget\\packages\\",
-      "outputPath": "D:\\GitHub\\BookConnect\\Grad_01\\APIs\\obj\\",
+      "outputPath": "D:\\BookCo\\BookConnect\\Grad_01\\APIs\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -3896,8 +3896,8 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "D:\\GitHub\\BookConnect\\Grad_01\\DataAccess\\DataAccess.csproj": {
-              "projectPath": "D:\\GitHub\\BookConnect\\Grad_01\\DataAccess\\DataAccess.csproj"
+            "D:\\BookCo\\BookConnect\\Grad_01\\DataAccess\\DataAccess.csproj": {
+              "projectPath": "D:\\BookCo\\BookConnect\\Grad_01\\DataAccess\\DataAccess.csproj"
             }
           }
         }

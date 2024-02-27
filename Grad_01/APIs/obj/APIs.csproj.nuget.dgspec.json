@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\GitHub\\BookConnect\\Grad_01\\APIs\\APIs.csproj": {}
+    "D:\\BookCo\\BookConnect\\Grad_01\\APIs\\APIs.csproj": {}
   },
   "projects": {
-    "D:\\GitHub\\BookConnect\\Grad_01\\APIs\\APIs.csproj": {
+    "D:\\BookCo\\BookConnect\\Grad_01\\APIs\\APIs.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\GitHub\\BookConnect\\Grad_01\\APIs\\APIs.csproj",
+        "projectUniqueName": "D:\\BookCo\\BookConnect\\Grad_01\\APIs\\APIs.csproj",
         "projectName": "APIs",
-        "projectPath": "D:\\GitHub\\BookConnect\\Grad_01\\APIs\\APIs.csproj",
+        "projectPath": "D:\\BookCo\\BookConnect\\Grad_01\\APIs\\APIs.csproj",
         "packagesPath": "C:\\Users\\HI\\.nuget\\packages\\",
-        "outputPath": "D:\\GitHub\\BookConnect\\Grad_01\\APIs\\obj\\",
+        "outputPath": "D:\\BookCo\\BookConnect\\Grad_01\\APIs\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -32,8 +32,8 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "D:\\GitHub\\BookConnect\\Grad_01\\DataAccess\\DataAccess.csproj": {
-                "projectPath": "D:\\GitHub\\BookConnect\\Grad_01\\DataAccess\\DataAccess.csproj"
+              "D:\\BookCo\\BookConnect\\Grad_01\\DataAccess\\DataAccess.csproj": {
+                "projectPath": "D:\\BookCo\\BookConnect\\Grad_01\\DataAccess\\DataAccess.csproj"
               }
             }
           }
@@ -96,14 +96,14 @@
         }
       }
     },
-    "D:\\GitHub\\BookConnect\\Grad_01\\BusinessObjects\\BusinessObjects.csproj": {
+    "D:\\BookCo\\BookConnect\\Grad_01\\BusinessObjects\\BusinessObjects.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\GitHub\\BookConnect\\Grad_01\\BusinessObjects\\BusinessObjects.csproj",
+        "projectUniqueName": "D:\\BookCo\\BookConnect\\Grad_01\\BusinessObjects\\BusinessObjects.csproj",
         "projectName": "BusinessObjects",
-        "projectPath": "D:\\GitHub\\BookConnect\\Grad_01\\BusinessObjects\\BusinessObjects.csproj",
+        "projectPath": "D:\\BookCo\\BookConnect\\Grad_01\\BusinessObjects\\BusinessObjects.csproj",
         "packagesPath": "C:\\Users\\HI\\.nuget\\packages\\",
-        "outputPath": "D:\\GitHub\\BookConnect\\Grad_01\\BusinessObjects\\obj\\",
+        "outputPath": "D:\\BookCo\\BookConnect\\Grad_01\\BusinessObjects\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -188,14 +188,14 @@
         }
       }
     },
-    "D:\\GitHub\\BookConnect\\Grad_01\\DataAccess\\DataAccess.csproj": {
+    "D:\\BookCo\\BookConnect\\Grad_01\\DataAccess\\DataAccess.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\GitHub\\BookConnect\\Grad_01\\DataAccess\\DataAccess.csproj",
+        "projectUniqueName": "D:\\BookCo\\BookConnect\\Grad_01\\DataAccess\\DataAccess.csproj",
         "projectName": "DataAccess",
-        "projectPath": "D:\\GitHub\\BookConnect\\Grad_01\\DataAccess\\DataAccess.csproj",
+        "projectPath": "D:\\BookCo\\BookConnect\\Grad_01\\DataAccess\\DataAccess.csproj",
         "packagesPath": "C:\\Users\\HI\\.nuget\\packages\\",
-        "outputPath": "D:\\GitHub\\BookConnect\\Grad_01\\DataAccess\\obj\\",
+        "outputPath": "D:\\BookCo\\BookConnect\\Grad_01\\DataAccess\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -216,8 +216,8 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "D:\\GitHub\\BookConnect\\Grad_01\\BusinessObjects\\BusinessObjects.csproj": {
-                "projectPath": "D:\\GitHub\\BookConnect\\Grad_01\\BusinessObjects\\BusinessObjects.csproj"
+              "D:\\BookCo\\BookConnect\\Grad_01\\BusinessObjects\\BusinessObjects.csproj": {
+                "projectPath": "D:\\BookCo\\BookConnect\\Grad_01\\BusinessObjects\\BusinessObjects.csproj"
               }
             }
           }

@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.IdentityModel.Tokens;
 
-namespace APIs.Repositories.Intefaces
+namespace APIs.Repositories.Interfaces
 {
     public class AccountService : IAccountService
     {

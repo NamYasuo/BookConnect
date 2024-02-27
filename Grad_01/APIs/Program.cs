@@ -1,7 +1,6 @@
 ﻿using System.Text;
 using APIs.Config;
 using APIs.Repositories;
-using APIs.Repositories.Intefaces;
 using APIs.Repositories.Interfaces;
 using APIs.Services;
 using APIs.Services.Intefaces;
@@ -26,6 +25,7 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IVnPayService, VnPayService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IBookService, BookService>();
 
 //Repositories
 builder.Services.AddScoped<ICartRepository, CartRepository>();
