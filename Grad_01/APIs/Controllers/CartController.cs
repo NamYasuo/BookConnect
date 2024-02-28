@@ -2,6 +2,7 @@
 using APIs.DTO.Ecom;
 using APIs.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using BusinessObjects.Models;
 
 namespace APIs.Controllers
 {

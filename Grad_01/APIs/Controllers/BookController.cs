@@ -22,31 +22,43 @@ namespace APIs.Controllers
         }
 
         [HttpGet("search")]
-        public IActionResult SearchProductsByName()
+        public IActionResult SearchProductsByName([FromQuery] string searchTerm)
         {
-            try{
-                List<SEODTO> result = _bookService.ListSEO();
-                return Ok(result);
-            }
-            catch (Exception ex)
+            if (string.IsNullOrEmpty(searchTerm))
             {
-                throw new Exception(ex.Message);
+                return BadRequest("Search term cannot be empty.");
             }
-               
-        }
-    /*    [HttpGet("search all")]
-        public IActionResult SearchAll()
-        {
+
             try
             {
-                List<Book> result = _bookService.GetAllBook();
-                return Ok(result);
+                List<SEODTO> searchResult = _bookService.ListSEO(searchTerm);
+
+                if (searchResult.Count == 0)
+                {
+                    return NotFound("No products found with the provided search term.");
+                }
+
+                return Ok(searchResult);
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                return StatusCode(500, ex.Message); // Internal Server Error with message
             }
-        }*/
+        }
+
+        /*    [HttpGet("search all")]
+            public IActionResult SearchAll()
+            {
+                try
+                {
+                    List<Book> result = _bookService.GetAllBook();
+                    return Ok(result);
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            }*/
 
     }
 }

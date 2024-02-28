@@ -8,7 +8,7 @@ namespace APIs.Services.Intefaces
 {
     public interface IBookService
     {
-       /* public List<Book> GetAllBook();
+        /*public List<Book> GetAllBook();
         public Book GetBookById(Guid bookId);
         public Book GetBookByName(string name);
         public void AddNewBook(Book book);
@@ -16,6 +16,7 @@ namespace APIs.Services.Intefaces
         public void DeleteBook(Guid bookId);
         public List<Book> GetBookListById(List<Guid> bookIds);*/
 
-        public List<SEODTO> ListSEO(); 
+        
+        List<SEODTO> ListSEO(string searchTerm);
     }
 }
