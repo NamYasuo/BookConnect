@@ -5,6 +5,7 @@ using BusinessObjects;
 using BusinessObjects.Models;
 using BusinessObjects.Models.Ecom;
 using DataAccess.DTO;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.DAO
@@ -16,38 +17,32 @@ namespace DataAccess.DAO
         {
             try
             {
+                int result;
                 using (var context = new AppDbContext())
                 {
-                    /*int result = context.Database.ExecuteSqlRaw
-                    ($"exec AddProductToCart '{id}', '{cartId}', null , {quantity}, {DateTime.Now} , null");*/
+
                     if (context.Baskets.Any(b => b.ProductId == productId && b.CartId == cartId))
                     {
-                        // check if existed, if it does, increase quantity by new quantity added
-                        var basket = context.Baskets
-                            .Where(b => b.ProductId == productId && b.CartId == cartId)
-                            .SingleOrDefault();
-
-                        basket.Quantity += quantity;
-                        basket.AddedDate = DateTime.Now;
-                        /*				basket.AddedDate = DateTime.ParseExact(DateTime.Now.ToString("yyyy-MM-dd"), "yyyy-MM-dd", CultureInfo.InvariantCulture);*/
+                        result = context.Database.ExecuteSqlRaw(
+                        "UPDATE Baskets " +
+                        "SET Quantity = Quantity + {0}, AddedDate = {1} " +
+                        "WHERE ProductId = {2} AND CartId = {3}",
+                        quantity,
+                        DateTime.Now,
+                        productId,
+                        cartId);
                     }
                     else
                     {
-                        // if not, add a new record
-                        var newBasket = new Basket
-                        {
-                            ProductId = productId,
-                            CartId = cartId,
-                            OrderId = null,
-                            Quantity = quantity,
-                            AddedDate = DateTime.Now,
-                            /*AddedDate = DateTime.ParseExact(DateTime.Now.ToString("yyyy-MM-dd"), "yyyy-MM-dd", CultureInfo.InvariantCulture),*/
-                            Stored_Price = null
-                        };
+                        string insertQuery = $"INSERT INTO Baskets (ProductId, CartId, OrderId, Quantity, AddedDate, Stored_Price) " +
+                     $"VALUES (@productId, @cartId, NULL, @quantity, @addedDate, NULL)";
 
-                        context.Baskets.Add(newBasket);
+                        result = context.Database.ExecuteSqlRaw(insertQuery,
+                            new SqlParameter("@productId", productId),
+                            new SqlParameter("@cartId", cartId),
+                            new SqlParameter("@quantity", quantity),
+                            new SqlParameter("@addedDate", DateTime.Now));
                     }
-                    int result = context.SaveChanges();
                     return result;
                 }
             }
@@ -56,8 +51,8 @@ namespace DataAccess.DAO
                 throw new Exception(e.Message);
             }
         }
-
-        public void AddListProductToCart(List<Guid> productIds, Guid cartId , int quantity)
+    
+    public void AddListProductToCart(List<Guid> productIds, Guid cartId , int quantity)
         {
             try
             {
@@ -148,6 +143,24 @@ namespace DataAccess.DAO
                 throw new Exception(e.Message);
             }
         }
+        public void DeleteProductFromCart(Guid productId, Guid cartId)
+        {
+            try
+            {
+                using (var context = new AppDbContext())
+                {
+                    // Remove the item with the matching product and cart IDs
+                    int result = context.Database.ExecuteSqlRaw(
+                        "DELETE FROM Baskets WHERE ProductId = {0} AND CartId = {1}",
+                        productId, cartId);
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
     }
 }
 
