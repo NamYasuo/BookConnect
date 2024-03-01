@@ -41,7 +41,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Mapper\" />
+    <Folder Include="Services\" />
     <Folder Include="Services\Payment\" />
+    <Folder Include="Services\Intefaces\" />
     <Folder Include="Repositories\" />
     <Folder Include="Repositories\Interfaces\" />
     <Folder Include="Utils\" />

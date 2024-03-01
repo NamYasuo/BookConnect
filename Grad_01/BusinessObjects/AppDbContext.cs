@@ -46,6 +46,7 @@ namespace BusinessObjects
         //Trading services DbSet
         public virtual DbSet<Post> Posts { get; set; } = null!;
 
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             var builder = new ConfigurationBuilder()
