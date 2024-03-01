@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.IdentityModel.Tokens;
 
-namespace APIs.Repositories.Interfaces
+namespace APIs.Services.Interfaces
 {
     public class AccountService : IAccountService
     {
@@ -125,18 +125,8 @@ namespace APIs.Repositories.Interfaces
 
         public Address GetDefaultAddress(Guid userId) => new AddressDAO().GetUserDefaultAddress(userId);
 
-        //public UserProfile? GetUserProfile(string token)
-        //{
-        //    UserProfile? profile = new UserProfile();
-        //    try
-        //    {
-               
-        //    }
-        //    catch(Exception e)
-        //    {
-        //        throw new Exception(e.Message);
-        //    }
-        //}
+        //public AppUser GetUserProfile(Guid userId) => new AccountDAO().GetUserProfile(userId);
+        
     }
 }
 

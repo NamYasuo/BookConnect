@@ -157,6 +157,23 @@ namespace DataAccess.DAO
             }
         }
 
+        //public AppUser GetUserProfile(Guid userId)
+        //{
+        //    AppUser? user = null;
+        //    try
+        //    {
+        //        using (var context = new AppDbContext())
+        //        {
+        //            user = context.AppUsers.Where(u => u.UserId == userId).FirstOrDefault();
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        throw new Exception(e.Message);
+        //    }
+
+        //    return user;
+        //}
         //public UserProfile GetUserProfile(Guid userId)
         //{
         //    try
@@ -164,7 +181,7 @@ namespace DataAccess.DAO
         //        UserProfile profile = new UserProfile();
         //        using (var context = new AppDbContext())
         //        {
-                   
+
         //        }
         //    }
         //    catch (Exception e)

@@ -42,8 +42,6 @@
   <ItemGroup>
     <Folder Include="Mapper\" />
     <Folder Include="Services\Payment\" />
-    <Folder Include="Repositories\" />
-    <Folder Include="Repositories\Interfaces\" />
     <Folder Include="Utils\" />
     <Folder Include="Utils\Config\" />
     <Folder Include="Utils\Base\" />

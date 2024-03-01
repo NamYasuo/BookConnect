@@ -21,6 +21,7 @@ namespace APIs.Services.Intefaces
         //Address services
         public List<Address> GetAllUserAdderess(Guid userId);
         public Address GetDefaultAddress(Guid userId);
+        //public AppUser GetUserProfile(Guid userId);
     }
 }
 

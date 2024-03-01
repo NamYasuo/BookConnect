@@ -1,6 +1,6 @@
 ﻿using System;
 using APIs.DTO.Ecom;
-using APIs.Repositories.Interfaces;
+using APIs.Services.Intefaces;
 using Microsoft.AspNetCore.Mvc;
 using BusinessObjects.Models;
 
@@ -10,9 +10,9 @@ namespace APIs.Controllers
     [ApiController]
     public class CartController: ControllerBase
 	{
-		private readonly ICartRepository _cartRepo;
+		private readonly ICartService _cartRepo;
 
-		public CartController(ICartRepository cartRepository)
+		public CartController(ICartService cartRepository)
 		{
 			_cartRepo = cartRepository;
 		}
@@ -73,11 +73,11 @@ namespace APIs.Controllers
 
         [HttpDelete]
         [Route("delete-product-from-cart")]
-        public IActionResult DeleteProductFromCart(Guid productId, Guid cartId)
+        public IActionResult DeleteProductFromCart(Guid productId, Guid cartId, int quantity)
         {
             try
             {
-                _cartRepo.DeleteProductFromCart(productId, cartId);
+                _cartRepo.DeleteProductFromCart(productId, cartId, quantity);
                 return Ok("Product deleted from cart successfully!");
             }
             catch (Exception e)
