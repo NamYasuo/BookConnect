@@ -157,6 +157,21 @@ namespace DataAccess.DAO
             }
         }
 
+        public string? GetNameById(Guid userId)
+        {
+            try
+            {
+                string? result = "";
+                using(var context = new AppDbContext())
+                {
+                    result = context.AppUsers.Where(u => u.UserId == userId).FirstOrDefault()?.Username;
+                }
+                return result;
+            }catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
         //public UserProfile GetUserProfile(Guid userId)
         //{
         //    try

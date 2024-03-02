@@ -4,7 +4,7 @@ using APIs.Utils.Base.Models;
 using BusinessObjects.DTO;
 using BusinessObjects.Models;
 
-namespace APIs.Services.Intefaces
+namespace APIs.Services.Interfaces
 {
 	public interface IVnPayService
 	{

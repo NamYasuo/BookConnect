@@ -2,7 +2,7 @@
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using APIs.Services.Intefaces;
+using APIs.Services.Interfaces;
 using BusinessObjects.DTO;
 using BusinessObjects.Models;
 using DataAccess.DAO;
@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.IdentityModel.Tokens;
 
-namespace APIs.Repositories.Intefaces
+namespace APIs.Repositories.Interfaces
 {
     public class AccountService : IAccountService
     {
@@ -119,6 +119,8 @@ namespace APIs.Repositories.Intefaces
         public void AddNewRole(Role role) => new AccountDAO().AddNewRole(role);
 
         public Role GetRoleDetails(string roleName) => new AccountDAO().GetRolesDetails(roleName);
+
+        public string? GetUsernameById(Guid userId) => new AccountDAO().GetNameById(userId);
 
         //Address services
         public List<Address> GetAllUserAdderess(Guid userId) => new AddressDAO().GetAllUserAddress(userId);

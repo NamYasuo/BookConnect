@@ -1,5 +1,5 @@
 ﻿using System;
-using APIs.Services.Intefaces;
+using APIs.Services.Interfaces;
 using BusinessObjects.DTO;
 using DataAccess.DAO;
 

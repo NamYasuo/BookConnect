@@ -16,6 +16,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="7.0.14" />
     <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.12" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="8.0.0" />
   </ItemGroup>
    <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
@@ -29,7 +30,6 @@
     <None Remove="Mapper\" />
     <None Remove="Services\" />
     <None Remove="Services\Payment\" />
-    <None Remove="Services\Intefaces\" />
     <None Remove="Repositories\" />
     <None Remove="Repositories\Interfaces\" />
     <None Remove="Utils\" />
@@ -38,12 +38,14 @@
     <None Remove="Utils\Base\Models\" />
     <None Remove="Utils\Extensions\" />
     <None Remove="Utils\VnPay\" />
+    <None Remove="Utils\Paging\" />
+    <None Remove="FileSystem\" />
+    <None Remove="Services\Interfaces\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Mapper\" />
     <Folder Include="Services\" />
     <Folder Include="Services\Payment\" />
-    <Folder Include="Services\Intefaces\" />
     <Folder Include="Repositories\" />
     <Folder Include="Repositories\Interfaces\" />
     <Folder Include="Utils\" />
@@ -52,5 +54,8 @@
     <Folder Include="Utils\Base\Models\" />
     <Folder Include="Utils\Extensions\" />
     <Folder Include="Utils\VnPay\" />
+    <Folder Include="Utils\Paging\" />
+    <Folder Include="FileSystem\" />
+    <Folder Include="Services\Interfaces\" />
   </ItemGroup>
 </Project>

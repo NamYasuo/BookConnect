@@ -1,16 +1,14 @@
 ﻿using System.Text;
 using APIs.Config;
 using APIs.Repositories;
-using APIs.Repositories.Intefaces;
 using APIs.Repositories.Interfaces;
 using APIs.Services;
-using APIs.Services.Intefaces;
+using APIs.Services.Interfaces;
 using BusinessObjects;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
-using Swashbuckle.AspNetCore.Filters;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +25,7 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IVnPayService, VnPayService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IWorkService, WorkService>();
+builder.Services.AddScoped<IBookService, BookService>();
 
 //Repositories
 builder.Services.AddScoped<ICartRepository, CartRepository>();
@@ -36,6 +35,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo { Title = "BookConnectAPI", Version = "v1" });
+
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         In = ParameterLocation.Header,
@@ -45,6 +45,7 @@ builder.Services.AddSwaggerGen(options =>
         BearerFormat = "JWT",
         Scheme = "bearer"
     });
+
     options.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {

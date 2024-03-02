@@ -30,6 +30,7 @@
     <None Remove="DTO\" />
     <None Remove="Models\E-com\Base\" />
     <None Remove="Models\E-com\Rating\" />
+    <None Remove="Models\Trading\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
@@ -38,5 +39,6 @@
     <Folder Include="DTO\" />
     <Folder Include="Models\E-com\Base\" />
     <Folder Include="Models\E-com\Rating\" />
+    <Folder Include="Models\Trading\" />
   </ItemGroup>
 </Project>

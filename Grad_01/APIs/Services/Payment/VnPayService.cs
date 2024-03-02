@@ -2,7 +2,7 @@
 using System.Text;
 using APIs.DTO;
 using System.Security.Cryptography;
-using APIs.Services.Intefaces;
+using APIs.Services.Interfaces;
 using APIs.Config;
 using Microsoft.Extensions.Options;
 using APIs.Utils.Base.Models;

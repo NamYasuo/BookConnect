@@ -11,11 +11,12 @@ namespace BusinessObjects.Models.Creative
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Guid ChapterId { get; set;}
 		public Guid WorkId { get; set; }
+		public string Name { get; set; } = null!;
 		public string? Directory { get; set; }
 		public string Type { get; set; } = null!; //Values: Public or Private
 		public string Status { get; set; } = null!; //Values: Published or not
 
 		[ForeignKey("WorkId"), JsonIgnore]
-		public virtual Work Work { get; set; } = new Work();
+		public virtual Work Work { get; set; } = null!;
 	}
 } 

@@ -5,7 +5,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using APIs.Services.Intefaces;
+using APIs.Services.Interfaces;
 
 namespace APIs.Repositories
 {

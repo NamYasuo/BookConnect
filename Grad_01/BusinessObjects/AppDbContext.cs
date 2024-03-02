@@ -1,5 +1,6 @@
 ﻿using BusinessObjects.Models;
 using BusinessObjects.Models.Creative;
+using BusinessObjects.Models.E_com.Trading;
 using BusinessObjects.Models.Ecom;
 using BusinessObjects.Models.Ecom.Payment;
 using BusinessObjects.Models.Ecom.Rating;
@@ -23,12 +24,16 @@ namespace BusinessObjects
         public virtual DbSet<Order> Orders { get; set; } = null!;
         public virtual DbSet<Book> Books { get; set; } = null!;
 
+
         //Rating services DbSets
         public virtual DbSet<RatingRecord> RatingRecords { get; set; } = null!;
 
         //Payment service DbSets 
         public virtual DbSet<PaymentDetails> PaymentDetails { get; set; } = null!;
-       
+
+        //Trading services DbSets
+        public virtual DbSet<Post> Posts { get; set; } = null!;
+
         //Utility DbSets
         public virtual DbSet<Role> Roles { get; set; } = null!;
         public virtual DbSet<TokenInfo> TokenInfos { get; set; } = null!;

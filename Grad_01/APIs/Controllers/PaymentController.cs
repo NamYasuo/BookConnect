@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Net;
-using APIs.Services.Intefaces;
+using APIs.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using APIs.DTO;

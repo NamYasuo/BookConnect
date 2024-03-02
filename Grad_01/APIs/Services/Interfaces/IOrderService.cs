@@ -2,7 +2,7 @@
 using BusinessObjects.DTO;
 using DataAccess.DAO;
 
-namespace APIs.Services.Intefaces
+namespace APIs.Services.Interfaces
 {
 	public interface IOrderService
 	{

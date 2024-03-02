@@ -3,7 +3,7 @@ using System.Net.NetworkInformation;
 using System.Security.Claims;
 using System.Text;
 using APIs.DTO;
-using APIs.Services.Intefaces;
+using APIs.Services.Interfaces;
 using BusinessObjects.DTO;
 using BusinessObjects.Models;
 using DataAccess.DTO;

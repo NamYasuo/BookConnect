@@ -69,6 +69,21 @@ namespace APIs.Controllers
                 throw new Exception(e.Message);
             }
         }
-	}
+
+        [HttpDelete]
+        [Route("delete-product-from-cart")]
+        public IActionResult DeleteProductFromCart(Guid productId, Guid cartId, int quantity)
+        {
+            try
+            {
+                _cartRepo.DeleteProductFromCart(productId, cartId, quantity);
+                return Ok("Product deleted from cart successfully!");
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+    }
 }
 

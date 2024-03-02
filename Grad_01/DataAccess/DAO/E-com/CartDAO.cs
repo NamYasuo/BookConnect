@@ -164,6 +164,45 @@ namespace DataAccess.DAO
             }
         }
 
+        public int DeleteProductFromCart(Guid productId, Guid cartId, int quantity)
+        {
+            try
+            {
+                int result;
+                using (var context = new AppDbContext())
+                {
+                    var basket = context.Baskets.FirstOrDefault(b => b.ProductId == productId && b.CartId == cartId);
+
+                    if (basket != null)
+                    {
+                        if (basket.Quantity > quantity)
+                        {
+                            // If the quantity in the cart is greater than the quantity to delete, decrement it
+                            result = context.Database.ExecuteSqlRaw(
+                                "UPDATE Baskets SET Quantity = Quantity - {0} WHERE ProductId = {1} AND CartId = {2}",
+                                quantity, productId, cartId);
+                        }
+                        else
+                        {
+                            // If the quantity to delete is greater than or equal to the quantity in the cart, delete the product
+                            result = context.Database.ExecuteSqlRaw(
+                                "DELETE FROM Baskets WHERE ProductId = {0} AND CartId = {1}",
+                                productId, cartId);
+                        }
+                        return result;
+                    }
+                    else
+                    {
+                        // If the product is not found in the cart, return 0
+                        return 0;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
     }
 }
 
