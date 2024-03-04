@@ -21,6 +21,21 @@ namespace APIs.Controllers
             _bookService = bookService;
         }
 
+        [HttpGet("all")] // Adjusted route for clarity
+        public IActionResult GetAllBooks()
+        {
+            try
+            {
+                List<Book> allBooks = _bookService.GetAllBook();
+                return Ok(allBooks);
+            }
+            catch (Exception ex)
+            {
+                // Consider logging the exception and returning a more user-friendly error message
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
         [HttpGet("search")]
         public IActionResult SearchProductsByName([FromQuery] string searchTerm)
         {
@@ -51,7 +66,17 @@ namespace APIs.Controllers
         {
             if (cateName == null || cateName.Length == 0)
             {
-                return BadRequest("Category name cannot be empty.");
+                try
+                {
+                    // Delegate to the BookService to retrieve all books
+                    List<Book> allBooks = _bookService.GetAllBook();
+                    return Ok(allBooks);
+                }
+                catch (Exception ex)
+                {
+                    // Consider logging the exception and returning a more user-friendly error message
+                    return StatusCode(500, "Internal Server Error");
+                }
             }
 
             try

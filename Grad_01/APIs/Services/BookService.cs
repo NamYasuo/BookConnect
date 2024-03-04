@@ -10,6 +10,8 @@ namespace APIs.Services
 {
     public class BookService : IBookService
     {
+        public List<Book> GetAllBook() => new BookDAO().GetAllBook();
+        
         public List<Book> GetBookByCategoryName(string[] cateName)
         {
             try

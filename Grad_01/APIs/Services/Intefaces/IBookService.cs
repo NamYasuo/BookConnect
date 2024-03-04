@@ -8,8 +8,8 @@ namespace APIs.Services.Intefaces
 {
     public interface IBookService
     {
-        /*public List<Book> GetAllBook();
-        public Book GetBookById(Guid bookId);
+        public List<Book> GetAllBook();
+        /*public Book GetBookById(Guid bookId);
         public Book GetBookByName(string name);
         public void AddNewBook(Book book);
         public void UpdateBook(Book book);
