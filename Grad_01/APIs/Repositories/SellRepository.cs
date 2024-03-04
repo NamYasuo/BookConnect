@@ -18,12 +18,12 @@ namespace APIs.Repositories
 
         public Book GetBookListingById(Guid bookId) => new BookDAO().GetBookById(bookId);
 
-        public void AddToInventory(InventoryItem item) => new InventoryDAO().AddInventoryItem(item);
+        public void AddToInventory(Inventory item) => new InventoryDAO().AddInventoryItem(item);
 
-        public void UpdateInventoryItem(InventoryItem item) => new InventoryDAO().UpdateInventoryItem(item);
+        public void UpdateInventoryItem(Inventory item) => new InventoryDAO().UpdateInventoryItem(item);
 
         public void RemoveFromInventory(Guid itemId) => new InventoryDAO().DeleteInventoryItem(itemId);
 
-        public List<InventoryItem> GetInventoryItemsBySellerId(Guid sellerId) => new InventoryDAO().GetInventoryItemsBySellerId(sellerId);
+        public List<Inventory> GetInventoryItemsBySellerId(Guid sellerId) => new InventoryDAO().GetInventoryItemsBySellerId(sellerId);
     }
 }

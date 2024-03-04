@@ -20,7 +20,7 @@ namespace APIs.Services.Interfaces
         List<InventoryItem> GetInventoryItemsBySellerId(Guid sellerId);
 
         // Communication Services
-        void SendMessageToBuyer(Guid sellerId, Guid buyerId, string message);
+        //  void SendMessageToBuyer(Guid sellerId, Guid buyerId, string message);
 
         // Order Processing Services
         string ProcessOrder(Guid orderId);

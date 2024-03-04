@@ -41,7 +41,7 @@ namespace APIs.Services
         public List<InventoryItem> GetInventoryItemsBySellerId(Guid sellerId) => _inventoryRepository.GetInventoryItemsBySellerId(sellerId);
 
         // Communication Services
-        public void SendMessageToBuyer(Guid sellerId, Guid buyerId, string message) => _messageService.SendMessage(sellerId, buyerId, message);
+        //public void SendMessageToBuyer(Guid sellerId, Guid buyerId, string message) => _messageService.SendMessage(sellerId, buyerId, message);
 
         // Order Processing Services
         public string ProcessOrder(Guid orderId) => _orderService.ProcessOrder(orderId);

@@ -14,9 +14,9 @@ namespace APIs.Repositories.Interfaces
         Book GetBookListingById(Guid bookId);
 
         // Methods for managing inventory
-        void AddToInventory(InventoryItem item);
-        void UpdateInventoryItem(InventoryItem item);
+        void AddToInventory(Inventory item);
+        void UpdateInventoryItem(Inventory item);
         void RemoveFromInventory(Guid itemId);
-        List<InventoryItem> GetInventoryItemsBySellerId(Guid sellerId);
+        List<Inventory> GetInventoryItemsBySellerId(Guid sellerId);
     }
 }

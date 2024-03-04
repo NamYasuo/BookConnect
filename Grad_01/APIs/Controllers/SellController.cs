@@ -90,5 +90,34 @@ namespace APIs.Controllers
             }
         }
 
+        [HttpPut("UpdateOrderStatus")]
+        public IActionResult UpdateOrderStatus(Guid orderId, string newStatus)
+        {
+            try
+            {
+                var result = _sellService.UpdateOrderStatus(orderId, newStatus);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpPut("UpdateShippingInformation")]
+        public IActionResult UpdateShippingInformation(Guid orderId, ShippingInfoDTO shippingInfo)
+        {
+            try
+            {
+                var result = _sellService.UpdateShippingInformation(orderId, shippingInfo);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+
     }
 }
