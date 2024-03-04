@@ -1,4 +1,5 @@
-﻿using BusinessObjects.Models;
+﻿using System.Reflection.Emit;
+using BusinessObjects.Models;
 using BusinessObjects.Models.Creative;
 using BusinessObjects.Models.E_com.Trading;
 using BusinessObjects.Models.Ecom;
@@ -24,8 +25,14 @@ namespace BusinessObjects
         public virtual DbSet<Order> Orders { get; set; } = null!;
         public virtual DbSet<Book> Books { get; set; } = null!;
 
+        //Subscribtion services DbSets
+        public virtual DbSet<TierList> TierLists { get; set; } = null!;
+        public virtual DbSet<SubscriptionModel> SubscriptionModels { get; set; } = null!;
+        public virtual DbSet<SubRecord> SubRecords { get; set; } = null!;
+
 
         //Rating services DbSets
+        public virtual DbSet<Rating> Ratings { get; set; } = null!;
         public virtual DbSet<RatingRecord> RatingRecords { get; set; } = null!;
 
         //Payment service DbSets 
@@ -65,6 +72,18 @@ namespace BusinessObjects
             builder.Entity<RatingRecord>().HasNoKey();
             builder.Entity<CategoryList>().HasNoKey();
             builder.Entity<CICMedia>().HasNoKey();
+
+            builder.Entity<SubRecord>()
+           .HasOne(sr => sr.Subscription)
+           .WithMany()
+           .HasForeignKey(sr => sr.SubscriptionId)
+           .OnDelete(DeleteBehavior.Restrict);
+
+            //builder.Entity<SubscriptionModel>()
+            //.HasOne(s => s.TierList)
+            //.WithMany()
+            //.HasForeignKey(s => s.TierId)
+            //.OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

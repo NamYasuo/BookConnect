@@ -25,7 +25,7 @@ namespace APIs.Controllers
         }
 
         [HttpPost("SignUp")]
-        public async Task<IActionResult> SignUp([FromBody] RegisterDTO model)
+        public IActionResult SignUp([FromBody] RegisterDTO model)
         {
             var status = new Status();
 
@@ -37,7 +37,7 @@ namespace APIs.Controllers
             }
             // check if users exists
             var userExists = accService.FindUserByEmailAsync(model.Email);
-            if (userExists.Username != null)
+            if (userExists != null && userExists?.Username != null)
             {
                 status.StatusCode = 0;
                 status.Message = userExists.Username;

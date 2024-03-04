@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BusinessObjects.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class ver1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,6 +17,7 @@ namespace BusinessObjects.Migrations
                 {
                     CateId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CateName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImageDir = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -25,32 +26,15 @@ namespace BusinessObjects.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Orders",
-                columns: table => new
-                {
-                    OrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Total_Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Quantity = table.Column<int>(type: "int", nullable: false),
-                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Orders", x => x.OrderId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Rating",
+                name: "Ratings",
                 columns: table => new
                 {
                     RatingId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    OverallRating = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    OverallRating = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Rating", x => x.RatingId);
+                    table.PrimaryKey("PK_Ratings", x => x.RatingId);
                 });
 
             migrationBuilder.CreateTable(
@@ -75,7 +59,7 @@ namespace BusinessObjects.Migrations
                     Quantity = table.Column<int>(type: "int", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Price = table.Column<double>(type: "float", nullable: true),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     PublishDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     RatingId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
@@ -84,9 +68,9 @@ namespace BusinessObjects.Migrations
                 {
                     table.PrimaryKey("PK_Books", x => x.ProductId);
                     table.ForeignKey(
-                        name: "FK_Books_Rating_RatingId",
+                        name: "FK_Books_Ratings_RatingId",
                         column: x => x.RatingId,
-                        principalTable: "Rating",
+                        principalTable: "Ratings",
                         principalColumn: "RatingId");
                 });
 
@@ -136,6 +120,29 @@ namespace BusinessObjects.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Addresses",
+                columns: table => new
+                {
+                    AddressId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    City_Province = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    District = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SubDistrict = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Rendezvous = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Default = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Addresses", x => x.AddressId);
+                    table.ForeignKey(
+                        name: "FK_Addresses_AppUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AppUsers",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Agencies",
                 columns: table => new
                 {
@@ -179,6 +186,72 @@ namespace BusinessObjects.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CICMedias",
+                columns: table => new
+                {
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Directory = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Type = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.ForeignKey(
+                        name: "FK_CICMedias_AppUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AppUsers",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PaymentDetails",
+                columns: table => new
+                {
+                    PaymentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Currency = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RequiredAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    PaidDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Language = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MerchantId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PaymentGate = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastMessage = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PaymentDetails", x => x.PaymentId);
+                    table.ForeignKey(
+                        name: "FK_PaymentDetails_AppUsers_MerchantId",
+                        column: x => x.MerchantId,
+                        principalTable: "AppUsers",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Posts",
+                columns: table => new
+                {
+                    PostId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AuthorName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Posts", x => x.PostId);
+                    table.ForeignKey(
+                        name: "FK_Posts_AppUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AppUsers",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "RatingRecords",
                 columns: table => new
                 {
@@ -196,10 +269,55 @@ namespace BusinessObjects.Migrations
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_RatingRecords_Rating_RatingId",
+                        name: "FK_RatingRecords_Ratings_RatingId",
                         column: x => x.RatingId,
-                        principalTable: "Rating",
+                        principalTable: "Ratings",
                         principalColumn: "RatingId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SubscriptionModels",
+                columns: table => new
+                {
+                    SubId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TierId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SubcriberId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SubscriberId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SubscriptionModels", x => x.SubId);
+                    table.ForeignKey(
+                        name: "FK_SubscriptionModels_AppUsers_SubscriberId",
+                        column: x => x.SubscriberId,
+                        principalTable: "AppUsers",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TierLists",
+                columns: table => new
+                {
+                    TierId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    TierType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Duration = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TierLists", x => x.TierId);
+                    table.ForeignKey(
+                        name: "FK_TierLists_AppUsers_CreatorId",
+                        column: x => x.CreatorId,
+                        principalTable: "AppUsers",
+                        principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -233,7 +351,10 @@ namespace BusinessObjects.Migrations
                     Titile = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AuthorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CoverDir = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BackgroundDir = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -244,6 +365,29 @@ namespace BusinessObjects.Migrations
                         principalTable: "AppUsers",
                         principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    OrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CustomerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Total_Price = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AddressId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.OrderId);
+                    table.ForeignKey(
+                        name: "FK_Orders_Addresses_AddressId",
+                        column: x => x.AddressId,
+                        principalTable: "Addresses",
+                        principalColumn: "AddressId");
                 });
 
             migrationBuilder.CreateTable(
@@ -271,35 +415,30 @@ namespace BusinessObjects.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Baskets",
+                name: "SubRecords",
                 columns: table => new
                 {
-                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CartId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    OrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    Quantity = table.Column<int>(type: "int", nullable: false),
-                    AddedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Stored_Price = table.Column<double>(type: "float", nullable: true)
+                    SubRecordId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    BillingId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SubscriptionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    EventType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Token = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
+                    table.PrimaryKey("PK_SubRecords", x => x.SubRecordId);
                     table.ForeignKey(
-                        name: "FK_Baskets_Books_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Books",
-                        principalColumn: "ProductId",
+                        name: "FK_SubRecords_PaymentDetails_BillingId",
+                        column: x => x.BillingId,
+                        principalTable: "PaymentDetails",
+                        principalColumn: "PaymentId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Baskets_Carts_CartId",
-                        column: x => x.CartId,
-                        principalTable: "Carts",
-                        principalColumn: "CartId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Baskets_Orders_OrderId",
-                        column: x => x.OrderId,
-                        principalTable: "Orders",
-                        principalColumn: "OrderId");
+                        name: "FK_SubRecords_SubscriptionModels_SubscriptionId",
+                        column: x => x.SubscriptionId,
+                        principalTable: "SubscriptionModels",
+                        principalColumn: "SubId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -308,6 +447,7 @@ namespace BusinessObjects.Migrations
                 {
                     ChapterId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     WorkId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Directory = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
@@ -322,6 +462,42 @@ namespace BusinessObjects.Migrations
                         principalColumn: "WorkId",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "Baskets",
+                columns: table => new
+                {
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CartId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    OrderId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    AddedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Stored_Price = table.Column<decimal>(type: "decimal(18,2)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.ForeignKey(
+                        name: "FK_Baskets_Books_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Books",
+                        principalColumn: "ProductId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Baskets_Carts_CartId",
+                        column: x => x.CartId,
+                        principalTable: "Carts",
+                        principalColumn: "CartId");
+                    table.ForeignKey(
+                        name: "FK_Baskets_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "OrderId");
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Addresses_UserId",
+                table: "Addresses",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Agencies_OwnerId",
@@ -374,6 +550,11 @@ namespace BusinessObjects.Migrations
                 column: "WorkId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CICMedias_UserId",
+                table: "CICMedias",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Inventories_AgencyId",
                 table: "Inventories",
                 column: "AgencyId");
@@ -384,6 +565,21 @@ namespace BusinessObjects.Migrations
                 column: "BookId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Orders_AddressId",
+                table: "Orders",
+                column: "AddressId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PaymentDetails_MerchantId",
+                table: "PaymentDetails",
+                column: "MerchantId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Posts_UserId",
+                table: "Posts",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_RatingRecords_RatingId",
                 table: "RatingRecords",
                 column: "RatingId");
@@ -392,6 +588,26 @@ namespace BusinessObjects.Migrations
                 name: "IX_RatingRecords_UserId",
                 table: "RatingRecords",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SubRecords_BillingId",
+                table: "SubRecords",
+                column: "BillingId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SubRecords_SubscriptionId",
+                table: "SubRecords",
+                column: "SubscriptionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SubscriptionModels_SubscriberId",
+                table: "SubscriptionModels",
+                column: "SubscriberId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TierLists_CreatorId",
+                table: "TierLists",
+                column: "CreatorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TokenInfos_AppUserUserId",
@@ -417,10 +633,22 @@ namespace BusinessObjects.Migrations
                 name: "Chapters");
 
             migrationBuilder.DropTable(
+                name: "CICMedias");
+
+            migrationBuilder.DropTable(
                 name: "Inventories");
 
             migrationBuilder.DropTable(
+                name: "Posts");
+
+            migrationBuilder.DropTable(
                 name: "RatingRecords");
+
+            migrationBuilder.DropTable(
+                name: "SubRecords");
+
+            migrationBuilder.DropTable(
+                name: "TierLists");
 
             migrationBuilder.DropTable(
                 name: "TokenInfos");
@@ -444,10 +672,19 @@ namespace BusinessObjects.Migrations
                 name: "Books");
 
             migrationBuilder.DropTable(
-                name: "AppUsers");
+                name: "PaymentDetails");
 
             migrationBuilder.DropTable(
-                name: "Rating");
+                name: "SubscriptionModels");
+
+            migrationBuilder.DropTable(
+                name: "Addresses");
+
+            migrationBuilder.DropTable(
+                name: "Ratings");
+
+            migrationBuilder.DropTable(
+                name: "AppUsers");
 
             migrationBuilder.DropTable(
                 name: "Roles");

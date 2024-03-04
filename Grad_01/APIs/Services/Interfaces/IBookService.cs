@@ -9,6 +9,7 @@ namespace APIs.Services.Interfaces
     public interface IBookService
     {
         public List<Book> GetAllBook();
+        public BookDetailsDTO GetBookDetailsById(Guid bookId);
         public Book GetBookById(Guid bookId);
         public Book GetBookByName(string name);
         public void AddNewBook(Book book);

@@ -57,11 +57,11 @@ namespace APIs.Controllers
         }
 
         [HttpGet("get-product-by-id")]
-        public IActionResult GetBookById(Guid bookId)
+        public IActionResult GetBookDetailsById(Guid bookId)
         {
             try
             {
-                return Ok(_bookService.GetBookById(bookId));
+                return Ok(_bookService.GetBookDetailsById(bookId));
             }
             catch(Exception e)
             {

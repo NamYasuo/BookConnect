@@ -21,7 +21,8 @@ namespace APIs.Repositories
         public void DeleteProductFromCart(Guid productId, Guid cartId, int quantity)
       => new CartDAO().DeleteProductFromCart(productId, cartId, quantity);
 
-
+        public bool IsCartExist(Guid userId) => new CartDAO().IsCartExists(userId);
+       
     }
 }
 

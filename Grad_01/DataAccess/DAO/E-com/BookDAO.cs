@@ -1,6 +1,8 @@
 ﻿using System;
 using BusinessObjects;
+using BusinessObjects.DTO;
 using BusinessObjects.Models;
+using DataAccess.DAO.Ecom;
 
 namespace DataAccess.DAO
 {
@@ -25,26 +27,78 @@ namespace DataAccess.DAO
 			return bookList;
 		}
 
-		//Get book by id
-		public Book GetBookById(Guid bookId)
+        //Get book details by id
+
+        public BookDetailsDTO GetBookDetailsById(Guid bookId)
 		{
 			Book? book = new Book();
-			try
+			BookDetailsDTO result = new BookDetailsDTO();
+
+
+            try
 			{
 				using(var context = new AppDbContext())
 				{
 					book = context.Books.Where(b => b.ProductId == bookId).FirstOrDefault();
 				}
+				if (book != null)
+				{
+					NameAndIdDTO agency = new AgencyDAO().GetNameAndIdDTO(bookId);
+					result = new BookDetailsDTO()
+					{
+						ProductId = bookId,
+						//public string? Name { get; set; } = null!;
+						Name = book.Name,
+						//public string? Description { get; set; }
+						Description = book.Description,
+						//public double? Price { get; set; }
+						Price = book.Price,
+						//public DateTime? CreatedDate { get; set; }
+						CreatedDate = book.CreatedDate,
+						//public DateTime? PublishDate { get; set; }
+						PublishDate = book.PublishDate,
+						//public string? Type { get; set; } = null!;
+						Type = book.Type,
+						//public int? Quantity { get; set; }
+						Quantity = book.Quantity,
+						//public double Rating { get; set; }
+						Rating = 5,
+
+						//public Guid SellerId { get; set; }
+						SellerId = agency.AgencyId,
+						//public string SellerName { get; set; } = null!;
+						SellerName = agency.AgencyName
+					};
+				} return result;
+              
 			}
 			catch(Exception e)
 			{
 				throw new Exception(e.Message);
 			}
-			if (book != null) return book;
-			else throw new NullReferenceException();
 		}
 
-		//Get book by name
+        //Get book by id
+
+        public Book GetBookById(Guid bookId)
+        {
+            Book? book = new Book();
+            try
+            {
+                using (var context = new AppDbContext())
+                {
+                    book = context.Books.Where(b => b.ProductId == bookId).FirstOrDefault();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            if (book != null) return book;
+            else throw new NullReferenceException();
+        }
+
+        //Get book by name
         public Book GetBookByName(string name)
         {
             Book? book = new Book();
@@ -128,6 +182,7 @@ namespace DataAccess.DAO
 					foreach(Guid i in bookIds)
 					{
 						listBooks.Add(context.Books.Where(b => b.ProductId == i).FirstOrDefault());
+						
 					}
 					return listBooks;
                 }

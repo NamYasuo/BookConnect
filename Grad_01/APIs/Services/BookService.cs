@@ -11,26 +11,27 @@ namespace APIs.Services
     public class BookService : IBookService
     {
 
-                public List<Book> GetAllBook() => new BookDAO().GetAllBook();
+        public List<Book> GetAllBook() => new BookDAO().GetAllBook();
 
 
-                 public Book GetBookById(Guid bookId) => new BookDAO().GetBookById(bookId);
+        public Book GetBookById(Guid bookId) => new BookDAO().GetBookById(bookId);
 
 
-                public Book GetBookByName(string name) => new BookDAO().GetBookByName(name);
+        public Book GetBookByName(string name) => new BookDAO().GetBookByName(name);
 
 
-                public void AddNewBook(Book book) => new BookDAO().AddNewBook(book);
+        public void AddNewBook(Book book) => new BookDAO().AddNewBook(book);
 
 
-                public void UpdateBook(Book book) => new BookDAO().UpdateBook(book);
+        public void UpdateBook(Book book) => new BookDAO().UpdateBook(book);
 
 
-                public void DeleteBook(Guid bookId) => new BookDAO().DeleteBook(bookId);
+        public void DeleteBook(Guid bookId) => new BookDAO().DeleteBook(bookId);
+
+        public BookDetailsDTO GetBookDetailsById(Guid bookId) => new BookDAO().GetBookDetailsById(bookId);
 
 
         public List<Book> GetBookListById(List<Guid> bookIds) => new BookDAO().GetBookListById(bookIds);
-               
 
         public List<SEODTO> ListSEO(string searchTerm)
         {

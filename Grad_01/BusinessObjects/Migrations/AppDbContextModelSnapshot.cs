@@ -145,8 +145,8 @@ namespace BusinessObjects.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double?>("Price")
-                        .HasColumnType("float");
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime?>("PublishDate")
                         .HasColumnType("datetime2");
@@ -177,6 +177,10 @@ namespace BusinessObjects.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageDir")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CateId");
@@ -214,6 +218,97 @@ namespace BusinessObjects.Migrations
                     b.ToTable("Chapters");
                 });
 
+            modelBuilder.Entity("BusinessObjects.Models.Creative.SubRecord", b =>
+                {
+                    b.Property<Guid>("SubRecordId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("BillingId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("EventType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("SubscriptionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("SubRecordId");
+
+                    b.HasIndex("BillingId");
+
+                    b.HasIndex("SubscriptionId");
+
+                    b.ToTable("SubRecords");
+                });
+
+            modelBuilder.Entity("BusinessObjects.Models.Creative.SubscriptionModel", b =>
+                {
+                    b.Property<Guid>("SubId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("SubcriberId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("SubscriberId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TierId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("SubId");
+
+                    b.HasIndex("SubscriberId");
+
+                    b.ToTable("SubscriptionModels");
+                });
+
+            modelBuilder.Entity("BusinessObjects.Models.Creative.TierList", b =>
+                {
+                    b.Property<Guid>("TierId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CreatorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Duration")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TierType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("TierId");
+
+                    b.HasIndex("CreatorId");
+
+                    b.ToTable("TierLists");
+                });
+
             modelBuilder.Entity("BusinessObjects.Models.Creative.Work", b =>
                 {
                     b.Property<Guid>("WorkId")
@@ -248,6 +343,33 @@ namespace BusinessObjects.Migrations
                     b.HasIndex("AuthorId");
 
                     b.ToTable("Works");
+                });
+
+            modelBuilder.Entity("BusinessObjects.Models.E_com.Trading.Post", b =>
+                {
+                    b.Property<Guid>("PostId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AuthorName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("PostId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Posts");
                 });
 
             modelBuilder.Entity("BusinessObjects.Models.Ecom.Cart", b =>
@@ -361,12 +483,12 @@ namespace BusinessObjects.Migrations
                     b.Property<Guid>("RatingId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("OverallRating")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<double>("OverallRating")
+                        .HasColumnType("float");
 
                     b.HasKey("RatingId");
 
-                    b.ToTable("Rating");
+                    b.ToTable("Ratings");
                 });
 
             modelBuilder.Entity("BusinessObjects.Models.Ecom.Rating.RatingRecord", b =>
@@ -563,6 +685,47 @@ namespace BusinessObjects.Migrations
                     b.Navigation("Work");
                 });
 
+            modelBuilder.Entity("BusinessObjects.Models.Creative.SubRecord", b =>
+                {
+                    b.HasOne("BusinessObjects.Models.Ecom.Payment.PaymentDetails", "PaymentDetails")
+                        .WithMany()
+                        .HasForeignKey("BillingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BusinessObjects.Models.Creative.SubscriptionModel", "Subscription")
+                        .WithMany()
+                        .HasForeignKey("SubscriptionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("PaymentDetails");
+
+                    b.Navigation("Subscription");
+                });
+
+            modelBuilder.Entity("BusinessObjects.Models.Creative.SubscriptionModel", b =>
+                {
+                    b.HasOne("BusinessObjects.Models.AppUser", "Subcriber")
+                        .WithMany()
+                        .HasForeignKey("SubscriberId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Subcriber");
+                });
+
+            modelBuilder.Entity("BusinessObjects.Models.Creative.TierList", b =>
+                {
+                    b.HasOne("BusinessObjects.Models.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("CreatorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+                });
+
             modelBuilder.Entity("BusinessObjects.Models.Creative.Work", b =>
                 {
                     b.HasOne("BusinessObjects.Models.AppUser", "Author")
@@ -572,6 +735,17 @@ namespace BusinessObjects.Migrations
                         .IsRequired();
 
                     b.Navigation("Author");
+                });
+
+            modelBuilder.Entity("BusinessObjects.Models.E_com.Trading.Post", b =>
+                {
+                    b.HasOne("BusinessObjects.Models.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
                 });
 
             modelBuilder.Entity("BusinessObjects.Models.Ecom.Cart", b =>

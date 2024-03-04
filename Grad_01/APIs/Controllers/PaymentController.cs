@@ -6,7 +6,7 @@ using Microsoft.Extensions.Options;
 using APIs.DTO;
 using APIs.Config;
 using Microsoft.AspNetCore.Http;
-using BusinessObjects.Models;
+using BusinessObjects.Models.Ecom.Payment;
 using APIs.Utils.Extensions;
 using BusinessObjects.DTO;
 
@@ -35,31 +35,29 @@ namespace APIs.Controllers
         }
 
         [HttpGet]
-        [Route("VnPayIPN")]
-        public IActionResult VnpayReturn([FromQuery] VnPayResponseDTO response)
+        [Route("vnpay/VnPayIPN")]
+        public IActionResult VnpayIpnReturnAsync([FromQuery] VnPayResponseDTO response)
         {
-            string returnUrl = string.Empty;
+            //string returnUrl = string.Empty;
             var returnModel = new PaymentReturnDTO();
             var processResult = _vnpService.ProcessVnPayReturn(response);
             
             if (processResult.Success)
             {
                 returnModel = processResult.Data.Item1;
-                returnUrl = processResult.Data.Item2;
+                //returnUrl = processResult.Data.Item2;
+                
+                return Ok(returnModel);
+
             }
-                returnModel = processResult.Data.Item1;
-                returnUrl = processResult.Data.Item2;
+            //    returnModel = processResult.Data.Item1;
+            //    returnUrl = processResult.Data.Item2;
             //if (returnUrl.EndsWith("/"))
             //    returnUrl = returnUrl.Remove(returnUrl.Length - 1, 1);
             return BadRequest(returnModel);
-            //processResult.Errors.Where(e => e.Code == "Exeption").FirstOrDefault().Message)
-            //return Redirect($"{returnUrl}?{returnModel.ToQueryString()}");
         }
 
-        //public async Task<IActionResult> VnPayIpnReturn([FromQuery] VnPayResponseDTO response)
-        //{
 
-        //}
     }
 }
 

@@ -203,6 +203,21 @@ namespace DataAccess.DAO
                 throw new Exception(e.Message);
             }
         }
+
+        public bool IsCartExists(Guid userId)
+        {
+            try
+            {
+                using(var context = new AppDbContext())
+                {
+                    return context.Carts.Any(c => c.CustomerId == userId);
+                }
+
+            }catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        } 
     }
 }
 
