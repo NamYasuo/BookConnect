@@ -137,6 +137,27 @@ namespace DataAccess.DAO
                 throw new Exception(e.Message);
             }
         }
-	}
+        public List<Book> GetBookByCategoryName(string cateName)
+        {
+            List<Book> bookList = new List<Book>();
+            try
+            {
+                using (var context = new AppDbContext())
+                {
+                    // Join the Books and CategoryList tables to find books in the specified category
+                    bookList = (from book in context.Books
+                                join categoryList in context.CategoryLists on book.ProductId equals categoryList.BookId
+                                join category in context.Categories on categoryList.CategoryId equals category.CateId
+                                where category.CateName == cateName
+                                select book).ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            return bookList;
+        }
+    }
 }
 

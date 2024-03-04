@@ -46,6 +46,32 @@ namespace APIs.Controllers
             }
         }
 
+        [HttpGet("search by cateName")]
+        public IActionResult GetBookByCategory(string cateName)
+        {
+            if (string.IsNullOrEmpty(cateName))
+            {
+                return BadRequest("Category name cannot be empty.");
+            }
+
+            try
+            {
+                List<Book> booksByCategory = _bookService.GetBookByCategoryName(cateName);
+
+                if (booksByCategory.Count == 0)
+                {
+                    return NotFound($"No books found in the category '{cateName}'.");
+                }
+
+                return Ok(booksByCategory);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message); // Internal Server Error with message
+            }
+        }
+
+
         /*    [HttpGet("search all")]
             public IActionResult SearchAll()
             {

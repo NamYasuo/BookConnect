@@ -10,47 +10,19 @@ namespace APIs.Services
 {
     public class BookService : IBookService
     {
-        /*    private readonly BookDAO _bookDAO;*/
-        /*
-                public BookService(BookDAO bookDAO)
-                {
-                    _bookDAO = bookDAO;
-                }
-
-                public List<Book> GetAllBook()
-                {
-                    return _bookDAO.GetAllBook();
-                }
-
-                public Book GetBookById(Guid bookId)
-                {
-                    return _bookDAO.GetBookById(bookId);
-                }
-
-                public Book GetBookByName(string name)
-                {
-                    return _bookDAO.GetBookByName(name);
-                }
-
-                public void AddNewBook(Book book)
-                {
-                    _bookDAO.AddNewBook(book);
-                }
-
-                public void UpdateBook(Book book)
-                {
-                    _bookDAO.UpdateBook(book);
-                }
-
-                public void DeleteBook(Guid bookId)
-                {
-                    _bookDAO.DeleteBook(bookId);
-                }
-
-                public List<Book> GetBookListById(List<Guid> bookIds)
-                {
-                    return _bookDAO.GetBookListById(bookIds);
-                }*/
+        public List<Book> GetBookByCategoryName(string cateName)
+        {
+            try
+            {
+                // Use the BookDAO to retrieve books based on category
+                BookDAO bookDAO = new BookDAO();
+                return bookDAO.GetBookByCategoryName(cateName);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
 
         public List<SEODTO> ListSEO(string searchTerm)
         {

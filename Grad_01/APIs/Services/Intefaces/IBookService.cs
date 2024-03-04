@@ -18,5 +18,7 @@ namespace APIs.Services.Intefaces
 
         
         List<SEODTO> ListSEO(string searchTerm);
+
+        public List<Book> GetBookByCategoryName(string cateName);
     }
 }
