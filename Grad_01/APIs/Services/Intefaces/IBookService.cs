@@ -16,9 +16,9 @@ namespace APIs.Services.Intefaces
         public void DeleteBook(Guid bookId);
         public List<Book> GetBookListById(List<Guid> bookIds);*/
 
-        
+
         List<SEODTO> ListSEO(string searchTerm);
 
-        public List<Book> GetBookByCategoryName(string cateName);
+        public List<Book> GetBookByCategoryName(string[] cateName);
     }
 }

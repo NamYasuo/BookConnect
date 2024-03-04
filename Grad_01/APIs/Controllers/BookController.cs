@@ -46,10 +46,10 @@ namespace APIs.Controllers
             }
         }
 
-        [HttpGet("search by cateName")]
-        public IActionResult GetBookByCategory(string cateName)
+        [HttpGet("search-by-cateName")]
+        public IActionResult GetBookByCategory([FromQuery] string[] cateName)
         {
-            if (string.IsNullOrEmpty(cateName))
+            if (cateName == null || cateName.Length == 0)
             {
                 return BadRequest("Category name cannot be empty.");
             }
@@ -60,7 +60,7 @@ namespace APIs.Controllers
 
                 if (booksByCategory.Count == 0)
                 {
-                    return NotFound($"No books found in the category '{cateName}'.");
+                    return NotFound($"No books found in the categories '{string.Join(", ", cateName)}'.");
                 }
 
                 return Ok(booksByCategory);
@@ -70,6 +70,7 @@ namespace APIs.Controllers
                 return StatusCode(500, ex.Message); // Internal Server Error with message
             }
         }
+
 
 
         /*    [HttpGet("search all")]

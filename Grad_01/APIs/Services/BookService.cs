@@ -10,7 +10,7 @@ namespace APIs.Services
 {
     public class BookService : IBookService
     {
-        public List<Book> GetBookByCategoryName(string cateName)
+        public List<Book> GetBookByCategoryName(string[] cateName)
         {
             try
             {

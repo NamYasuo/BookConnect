@@ -22,6 +22,8 @@ namespace BusinessObjects.Models
 
 		[ForeignKey("RatingId"), JsonIgnore]
 		public virtual Rating? Rating { get; set; }
+
+
         
     }
 }

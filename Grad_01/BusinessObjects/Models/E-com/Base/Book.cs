@@ -5,6 +5,7 @@ namespace BusinessObjects.Models
 	{
 		public string? Type { get; set; } = null!;
 		public int? Quantity { get; set; } 
+
 	}
 }
 
