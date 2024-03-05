@@ -137,7 +137,7 @@ namespace DataAccess.DAO
                     {
                         result = context.Database.ExecuteSqlRaw(
                         "UPDATE Baskets " +
-                        "SET Quantity = Quantity + {0}, AddedDate = {1} " +
+                        "SET Quantity = {0}, AddedDate = {1} " +
                         "WHERE ProductId = {2} AND CartId = {3}",
                         quantity,
                         DateTime.Now,

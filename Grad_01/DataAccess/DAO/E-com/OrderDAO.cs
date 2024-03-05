@@ -131,18 +131,18 @@ namespace DataAccess.DAO
                         AddressId = data.AddressId
                     };
                     context.Orders.Add(newOrder);
-					int result = context.SaveChanges();
+                    int result = context.SaveChanges();
                     if (result == 1)
                     {
                         return "Successfully!";
-                     }
+                    }
                     else return "Fail to create new order!!!";
                 }
             }
-			catch(Exception e)
-			{
-    throw new Exception(e.Message);
-}
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
 
         public decimal GetTotalAmount(List<ProductOptionDTO> dto)
@@ -168,6 +168,8 @@ namespace DataAccess.DAO
                 throw new Exception(e.Message);
             }
         }
+
+
     }
 }
 
