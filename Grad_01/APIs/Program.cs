@@ -26,6 +26,7 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IVnPayService, VnPayService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IPostService, PostService>();
 
 //Repositories
 builder.Services.AddScoped<ICartRepository, CartRepository>();
