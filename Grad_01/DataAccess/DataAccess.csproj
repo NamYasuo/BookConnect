@@ -16,9 +16,11 @@
   <ItemGroup>
     <None Remove="DAO\E-com\" />
     <None Remove="DAO\Creative\" />
+    <None Remove="DAO\Subcription\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DAO\E-com\" />
     <Folder Include="DAO\Creative\" />
+    <Folder Include="DAO\Subcription\" />
   </ItemGroup>
 </Project>

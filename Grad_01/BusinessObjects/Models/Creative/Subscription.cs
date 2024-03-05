@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace BusinessObjects.Models.Creative
 {
-	public class SubscriptionModel
+	public class Subscription
 	{
 		[Key]
 		public Guid SubId { get; set; }
@@ -13,10 +13,10 @@ namespace BusinessObjects.Models.Creative
 		public Guid SubcriberId { get; set; }
 		public DateTime StartDate { get; set; }
 		public DateTime EndDate { get; set; }
-		public string Status { get; set; } = null!; 
+		public string Status { get; set; } = null!;
 
 		//[ForeignKey("TierId"), JsonIgnore]
-		//public virtual TierList TierList { get; set; } = null!;
+		//public virtual Tier Tier { get; set; } = null!;
 		[ForeignKey("SubscriberId"), JsonIgnore]
 		public virtual AppUser Subcriber { get; set; } = null!;
 	}

@@ -7,7 +7,7 @@ namespace DataAccess.DAO.Ecom
 {
 	public class AgencyDAO
 	{
-		public NameAndIdDTO GetNameAndIdDTO(Guid bookId)
+		public NameAndIdDTO GetNameAndId(Guid bookId)
 		{
 			Guid agencyId = Guid.Empty;
 

@@ -247,7 +247,7 @@ namespace BusinessObjects.Migrations
                     b.ToTable("SubRecords");
                 });
 
-            modelBuilder.Entity("BusinessObjects.Models.Creative.SubscriptionModel", b =>
+            modelBuilder.Entity("BusinessObjects.Models.Creative.Subscription", b =>
                 {
                     b.Property<Guid>("SubId")
                         .ValueGeneratedOnAdd()
@@ -276,10 +276,10 @@ namespace BusinessObjects.Migrations
 
                     b.HasIndex("SubscriberId");
 
-                    b.ToTable("SubscriptionModels");
+                    b.ToTable("Subscriptions");
                 });
 
-            modelBuilder.Entity("BusinessObjects.Models.Creative.TierList", b =>
+            modelBuilder.Entity("BusinessObjects.Models.Creative.Tier", b =>
                 {
                     b.Property<Guid>("TierId")
                         .ValueGeneratedOnAdd()
@@ -306,7 +306,7 @@ namespace BusinessObjects.Migrations
 
                     b.HasIndex("CreatorId");
 
-                    b.ToTable("TierLists");
+                    b.ToTable("Tiers");
                 });
 
             modelBuilder.Entity("BusinessObjects.Models.Creative.Work", b =>
@@ -693,7 +693,7 @@ namespace BusinessObjects.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BusinessObjects.Models.Creative.SubscriptionModel", "Subscription")
+                    b.HasOne("BusinessObjects.Models.Creative.Subscription", "Subscription")
                         .WithMany()
                         .HasForeignKey("SubscriptionId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -704,7 +704,7 @@ namespace BusinessObjects.Migrations
                     b.Navigation("Subscription");
                 });
 
-            modelBuilder.Entity("BusinessObjects.Models.Creative.SubscriptionModel", b =>
+            modelBuilder.Entity("BusinessObjects.Models.Creative.Subscription", b =>
                 {
                     b.HasOne("BusinessObjects.Models.AppUser", "Subcriber")
                         .WithMany()
@@ -715,7 +715,7 @@ namespace BusinessObjects.Migrations
                     b.Navigation("Subcriber");
                 });
 
-            modelBuilder.Entity("BusinessObjects.Models.Creative.TierList", b =>
+            modelBuilder.Entity("BusinessObjects.Models.Creative.Tier", b =>
                 {
                     b.HasOne("BusinessObjects.Models.AppUser", "AppUser")
                         .WithMany()

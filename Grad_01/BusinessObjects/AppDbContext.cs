@@ -26,8 +26,8 @@ namespace BusinessObjects
         public virtual DbSet<Book> Books { get; set; } = null!;
 
         //Subscribtion services DbSets
-        public virtual DbSet<TierList> TierLists { get; set; } = null!;
-        public virtual DbSet<SubscriptionModel> SubscriptionModels { get; set; } = null!;
+        public virtual DbSet<Tier> Tiers { get; set; } = null!;
+        public virtual DbSet<Subscription> Subscriptions { get; set; } = null!;
         public virtual DbSet<SubRecord> SubRecords { get; set; } = null!;
 
 
