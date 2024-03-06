@@ -17,8 +17,11 @@ namespace APIs.Services.Intefaces
         public List<Book> GetBookListById(List<Guid> bookIds);*/
 
 
-        List<SEODTO> ListSEO(string searchTerm);
+        List<Book> GetBookByName(string searchTerm);
 
         public List<Book> GetBookByCategoryName(string[] cateName);
+
+        public List<Book> GetBookByType(string type);
+        
     }
 }

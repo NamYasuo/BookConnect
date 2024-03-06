@@ -1,5 +1,6 @@
 ﻿using System;
 using BusinessObjects;
+using BusinessObjects.DTO;
 using BusinessObjects.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,8 +8,9 @@ namespace DataAccess.DAO
 {
 	public class BookDAO
 	{
-		//Get all book
-		public List<Book> GetAllBook()
+        
+        //Get all book
+        public List<Book> GetAllBook()
 		{
 
 			List<Book> bookList = new List<Book>();
@@ -45,27 +47,11 @@ namespace DataAccess.DAO
 			else throw new NullReferenceException();
 		}
 
-		//Get book by name
-        public Book GetBookByName(string name)
-        {
-            Book? book = new Book();
-            try
-            {
-                using (var context = new AppDbContext())
-                {
-                    book = context.Books.Where(b => b.Name == name).FirstOrDefault();
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-            if (book != null) return book;
-            else throw new NullReferenceException();
-        }
+        
 
-		//Add new book
-		public void AddNewBook(Book book)
+
+        //Add new book
+        public void AddNewBook(Book book)
 		{
 			try
 			{
@@ -138,6 +124,26 @@ namespace DataAccess.DAO
                 throw new Exception(e.Message);
             }
         }
+        //Get book by name
+        public List<Book> GetBookByName(string searchTerm)
+        {
+            if (string.IsNullOrEmpty(searchTerm))
+            {
+                throw new ArgumentException("Search term cannot be empty.");
+            }
+
+            try
+            {
+                using (var context = new AppDbContext())
+                {
+                    return context.Books.Where(b => b.Name.Contains(searchTerm)).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
         public List<Book> GetBookByCategoryName(string[] cateName)
         {
             List<Book> bookList = new List<Book>();
@@ -163,10 +169,38 @@ namespace DataAccess.DAO
             }
             return bookList;
         }
+       
+
+            public List<Book> GetBookByType(string type)
+            {
+                List<Book> bookList = new List<Book>();
+                try
+                {
+                    using (var context = new AppDbContext())
+                    {
+                        // Validate the type input (optional but recommended)
+                        if (type != "OLD" && type != "NEW")
+                        {
+                            throw new ArgumentException("Invalid book type. Valid types are 'OLD' and 'NEW'");
+                        }
+
+                        bookList = context.Books.Where(b => b.Type == type).ToList();
+                    }
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message);
+                }
+                return bookList;
+            }
+        }
 
 
 
 
-    }
+
+
+
+    
 }
 

@@ -10,6 +10,8 @@ namespace APIs.Services
 {
     public class BookService : IBookService
     {
+       
+
         public List<Book> GetAllBook() => new BookDAO().GetAllBook();
         
         public List<Book> GetBookByCategoryName(string[] cateName)
@@ -26,33 +28,14 @@ namespace APIs.Services
             }
         }
 
-        public List<SEODTO> ListSEO(string searchTerm)
+        public List<Book> GetBookByType(string type) => new BookDAO().GetBookByType(type);
+        
+
+        public List<Book> Get(string searchTerm) => new BookDAO().GetBookByName(searchTerm);
+
+        public List<Book> GetBookByName(string searchTerm)
         {
-            List<SEODTO> result = new List<SEODTO>();
-            try
-            {
-                using (var context = new AppDbContext()) // Assuming you use Entity Framework
-                {
-                    var searchResult = context.Books.Where(b => b.Name.Contains(searchTerm)).ToList();
-
-                    foreach (Book book in searchResult)
-                    {
-                        result.Add(new SEODTO
-                        {
-                            BookId = book.ProductId,
-                            Title = book.Name,
-                        });
-                    }
-                }
-                return result;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
+            throw new NotImplementedException();
         }
-
-
-
     }
 }
