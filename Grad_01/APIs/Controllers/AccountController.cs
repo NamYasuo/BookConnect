@@ -3,7 +3,7 @@ using System.Net.NetworkInformation;
 using System.Security.Claims;
 using System.Text;
 using APIs.DTO;
-using APIs.Services.Intefaces;
+using APIs.Services.Interfaces;
 using BusinessObjects.DTO;
 using BusinessObjects.Models;
 using DataAccess.DTO;
@@ -25,7 +25,7 @@ namespace APIs.Controllers
         }
 
         [HttpPost("SignUp")]
-        public async Task<IActionResult> SignUp([FromBody] RegisterDTO model)
+        public IActionResult SignUp([FromBody] RegisterDTO model)
         {
             var status = new Status();
 
@@ -37,7 +37,7 @@ namespace APIs.Controllers
             }
             // check if users exists
             var userExists = accService.FindUserByEmailAsync(model.Email);
-            if (userExists.Username != null)
+            if (userExists != null && userExists?.Username != null)
             {
                 status.StatusCode = 0;
                 status.Message = userExists.Username;
@@ -51,7 +51,6 @@ namespace APIs.Controllers
         public async Task<IActionResult> SignIn([FromBody] LoginDTO model)
         {
             var status = new Status();
-            AppUser user = new AppUser();
 
             if (!ModelState.IsValid)
             {
@@ -59,7 +58,7 @@ namespace APIs.Controllers
                 status.Message = "Please pass all the required fields";
                 return Ok(status);
             }
-            user = accService.FindUserByEmailAsync(model.Email);
+            AppUser? user = accService.FindUserByEmailAsync(model.Email);
             if (user == null)
             {
                 return BadRequest("User not found!");
@@ -68,7 +67,7 @@ namespace APIs.Controllers
             byte[] salt = Convert.FromHexString(user.Salt);
             if (!accService.VerifyPassword(model.Password, user.Password, salt, out byte[] result))
             {
-                return BadRequest("Wrong password" + Convert.ToHexString(result));
+                return BadRequest("Wrong password");
             }
             string token = accService.CreateToken(user);
             var refreshToken = accService.GenerateRefreshToken();

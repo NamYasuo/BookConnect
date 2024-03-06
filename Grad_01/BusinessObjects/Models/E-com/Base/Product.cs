@@ -13,7 +13,7 @@ namespace BusinessObjects.Models
         public Guid ProductId { get; set; }
 		public string? Name { get; set; } = null!;
 		public string? Description { get; set; }
-		public double? Price { get; set; }
+		public decimal Price { get; set; }
         public DateTime? CreatedDate { get; set; }
         public DateTime? PublishDate { get; set; }
 

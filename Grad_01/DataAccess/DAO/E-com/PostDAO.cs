@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -38,13 +38,14 @@ namespace DataAccess.DAO.E_com
             Post? post = new Post();
             try
             {
-                using(var context = new AppDbContext())
+                using (var context = new AppDbContext())
                 {
                     post = context.Posts.Where(p => p.UserId == postId).FirstOrDefault();
 
                 }
             }
             catch(Exception e)
+
             {
                 throw new Exception(e.Message);
             }
@@ -56,7 +57,7 @@ namespace DataAccess.DAO.E_com
         {
             try
             {
-                using(var context = new AppDbContext())
+                using (var context = new AppDbContext())
                 {
                     context.Add(post);
                     context.SaveChanges();
@@ -72,7 +73,7 @@ namespace DataAccess.DAO.E_com
         {
             try
             {
-                using(var context = new AppDbContext())
+                using (var context = new AppDbContext())
                 {
                     context.Posts.Update(post);
                     context.SaveChanges();
@@ -88,19 +89,19 @@ namespace DataAccess.DAO.E_com
         {
             try
             {
-                using(var context = new AppDbContext())
+                using (var context = new AppDbContext())
                 {
                     Post post = GetPostById(postId);
-                    if(post != null)
+                    if (post != null)
                     {
                         context.Posts.Remove(post);
                         context.SaveChanges();
                     }
                 }
             }
-            catch(Exception e)
-            { 
-                throw new Exception(e.Message); 
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
             }
         }
 

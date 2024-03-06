@@ -1,12 +1,32 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using BusinessObjects;
+using BusinessObjects.DTO;
+using BusinessObjects.Models;
 
-namespace DataAccess.DAO.E_com
+namespace DataAccess.DAO.Ecom
 {
-    internal class AgencyDAO
-    {
+	public class AgencyDAO
+	{
+		public NameAndIdDTO GetNameAndIdDTO(Guid bookId)
+		{
+			Guid agencyId = Guid.Empty;
+
+            using (var context = new AppDbContext())
+			{
+				Inventory? invent = context.Inventories.Where(i => i.BookId == bookId).FirstOrDefault();
+
+                if (invent != null && invent.AgencyId != null)
+				{
+                   agencyId = invent.AgencyId;
+                }
+
+                NameAndIdDTO dto = new NameAndIdDTO()
+				{
+					AgencyId = agencyId,
+					AgencyName = context.Agencies.Where(i => i.AgencyId == agencyId).FirstOrDefault()?.AgencyName
+				};
+				return dto;
+			}
+		}
     }
 }

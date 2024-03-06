@@ -17,7 +17,7 @@ namespace APIs.Controllers
 		}
 
         [HttpPost]
-        [Route("add-products-to-cart")]
+        [Route("update-products-to-cart")]
         public IActionResult AddListProductToCart([FromBody] List<ProductToCartDTO> data)
         {
             if (ModelState.IsValid)
@@ -46,7 +46,7 @@ namespace APIs.Controllers
             {
                 List<CartDetailsDTO> result = _cartRepo.GetCartDetails(userId);
 
-                if (result.Count == 0) return Ok("Blank cart!");
+                if (result.Count == 0) return Ok(new List<CartDetailsDTO>());
 
                 else return Ok(result);
             }
@@ -69,6 +69,21 @@ namespace APIs.Controllers
                 throw new Exception(e.Message);
             }
         }
-	}
+
+        [HttpDelete]
+        [Route("delete-product-from-cart")]
+        public IActionResult DeleteProductFromCart(Guid productId, Guid cartId, int quantity)
+        {
+            try
+            {
+                _cartRepo.DeleteProductFromCart(productId, cartId, quantity);
+                return Ok("Product deleted from cart successfully!");
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+    }
 }
 
