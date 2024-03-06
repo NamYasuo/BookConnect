@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BusinessObjects.Models.Creative
 {
-	public class TierList
+	public class Tier
 	{
 		[Key]
 		public Guid TierId { get; set; }
@@ -12,7 +12,7 @@ namespace BusinessObjects.Models.Creative
 		public decimal Price { get; set; }
 		public string TierType { get; set; } = null!;
 		public int Duration { get; set; }
-		public string Status { get; set; } = null!;
+		public string Status { get; set; } = null!; //Active or not
 
 		[ForeignKey("CreatorId")]
 		public virtual AppUser AppUser { get; set; } = null!;

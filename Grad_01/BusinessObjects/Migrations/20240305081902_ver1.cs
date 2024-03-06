@@ -277,7 +277,7 @@ namespace BusinessObjects.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SubscriptionModels",
+                name: "Subscriptions",
                 columns: table => new
                 {
                     SubId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -290,9 +290,9 @@ namespace BusinessObjects.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SubscriptionModels", x => x.SubId);
+                    table.PrimaryKey("PK_Subscriptions", x => x.SubId);
                     table.ForeignKey(
-                        name: "FK_SubscriptionModels_AppUsers_SubscriberId",
+                        name: "FK_Subscriptions_AppUsers_SubscriberId",
                         column: x => x.SubscriberId,
                         principalTable: "AppUsers",
                         principalColumn: "UserId",
@@ -300,7 +300,7 @@ namespace BusinessObjects.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TierLists",
+                name: "Tiers",
                 columns: table => new
                 {
                     TierId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -312,9 +312,9 @@ namespace BusinessObjects.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TierLists", x => x.TierId);
+                    table.PrimaryKey("PK_Tiers", x => x.TierId);
                     table.ForeignKey(
-                        name: "FK_TierLists_AppUsers_CreatorId",
+                        name: "FK_Tiers_AppUsers_CreatorId",
                         column: x => x.CreatorId,
                         principalTable: "AppUsers",
                         principalColumn: "UserId",
@@ -434,9 +434,9 @@ namespace BusinessObjects.Migrations
                         principalColumn: "PaymentId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_SubRecords_SubscriptionModels_SubscriptionId",
+                        name: "FK_SubRecords_Subscriptions_SubscriptionId",
                         column: x => x.SubscriptionId,
-                        principalTable: "SubscriptionModels",
+                        principalTable: "Subscriptions",
                         principalColumn: "SubId",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -600,13 +600,13 @@ namespace BusinessObjects.Migrations
                 column: "SubscriptionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SubscriptionModels_SubscriberId",
-                table: "SubscriptionModels",
+                name: "IX_Subscriptions_SubscriberId",
+                table: "Subscriptions",
                 column: "SubscriberId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TierLists_CreatorId",
-                table: "TierLists",
+                name: "IX_Tiers_CreatorId",
+                table: "Tiers",
                 column: "CreatorId");
 
             migrationBuilder.CreateIndex(
@@ -648,7 +648,7 @@ namespace BusinessObjects.Migrations
                 name: "SubRecords");
 
             migrationBuilder.DropTable(
-                name: "TierLists");
+                name: "Tiers");
 
             migrationBuilder.DropTable(
                 name: "TokenInfos");
@@ -675,7 +675,7 @@ namespace BusinessObjects.Migrations
                 name: "PaymentDetails");
 
             migrationBuilder.DropTable(
-                name: "SubscriptionModels");
+                name: "Subscriptions");
 
             migrationBuilder.DropTable(
                 name: "Addresses");

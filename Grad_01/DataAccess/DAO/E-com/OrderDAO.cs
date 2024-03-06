@@ -30,7 +30,7 @@ namespace DataAccess.DAO
 
                             if (book != null)
                             {
-                                item.Stored_Price = (decimal?)book.Price;
+                                item.Stored_Price = book.Price;
                             }
                             else return "Error! Product doesn't exist, productId: " + item.ProductId;
                             context.Database.ExecuteSqlRaw("UPDATE Baskets SET CartId = NULL, OrderId = {0}, Stored_Price = {1} WHERE ProductId = {2} AND CartId is not null AND OrderId is null", orderId, item.Stored_Price, item.ProductId);
@@ -168,7 +168,6 @@ namespace DataAccess.DAO
                 throw new Exception(e.Message);
             }
         }
-
 
     }
 }

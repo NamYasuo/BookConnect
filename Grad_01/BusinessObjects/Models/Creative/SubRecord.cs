@@ -19,7 +19,7 @@ namespace BusinessObjects.Models.Creative
         public virtual PaymentDetails PaymentDetails { get; set; } = null!;
 
         [ForeignKey("SubscriptionId"), JsonIgnore]
-        public virtual SubscriptionModel Subscription { get; set; } = null!;
+        public virtual Subscription Subscription { get; set; } = null!;
     }
 }
 

@@ -27,6 +27,7 @@ builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<IWorkService, WorkService>();
 builder.Services.AddScoped<IBookService, BookService>();
+builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
 
 //Repositories
 builder.Services.AddScoped<ICartRepository, CartRepository>();
