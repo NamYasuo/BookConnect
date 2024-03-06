@@ -43,7 +43,7 @@ namespace DataAccess.DAO
 				}
 				if (book != null)
 				{
-					NameAndIdDTO agency = new AgencyDAO().GetNameAndIdDTO(bookId);
+					NameAndIdDTO agency = new AgencyDAO().GetNameAndId(bookId);
 					result = new BookDetailsDTO()
 					{
 						ProductId = bookId,

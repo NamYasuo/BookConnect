@@ -1,12 +1,12 @@
 ﻿using BusinessObjects.DTO;
 using BusinessObjects.Models.E_com.Trading;
 
-namespace APIs.Services.Intefaces
+namespace APIs.Services.Interfaces
 {
     public interface IPostService
     {
         public void AddNewPost(Post post);
-        
+
         public void UpdatePost(Post Post);
 
         public void DeletePost(Post post);

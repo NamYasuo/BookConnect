@@ -1,4 +1,4 @@
-﻿using APIs.Services.Intefaces;
+﻿using APIs.Services.Interfaces;
 using BusinessObjects.Models.Creative;
 using BusinessObjects.Models.E_com.Trading;
 using DataAccess.DAO;

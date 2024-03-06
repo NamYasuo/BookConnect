@@ -44,7 +44,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Mapper\" />
-    <Folder Include="Services\" />
     <Folder Include="Services\Payment\" />
     <Folder Include="Repositories\" />
     <Folder Include="Repositories\Interfaces\" />
@@ -56,6 +55,5 @@
     <Folder Include="Utils\VnPay\" />
     <Folder Include="Utils\Paging\" />
     <Folder Include="FileSystem\" />
-    <Folder Include="Services\Interfaces\" />
   </ItemGroup>
 </Project>

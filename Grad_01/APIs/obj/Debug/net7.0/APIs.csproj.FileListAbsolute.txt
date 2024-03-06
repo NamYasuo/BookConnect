@@ -96,3 +96,5 @@ D:\FA23\Đồ án\BookConnect\Grad_01\APIs\obj\Debug\net7.0\refint\APIs.dll
 D:\FA23\Đồ án\BookConnect\Grad_01\APIs\obj\Debug\net7.0\APIs.pdb
 D:\FA23\Đồ án\BookConnect\Grad_01\APIs\obj\Debug\net7.0\APIs.genruntimeconfig.cache
 D:\FA23\Đồ án\BookConnect\Grad_01\APIs\obj\Debug\net7.0\ref\APIs.dll
+D:\FA23\Đồ án\BookConnect\Grad_01\APIs\bin\Debug\net7.0\System.Text.Encoding.CodePages.dll
+D:\FA23\Đồ án\BookConnect\Grad_01\APIs\bin\Debug\net7.0\runtimes\win\lib\net7.0\System.Text.Encoding.CodePages.dll
