@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using BusinessObjects.Models.Ecom.Payment;
 using APIs.Utils.Extensions;
 using BusinessObjects.DTO;
+using Azure.Core;
 
 namespace APIs.Controllers
 {
@@ -17,9 +18,12 @@ namespace APIs.Controllers
     public class PaymentController: ControllerBase
 	{
         private readonly IVnPayService _vnpService;
-        public PaymentController(IVnPayService vnpService)
+        private readonly ITransactionService _transacService;
+
+        public PaymentController(IVnPayService vnpService, ITransactionService transacService)
         {
             _vnpService = vnpService;
+            _transacService = transacService;
         }
 
         [HttpPost]
@@ -41,18 +45,31 @@ namespace APIs.Controllers
             //string returnUrl = string.Empty;
             var returnModel = new PaymentReturnDTO();
             var processResult = _vnpService.ProcessVnPayReturn(response);
-            
+
+            PaymentReturnDTO dto = processResult.Data.Item1;
+
+            TransactionRecord transaction = new TransactionRecord()
+            {
+                PaymentId = dto.PaymentId,
+                PaymentDate = dto.PaymentDate,
+                PaymentMessage = dto.PaymentMessage,
+                PaymentRefId = dto.PaymentRefId,
+                PaymentStatus = dto.PaymentStatus,
+                Amount = dto.Amount,
+                Signature = dto.Signature
+            };
+
+            _transacService.AddTransactionRecord(transaction);
+
             if (processResult.Success)
             {
                 returnModel = processResult.Data.Item1;
                 //returnUrl = processResult.Data.Item2;
-                
                 return Ok(returnModel);
-
             }
             //    returnModel = processResult.Data.Item1;
             //    returnUrl = processResult.Data.Item2;
-            //if (returnUrl.EndsWith("/"))
+            //    if (returnUrl.EndsWith("/"))
             //    returnUrl = returnUrl.Remove(returnUrl.Length - 1, 1);
             return BadRequest(returnModel);
         }

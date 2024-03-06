@@ -4,6 +4,7 @@ using APIs.Repositories;
 using APIs.Repositories.Interfaces;
 using APIs.Services;
 using APIs.Services.Interfaces;
+using APIs.Services.Payment;
 using BusinessObjects;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -27,6 +28,7 @@ builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IWorkService, WorkService>();
 builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
+builder.Services.AddScoped<ITransactionService, TransactionService>();
 
 //Repositories
 builder.Services.AddScoped<ICartRepository, CartRepository>();

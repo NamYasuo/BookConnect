@@ -478,6 +478,34 @@ namespace BusinessObjects.Migrations
                     b.ToTable("PaymentDetails");
                 });
 
+            modelBuilder.Entity("BusinessObjects.Models.Ecom.Payment.TransactionRecord", b =>
+                {
+                    b.Property<string>("PaymentId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<decimal?>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("PaymentDate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PaymentMessage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PaymentRefId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PaymentStatus")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Signature")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("PaymentId");
+
+                    b.ToTable("Transactions");
+                });
+
             modelBuilder.Entity("BusinessObjects.Models.Ecom.Rating.Rating", b =>
                 {
                     b.Property<Guid>("RatingId")

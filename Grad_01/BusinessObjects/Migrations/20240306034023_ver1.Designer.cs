@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusinessObjects.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240305081902_ver1")]
+    [Migration("20240306034023_ver1")]
     partial class ver1
     {
         /// <inheritdoc />
@@ -479,6 +479,34 @@ namespace BusinessObjects.Migrations
                     b.HasIndex("MerchantId");
 
                     b.ToTable("PaymentDetails");
+                });
+
+            modelBuilder.Entity("BusinessObjects.Models.Ecom.Payment.TransactionRecord", b =>
+                {
+                    b.Property<string>("PaymentId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<decimal?>("Amount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("PaymentDate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PaymentMessage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PaymentRefId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PaymentStatus")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Signature")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("PaymentId");
+
+                    b.ToTable("Transactions");
                 });
 
             modelBuilder.Entity("BusinessObjects.Models.Ecom.Rating.Rating", b =>

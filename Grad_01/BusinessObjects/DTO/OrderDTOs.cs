@@ -25,6 +25,12 @@ namespace BusinessObjects.DTO
         public PaymentReturnDTO PaymentReturnDTO { get; set; } = null!;
     }
 
+    public class PreCheckoutDTO
+    {
+        public Guid ReferenceId { get; set; }
+        public List<ProductOptionDTO> Products { get; set; } = null!;
+    }
+
     public class ProductOptionDTO
     {
         public Guid ProductId { get; set; }

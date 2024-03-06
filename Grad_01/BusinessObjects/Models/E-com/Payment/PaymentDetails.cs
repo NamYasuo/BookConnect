@@ -26,5 +26,7 @@ namespace BusinessObjects.Models.Ecom.Payment
 		public virtual AppUser? Merchant { get; set; } 
 
 	}
+
+
 }
 

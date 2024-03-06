@@ -2,6 +2,7 @@
 using APIs.Repositories.Interfaces;
 using APIs.Services.Interfaces;
 using BusinessObjects.DTO;
+using BusinessObjects.Models.Ecom.Payment;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -12,8 +13,10 @@ namespace APIs.Controllers
     public class OrderController : ControllerBase
     {
         private readonly IOrderService _orderService;
-        public OrderController(IOrderService orderService)
+        private readonly ITransactionService _transactionService;
+        public OrderController(IOrderService orderService, ITransactionService transactionService)
         {
+            _transactionService = transactionService;
             _orderService = orderService;
         }
 
@@ -31,6 +34,7 @@ namespace APIs.Controllers
                 PaymentId = Guid.Parse(request.PaymentReturnDTO.PaymentId),
                 AddressId = request.AddressId,
             };
+           
             string result = _orderService.CreateNewOrder(dto);
 
             if (result == "Successfully!")
@@ -118,18 +122,19 @@ namespace APIs.Controllers
         //}
         [HttpPost]
         [Route("check-out")]
-        public async Task<IActionResult> CheckoutAsync([FromBody] List<ProductOptionDTO> products)
+        public async Task<IActionResult> CheckoutAsync([FromBody] PreCheckoutDTO dto)
         {
-            decimal totalAmount = _orderService.GetTotalAmount(products);
+            decimal totalAmount = _orderService.GetTotalAmount(dto.Products);
             int truncatedAmount = (int)Math.Round(totalAmount, MidpointRounding.AwayFromZero);
 
 
 
             NewTransactionDTO newTransDTO = new NewTransactionDTO()
             {
-                PaymentContent = "Bill no" + Guid.NewGuid(),
+                PaymentContent = "Bill" + Guid.NewGuid(),
                 PaymentCurrency = "vnd",
-                RequiredAmount = truncatedAmount
+                RequiredAmount = truncatedAmount,
+                ReferenceId = dto.ReferenceId.ToString()
             };
 
             using (HttpClient client = new HttpClient())
@@ -184,6 +189,21 @@ namespace APIs.Controllers
             //    return BadRequest(result2);
             //}
             //return BadRequest(result);
+        }
+
+        [HttpGet("get-transaction-by-id")]
+        public IActionResult GetTransactionById(Guid refId)
+        {
+            try
+            {
+                TransactionRecord? record = _transactionService.GetTransactionId(refId);
+                if (record != null) return Ok(record); 
+                else return BadRequest("Not found!");
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
     }
 }

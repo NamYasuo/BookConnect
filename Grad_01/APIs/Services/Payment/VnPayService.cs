@@ -39,7 +39,7 @@ namespace APIs.Services
                 vnp_OrderType = "other",
                 vnp_OrderInfo = paymentInfo.PaymentContent,
                 vnp_ReturnUrl = _vnPayConfig.ReturnUrl,
-                vnp_TxnRef = Guid.NewGuid().ToString(),
+                vnp_TxnRef = paymentInfo.ReferenceId,
                 vnp_ExpireDate = DateTime.Now.AddMinutes(6).ToString("yyyyMMddHHmmss"),
             };
 
@@ -86,6 +86,7 @@ namespace APIs.Services
                     resultData.Amount = request.vnp_Amount / 100;
                     resultData.PaymentDate = request.vnp_PayDate;
                     resultData.PaymentMessage = request.vnp_OrderInfo;
+                    resultData.PaymentRefId = request.vnp_TxnRef;
                 }
                 else
                 {
@@ -132,22 +133,6 @@ namespace APIs.Services
                 data.ToString().Remove(data.Length - 1, 1), out var checkSum);
             return checkSum.Equals(responseDTO.vnp_SecureHash, StringComparison.InvariantCultureIgnoreCase);
         }
-
-        //private string IsValidSignature2(string secretKey, VnPayResponseDTO responseDTO)
-        //{
-        //    SortedList<string, string> responseData = MakeResponseData(responseDTO);
-        //    StringBuilder data = new StringBuilder();
-        //    foreach (KeyValuePair<string, string> kv in responseData)
-        //    {
-        //        if (!String.IsNullOrEmpty(kv.Value))
-        //        {
-        //            data.Append(WebUtility.UrlEncode(kv.Key) + "=" + WebUtility.UrlEncode(kv.Value) + "&");
-        //        }
-        //    }
-        //    CreateSecureHash(Encoding.UTF8.GetBytes(secretKey),
-        //        data.ToString().Remove(data.Length - 1, 1), out var checkSum);
-        //    return data.ToString().Remove(data.Length - 1, 1);
-        //}
 
         private SortedList<string, string> MakeRequestData(VnPayRequestDTO requestDto)
         {

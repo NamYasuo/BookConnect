@@ -36,7 +36,6 @@ namespace APIs.Controllers
 				if (ModelState.IsValid)
 				{
 
-                 
                     string? authorName = _accountService.GetUsernameById(dto.AuthorId);
                     string coverDir = "";
 					string backgroundDir = "";

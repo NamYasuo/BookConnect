@@ -37,6 +37,8 @@ namespace BusinessObjects
 
         //Payment service DbSets 
         public virtual DbSet<PaymentDetails> PaymentDetails { get; set; } = null!;
+        public virtual DbSet<TransactionRecord> Transactions { get; set; } = null!;
+        //public virtual Db
 
         //Trading services DbSets
         public virtual DbSet<Post> Posts { get; set; } = null!;
