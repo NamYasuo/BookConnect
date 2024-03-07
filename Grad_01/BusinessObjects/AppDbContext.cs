@@ -68,6 +68,13 @@ namespace BusinessObjects
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<Role>().HasData(
+                new Role {
+                    RoleId = Guid.Parse("2da9143d-559c-40b5-907d-0d9c8d714c6c"),
+                    RoleName = "BaseUser",
+                    Description = "Role for base user?"
+                }
+                );
             base.OnModelCreating(builder); ;
             builder.Entity<Inventory>().HasNoKey();
             builder.Entity<Basket>().HasNoKey();

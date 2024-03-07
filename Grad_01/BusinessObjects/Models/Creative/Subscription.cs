@@ -10,7 +10,7 @@ namespace BusinessObjects.Models.Creative
 		[Key]
 		public Guid SubId { get; set; }
 		public Guid TierId { get; set; }
-		public Guid SubcriberId { get; set; }
+		public Guid SubscriberId { get; set; }
 		public DateTime StartDate { get; set; }
 		public DateTime EndDate { get; set; }
 		public string Status { get; set; } = null!;

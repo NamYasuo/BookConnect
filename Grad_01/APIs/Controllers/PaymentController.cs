@@ -60,12 +60,11 @@ namespace APIs.Controllers
             };
 
             _transacService.AddTransactionRecord(transaction);
-
             if (processResult.Success)
             {
                 returnModel = processResult.Data.Item1;
                 //returnUrl = processResult.Data.Item2;
-                return Ok(returnModel);
+                return Ok("http://localhost:5000/checkout-result?refId=" + returnModel.PaymentRefId);
             }
             //    returnModel = processResult.Data.Item1;
             //    returnUrl = processResult.Data.Item2;

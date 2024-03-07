@@ -117,20 +117,5 @@ namespace BusinessObjects.DTO
         //15 vnp_ExpireDate extra attribute
         public string? vnp_ExpireDate { get; set; }
     }
-
-    //public class PaymentDetailsDTO
-    //{
-    //    public string Content { get; set; } = null!;
-    //    public string? Currency { get; set; } 
-    //    public decimal? RequiredAmount { get; set; }
-    //    public DateTime? PaidDate { get; set; }
-    //    public DateTime? ExpireDate { get; set; }
-    //    public string? Language { get; set; } 
-    //    public Guid RefId { get; set; }
-    //    //public Guid Payment_destination_id { get; set; }
-    //    public string? PaymentGate { get; set; } = null!;
-    //    public string? Status { get; set; } = null!;
-    //    public string? LastMessage { get; set; }
-    //}
 }
 
