@@ -31,11 +31,8 @@ namespace APIs.Services
         public List<Book> GetBookByType(string type) => new BookDAO().GetBookByType(type);
         
 
-        public List<Book> Get(string searchTerm) => new BookDAO().GetBookByName(searchTerm);
+        public List<Book> GetBookByName(string searchTerm) => new BookDAO().GetBookByName(searchTerm);
 
-        public List<Book> GetBookByName(string searchTerm)
-        {
-            throw new NotImplementedException();
-        }
+       
     }
 }
