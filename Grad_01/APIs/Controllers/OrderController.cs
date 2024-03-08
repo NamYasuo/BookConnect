@@ -24,18 +24,40 @@ namespace APIs.Controllers
         [Route("create-order")]
         public IActionResult CreateOrder([FromBody] CheckoutDTO request)
         {
+
+            decimal totalAmount = _orderService.GetTotalAmount(request.Products);
+  
             Guid orderId = Guid.NewGuid();
-            NewOrderDTO dto = new NewOrderDTO()
+            NewOrderDTO newOrder = new NewOrderDTO();
+
+            switch (request.PaymentMethod)
             {
-                OrderId = orderId,
-                CustomerId = request.CustomerId,
-                Status = request.PaymentReturnDTO?.PaymentStatus,
-                Notes = request.PaymentReturnDTO.PaymentMessage,
-                PaymentId = Guid.Parse(request.PaymentReturnDTO.PaymentId),
-                AddressId = request.AddressId,
-            };
-           
-            string result = _orderService.CreateNewOrder(dto);
+                case "VnPay": {
+                        newOrder.OrderId = orderId;
+                        newOrder.CustomerId = request.CustomerId;
+                        newOrder.Price = request.PaymentReturnDTO.Amount;
+                        newOrder.Status = request.PaymentReturnDTO?.PaymentStatus;
+                        newOrder.Notes = request.PaymentReturnDTO.PaymentMessage;
+                        newOrder.TransactionId = Guid.Parse(request.PaymentReturnDTO.PaymentRefId);
+                        newOrder.PaymentMethod = request.PaymentMethod;
+                        newOrder.AddressId = request.AddressId;
+                    }
+                    break;
+                case "COD":
+                    {
+                        newOrder.OrderId = orderId;
+                        newOrder.CustomerId = request.CustomerId;
+                        newOrder.Price = totalAmount;
+                        newOrder.Status = "It's a COD, what do u think ?";
+                        newOrder.Notes = "Told u, it's a COD ?";
+                        newOrder.PaymentMethod = request.PaymentMethod;
+                        newOrder.AddressId = request.AddressId;
+                        newOrder.TransactionId = null;
+                    }
+                break;
+            }
+
+            string result = _orderService.CreateNewOrder(newOrder);
 
             if (result == "Successfully!")
             {
@@ -124,6 +146,15 @@ namespace APIs.Controllers
         [Route("check-out")]
         public async Task<IActionResult> CheckoutAsync([FromBody] PreCheckoutDTO dto)
         {
+
+            foreach(ProductOptionDTO p in dto.Products)
+            {
+                if(_orderService.GetCurrentStock(p.AgencyId, p.ProductId) < p.Quantity)
+                {
+                    return BadRequest("Product out of stock!");
+                }
+            }
+
             decimal totalAmount = _orderService.GetTotalAmount(dto.Products);
             int truncatedAmount = (int)Math.Round(totalAmount, MidpointRounding.AwayFromZero);
 

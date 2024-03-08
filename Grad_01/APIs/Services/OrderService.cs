@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using APIs.Services.Interfaces;
 using BusinessObjects.DTO;
 using DataAccess.DAO;
+using DataAccess.DAO.Ecom;
 
 namespace APIs.Services
 {
@@ -17,6 +18,9 @@ namespace APIs.Services
 
         public decimal GetTotalAmount(List<ProductOptionDTO> productIds)
         => new OrderDAO().GetTotalAmount(productIds);
+
+        public int GetCurrentStock(Guid agencyId, Guid productId) => new AgencyDAO().GetProductStock(productId, agencyId);
+       
     }
 }
 

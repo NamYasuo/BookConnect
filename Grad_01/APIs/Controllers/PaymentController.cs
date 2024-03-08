@@ -38,6 +38,7 @@ namespace APIs.Controllers
             return Ok(response);
         }
 
+
         [HttpGet]
         [Route("vnpay/VnPayIPN")]
         public IActionResult VnpayIpnReturnAsync([FromQuery] VnPayResponseDTO response)
@@ -50,10 +51,10 @@ namespace APIs.Controllers
 
             TransactionRecord transaction = new TransactionRecord()
             {
-                PaymentId = dto.PaymentId,
+                //PaymentId = dto.PaymentId,
                 PaymentDate = dto.PaymentDate,
                 PaymentMessage = dto.PaymentMessage,
-                PaymentRefId = dto.PaymentRefId,
+                TransactionId = Guid.Parse(dto.PaymentRefId),
                 PaymentStatus = dto.PaymentStatus,
                 Amount = dto.Amount,
                 Signature = dto.Signature

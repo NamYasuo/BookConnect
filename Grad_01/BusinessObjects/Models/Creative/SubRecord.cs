@@ -16,7 +16,7 @@ namespace BusinessObjects.Models.Creative
         public string Token { get; set; } = null!;
 
         [ForeignKey("BillingId"), JsonIgnore]
-        public virtual PaymentDetails PaymentDetails { get; set; } = null!;
+        public virtual TransactionRecord Transaction { get; set; } = null!;
 
         [ForeignKey("SubscriptionId"), JsonIgnore]
         public virtual Subscription Subscription { get; set; } = null!;

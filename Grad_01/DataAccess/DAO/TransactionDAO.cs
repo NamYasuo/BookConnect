@@ -29,7 +29,7 @@ namespace DataAccess.DAO
 				TransactionRecord? result = null;
 				using(var context = new AppDbContext())
 				{
-					result = context.Transactions.Where(t => t.PaymentRefId == refId.ToString()).FirstOrDefault();
+					result = context.Transactions.Where(t => t.TransactionId == refId).FirstOrDefault();
 				}
 				return result;
 			}

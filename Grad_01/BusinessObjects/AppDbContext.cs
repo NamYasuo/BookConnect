@@ -36,7 +36,7 @@ namespace BusinessObjects
         public virtual DbSet<RatingRecord> RatingRecords { get; set; } = null!;
 
         //Payment service DbSets 
-        public virtual DbSet<PaymentDetails> PaymentDetails { get; set; } = null!;
+        //public virtual DbSet<PaymentDetails> PaymentDetails { get; set; } = null!;
         public virtual DbSet<TransactionRecord> Transactions { get; set; } = null!;
         //public virtual Db
 
