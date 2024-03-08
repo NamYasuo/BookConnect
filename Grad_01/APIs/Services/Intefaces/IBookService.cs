@@ -22,6 +22,8 @@ namespace APIs.Services.Intefaces
         public List<Book> GetBookByCategoryName(string[] cateName);
 
         public List<Book> GetBookByType(string type);
-        
+        public List<Book> FilterBooks(string searchTerm = null, string[] categoryNames = null, string type = null);
+
+
     }
 }

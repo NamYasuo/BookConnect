@@ -33,6 +33,33 @@ namespace APIs.Services
 
         public List<Book> GetBookByName(string searchTerm) => new BookDAO().GetBookByName(searchTerm);
 
-       
+        public List<Book> FilterBooks(string searchTerm = null, string[] categoryNames = null, string type = null)
+        {
+            List<Book> filteredBooks = new List<Book>();
+
+            // Filter by name (optional)
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                filteredBooks = GetBookByName(searchTerm);
+            }
+            else
+            {
+                filteredBooks = GetAllBook(); // Get all books if no search term
+            }
+
+            // Filter by category names (optional)
+            if (categoryNames != null && categoryNames.Any())
+            {
+                filteredBooks = GetBookByCategoryName(categoryNames).Intersect(filteredBooks).ToList();
+            }
+
+            // Filter by type (optional)
+            if (type != null && (type == "OLD" || type == "NEW"))
+            {
+                filteredBooks = GetBookByType(type).Intersect(filteredBooks).ToList();
+            }
+
+            return filteredBooks;
+        }
     }
 }

@@ -120,49 +120,24 @@ namespace APIs.Controllers
                 return StatusCode(500, ex.Message); // Internal Server Error with message
             }
         }
-
-        [HttpGet] // Adjust HTTP method as needed
-        [Route("api/books/search")] // Adjust route as needed
-        public IActionResult GetBook(string searchTerm, [FromQuery] string[] cateName, string type)
+        [HttpGet("filter")]
+        public IActionResult FilterBooks( [FromQuery] string searchTerm = null,[FromQuery] string[] categoryNames = null,[FromQuery] string type = null)
         {
             try
             {
-                List<Book> searchResult = new List<Book>();
-
-                // Apply filters individually and collect unique results
-                if (!string.IsNullOrEmpty(searchTerm))
+                List<Book> filteredBooks = _bookService.FilterBooks(searchTerm, categoryNames, type);
+                if (filteredBooks.Count == 0)
                 {
-                    var booksByName = _bookService.GetBookByName(searchTerm);
-                    searchResult.AddRange(booksByName.Except(searchResult)); // Add books not already present
+                    return NotFound("No books found matching the applied filters.");
                 }
-
-                if (cateName != null && cateName.Length > 0)
-                {
-                    var booksByCategory = _bookService.GetBookByCategoryName(cateName);
-                    searchResult.AddRange(booksByCategory.Except(searchResult)); // Add books not already present
-                }
-
-                if (!string.IsNullOrEmpty(type))
-                {
-                    var booksByType = _bookService.GetBookByType(type);
-                    searchResult.AddRange(booksByType.Except(searchResult)); // Add books not already present
-                }
-
-                // Return appropriate response based on results
-                if (searchResult.Count == 0)
-                {
-                    return NotFound("No books found based on the provided search criteria.");
-                }
-
-                return Ok(searchResult); // Return the filtered books
+                return Ok(filteredBooks);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error occurred during book search: {ex.Message}");
-                // Log the exception (consider a dedicated logging framework)
-                return StatusCode(500, "Internal Server Error"); // Handle exceptions gracefully
+                return StatusCode(500, ex.Message); // Internal Server Error with message
             }
         }
+
 
         /*    [HttpGet("search all")]
             public IActionResult SearchAll()
