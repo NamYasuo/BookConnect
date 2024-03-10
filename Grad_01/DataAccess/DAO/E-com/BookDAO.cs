@@ -60,14 +60,12 @@ namespace DataAccess.DAO
 						//public string? Type { get; set; } = null!;
 						Type = book.Type,
 						//public int? Quantity { get; set; }
-						Quantity = book.Quantity,
 						//public double Rating { get; set; }
 						Rating = 5,
-
 						//public Guid SellerId { get; set; }
-						SellerId = agency.AgencyId,
+						AgencyId = agency.AgencyId,
 						//public string SellerName { get; set; } = null!;
-						SellerName = agency.AgencyName
+						AgencyName = agency.AgencyName
 					};
 				} return result;
               

@@ -19,7 +19,7 @@ namespace APIs.Services
         public decimal GetTotalAmount(List<ProductOptionDTO> productIds)
         => new OrderDAO().GetTotalAmount(productIds);
 
-        public int GetCurrentStock(Guid agencyId, Guid productId) => new AgencyDAO().GetProductStock(productId, agencyId);
+        public int GetCurrentStock(Guid productId) => new AgencyDAO().GetProductStock(productId);
        
     }
 }

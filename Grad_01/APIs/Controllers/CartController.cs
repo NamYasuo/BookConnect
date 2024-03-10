@@ -1,6 +1,7 @@
 ﻿using System;
 using APIs.DTO.Ecom;
 using APIs.Repositories.Interfaces;
+using APIs.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace APIs.Controllers
@@ -10,9 +11,11 @@ namespace APIs.Controllers
     public class CartController: ControllerBase
 	{
 		private readonly ICartRepository _cartRepo;
+        private readonly IOrderService _orderService;
 
-		public CartController(ICartRepository cartRepository)
+		public CartController(ICartRepository cartRepository, IOrderService orderService)
 		{
+            _orderService = orderService;
 			_cartRepo = cartRepository;
 		}
 
@@ -26,6 +29,10 @@ namespace APIs.Controllers
                 {
                     foreach(ProductToCartDTO d in data)
                     {
+                        if (_orderService.GetCurrentStock(d.ProductId) < d.Quantity)
+                        {
+                            return BadRequest("Can't purchase more product than inside stock!" + d.ProductId);
+                        }
                         int result = _cartRepo.AddProductToCart(d.ProductId, d.CartId, d.Quantity);
                     }
                     return Ok();

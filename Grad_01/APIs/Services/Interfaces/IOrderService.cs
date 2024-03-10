@@ -14,7 +14,7 @@ namespace APIs.Services.Interfaces
 
         public decimal GetTotalAmount(List<ProductOptionDTO> dto);
 
-        public int GetCurrentStock(Guid agencyId, Guid productId);
+        public int GetCurrentStock(Guid productId);
     }
 }
 

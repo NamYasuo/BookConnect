@@ -211,12 +211,14 @@ namespace APIs.Controllers
 					if(chapter.ChapterFile != null)
 					{
 						string? oldImgPath = _workService.GetChapterById(chapter.ChapterId)?.Directory;
+                        string workName = _workService.GetWorkDetails(chapter.WorkId).Title;
+                        string? authorName = _accountService.GetUsernameById(chapter.WorkId);
 
                         if (oldImgPath != null)
 						{
 							 _fileSaver.FileDelete(oldImgPath);
 						}
-						newImgPath = _fileSaver.FileSaveAsync(chapter.ChapterFile, "src/assets/FileSystem/" + "Author01" + "/" + "Work_01" + "/" + "Chapter");
+						newImgPath = _fileSaver.FileSaveAsync(chapter.ChapterFile, "src/assets/FileSystem/" + authorName + "/" + workName + "/" + "Chapters");
 					}
                     Chapter updateData = new Chapter
                     {

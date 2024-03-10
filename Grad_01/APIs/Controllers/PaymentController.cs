@@ -65,7 +65,11 @@ namespace APIs.Controllers
             {
                 returnModel = processResult.Data.Item1;
                 //returnUrl = processResult.Data.Item2;
-                return Ok("http://localhost:5000/checkout-result?refId=" + returnModel.PaymentRefId);
+
+                string redirectUrl = "http://localhost:5000/checkout-result?refId=" + returnModel.PaymentRefId;  // Replace with your desired URL
+                return Redirect(redirectUrl);
+
+                //return Ok("http://localhost:5000/checkout-result?refId=" + returnModel.PaymentRefId);
             }
             //    returnModel = processResult.Data.Item1;
             //    returnUrl = processResult.Data.Item2;

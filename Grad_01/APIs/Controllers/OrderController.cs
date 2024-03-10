@@ -149,9 +149,9 @@ namespace APIs.Controllers
 
             foreach(ProductOptionDTO p in dto.Products)
             {
-                if(_orderService.GetCurrentStock(p.AgencyId, p.ProductId) < p.Quantity)
+                if(_orderService.GetCurrentStock(p.ProductId) < p.Quantity)
                 {
-                    return BadRequest("Product out of stock!");
+                    return BadRequest("Can't purchase more product than inside stock!");
                 }
             }
 

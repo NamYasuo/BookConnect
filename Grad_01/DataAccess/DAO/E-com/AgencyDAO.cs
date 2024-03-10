@@ -29,13 +29,13 @@ namespace DataAccess.DAO.Ecom
 			}
 		}
 
-		public int GetProductStock(Guid productId, Guid agencyId)
+		public int GetProductStock(Guid productId)
 		{
 			try
 			{
 				using(var context = new AppDbContext())
 				{
-					Inventory? record = context.Inventories.Where(i => i.AgencyId == agencyId && i.BookId == productId).SingleOrDefault();
+					Inventory? record = context.Inventories.Where(i => i.BookId == productId).SingleOrDefault();
 
 					if (record == null) return 0;
 					else
