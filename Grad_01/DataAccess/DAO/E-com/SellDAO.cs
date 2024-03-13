@@ -1,75 +1,122 @@
 using System;
 using System.Collections.Generic;
+using BusinessObjects;
+using DataAccess;
 using BusinessObjects.Models;
-using DataAccess.Interfaces;
+
 
 namespace DataAccess.DAO
 {
-    public class SellDAO : ISellDAO
+    public class SellDAO
     {
-        private readonly AppDbContext _context;
-
-        public SellDAO(AppDbContext context)
-        {
-            _context = context;
-        }
-
         // Book Listing CRUD operations
 
-        public void AddNewBook(Book book)
+        public void AddBookListing(BookListing item)
         {
-            _context.Books.Add(book);
-            _context.SaveChanges();
-        }
-
-        public void UpdateBook(Book book)
-        {
-            _context.Books.Update(book);
-            _context.SaveChanges();
-        }
-
-        public void DeleteBookById(Guid bookId)
-        {
-            var book = _context.Books.Find(bookId);
-            if (book != null)
+            using (var context = new AppDbContext())
             {
-                _context.Books.Remove(book);
-                _context.SaveChanges();
+                context.BookListings.Add(item);
+                context.SaveChanges();
             }
         }
 
-        public List<Book> GetAllBooks()
+        public void UpdateBookListing(BookListing item)
         {
-            return _context.Books.ToList();
+            using (var context = new AppDbContext())
+            {
+                var existingItem = context.BookListings.FirstOrDefault(i => i.ListingId == item.ListingId);
+                if (existingItem != null)
+                {
+                    existingItem.ListingId = item.ListingId;
+                    existingItem.BookId = item.BookId;
+                    existingItem.ListName = item.ListName;
+                    existingItem.ListDescription = item.ListDescription;
+                    existingItem.DateAdded = item.DateAdded;
+
+                    context.SaveChanges();
+                }
+            }
+        }
+
+        public void DeleteBookListing(Guid itemId)
+        {
+            using (var context = new AppDbContext())
+            {
+                var item = context.BookListings.FirstOrDefault(i => i.ListingId == itemId);
+                if (item != null)
+                {
+                    context.BookListings.Remove(item);
+                    context.SaveChanges();
+                }
+            }
+        }
+
+        public List<BookListing> GetBookListingBySellerId(Guid sellerId)
+        {
+            using (var context = new AppDbContext())
+            {
+                return context.BookListings.Where(i => i.AgencyId == sellerId).ToList();
+            }
+        }
+
+        public List<BookListing> GetBookListingByName(string listName)
+        {
+            using (var context = new AppDbContext())
+            {
+                return context.BookListings
+                       .Where(bl => bl.ListName.Contains(listName))
+                       .ToList();
+            }
         }
 
         // Inventory operations
 
-        public void AddToInventory(InventoryItem item)
+        public void AddInventoryItem(Inventory item)
         {
-            _context.InventoryItems.Add(item);
-            _context.SaveChanges();
-        }
-
-        public void UpdateInventoryItem(InventoryItem item)
-        {
-            _context.InventoryItems.Update(item);
-            _context.SaveChanges();
-        }
-
-        public void RemoveFromInventory(Guid itemId)
-        {
-            var item = _context.InventoryItems.Find(itemId);
-            if (item != null)
+            using (var context = new AppDbContext())
             {
-                _context.InventoryItems.Remove(item);
-                _context.SaveChanges();
+                context.Inventories.Add(item);
+                context.SaveChanges();
             }
         }
 
-        public List<InventoryItem> GetInventoryItemsBySellerId(Guid sellerId)
+        public void UpdateInventoryItem(Inventory item)
         {
-            return _context.InventoryItems.Where(item => item.SellerId == sellerId).ToList();
+            using (var context = new AppDbContext())
+            {
+                var existingItem = context.Inventories.FirstOrDefault(i => i.InventoryId == item.InventoryId);
+                if (existingItem != null)
+                {
+                    existingItem.InventoryId = item.InventoryId;
+                    existingItem.BookId = item.BookId;
+                    existingItem.Quantity = item.Quantity;
+                    existingItem.Price = item.Price;
+                    existingItem.DateAdded = item.DateAdded;
+
+                    context.SaveChanges();
+                }
+            }
+        }
+
+        public void DeleteInventoryItem(Guid itemId)
+        {
+            using (var context = new AppDbContext())
+            {
+                var item = context.Inventories.FirstOrDefault(i => i.InventoryId == itemId);
+                if (item != null)
+                {
+                    context.Inventories.Remove(item);
+                    context.SaveChanges();
+                }
+            }
+        }
+
+        public List<Inventory> GetInventoryItemsBySellerId(Guid sellerId)
+        {
+            using (var context = new AppDbContext())
+            {
+                return context.Inventories.Where(i => i.AgencyId == sellerId).ToList();
+            }
         }
 
         // Additional methods for communication and order processing

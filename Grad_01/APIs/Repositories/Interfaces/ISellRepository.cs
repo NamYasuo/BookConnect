@@ -7,11 +7,12 @@ namespace APIs.Repositories.Interfaces
     public interface ISellRepository
     {
         // Methods for managing book listings
-        void CreateBookListing(Book book);
-        void UpdateBookListing(Book book);
-        void DeleteBookListing(Guid bookId);
-        List<Book> GetAllBookListings();
-        Book GetBookListingById(Guid bookId);
+        void AddToBookListing(BookListing item);
+        void UpdateBookListing(BookListing item);
+        void RemoveFromBookListing(Guid itemId);
+        List<BookListing> GetBookListingBySellerId(Guid sellerId);
+        List<BookListing> GetBookListingByName(string listName);
+
 
         // Methods for managing inventory
         void AddToInventory(Inventory item);
@@ -20,3 +21,5 @@ namespace APIs.Repositories.Interfaces
         List<Inventory> GetInventoryItemsBySellerId(Guid sellerId);
     }
 }
+
+

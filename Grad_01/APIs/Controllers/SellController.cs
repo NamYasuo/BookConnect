@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using APIs.DTO;
 using APIs.Repositories.Interfaces;
 using BusinessObjects.Models;
+using BusinessObjects.Models.Ecom;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,6 +12,7 @@ namespace APIs.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+
     public class SellerController : ControllerBase
     {
         private readonly ISellRepository _sellRepository;
@@ -19,13 +21,14 @@ namespace APIs.Controllers
         {
             _sellRepository = sellRepository;
         }
+        // Book Listings Endpoints
 
-        [HttpPost("CreateListing")]
-        public IActionResult CreateListing([FromBody] Book book)
+        [HttpPost("AddBookListing")]
+        public IActionResult AddBookListing([FromBody] BookListing item)
         {
             try
             {
-                _sellRepository.CreateBookListing(book);
+                _sellRepository.AddToBookListing(item);
                 return Ok();
             }
             catch (Exception e)
@@ -34,12 +37,12 @@ namespace APIs.Controllers
             }
         }
 
-        [HttpPut("UpdateListing")]
-        public IActionResult UpdateListing([FromBody] Book book)
+        [HttpPut("UpdateBookListing")]
+        public IActionResult UpdateBookListing([FromBody] BookListing item)
         {
             try
             {
-                _sellRepository.UpdateBookListing(book);
+                _sellRepository.UpdateBookListing(item);
                 return Ok();
             }
             catch (Exception e)
@@ -48,12 +51,12 @@ namespace APIs.Controllers
             }
         }
 
-        [HttpDelete("DeleteListing/{bookId}")]
-        public IActionResult DeleteListing(Guid bookId)
+        [HttpDelete("DeleteBookListing/{itemId}")]
+        public IActionResult DeleteBookListing(Guid itemId)
         {
             try
             {
-                _sellRepository.DeleteBookListing(bookId);
+                _sellRepository.RemoveFromBookListing(itemId);
                 return Ok();
             }
             catch (Exception e)
@@ -62,13 +65,13 @@ namespace APIs.Controllers
             }
         }
 
-        [HttpGet("GetAllListings")]
-        public IActionResult GetAllListings()
+        [HttpGet("GetBookListingBySellerId/{sellerId}")]
+        public IActionResult GetBookListingBySellerId(Guid sellerId)
         {
             try
             {
-                var listings = _sellRepository.GetAllBookListings();
-                return Ok(listings);
+                var items = _sellRepository.GetBookListingBySellerId(sellerId);
+                return Ok(items);
             }
             catch (Exception e)
             {
@@ -76,12 +79,28 @@ namespace APIs.Controllers
             }
         }
 
-        [HttpPost("ProcessOrder")]
-        public IActionResult ProcessOrder([FromBody] Order order)
+        [HttpGet("GetBookListingByName/{listName}")]
+        public IActionResult GetBookListingByName(string listName)
         {
             try
             {
-                _sellRepository.ProcessOrder(order);
+                var items = _sellRepository.GetBookListingByName(listName);
+                return Ok(items);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        // Inventory Endpoints
+
+        [HttpPost("AddInventoryItem")]
+        public IActionResult AddInventoryItem([FromBody] Inventory item)
+        {
+            try
+            {
+                _sellRepository.AddToInventory(item);
                 return Ok();
             }
             catch (Exception e)
@@ -90,13 +109,13 @@ namespace APIs.Controllers
             }
         }
 
-        [HttpPut("UpdateOrderStatus")]
-        public IActionResult UpdateOrderStatus(Guid orderId, string newStatus)
+        [HttpPut("UpdateInventoryItem")]
+        public IActionResult UpdateInventoryItem([FromBody] Inventory item)
         {
             try
             {
-                var result = _sellService.UpdateOrderStatus(orderId, newStatus);
-                return Ok(result);
+                _sellRepository.UpdateInventoryItem(item);
+                return Ok();
             }
             catch (Exception e)
             {
@@ -104,13 +123,13 @@ namespace APIs.Controllers
             }
         }
 
-        [HttpPut("UpdateShippingInformation")]
-        public IActionResult UpdateShippingInformation(Guid orderId, ShippingInfoDTO shippingInfo)
+        [HttpDelete("DeleteInventoryItem/{itemId}")]
+        public IActionResult DeleteInventoryItem(Guid itemId)
         {
             try
             {
-                var result = _sellService.UpdateShippingInformation(orderId, shippingInfo);
-                return Ok(result);
+                _sellRepository.RemoveFromInventory(itemId);
+                return Ok();
             }
             catch (Exception e)
             {
@@ -118,6 +137,18 @@ namespace APIs.Controllers
             }
         }
 
-
+        [HttpGet("GetInventoryItemsBySellerId/{sellerId}")]
+        public IActionResult GetInventoryItemsBySellerId(Guid sellerId)
+        {
+            try
+            {
+                var items = _sellRepository.GetInventoryItemsBySellerId(sellerId);
+                return Ok(items);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
     }
 }
