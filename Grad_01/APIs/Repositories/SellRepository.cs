@@ -1,29 +1,30 @@
-using System;
-using System.Collections.Generic;
-using APIs.Repositories.Interfaces;
-using BusinessObjects.Models;
-using DataAccess.DAO;
+﻿//using System;
+//using System.Collections.Generic;
+//using APIs.Repositories.Interfaces;
+//using BusinessObjects.Models;
+//using DataAccess.DAO;
 
-namespace APIs.Repositories
-{
-    public class SellRepository : ISellRepository
-    {
-        public void AddToBookListing(BookListing item) => new SellDAO().AddBookListing(item);
+//namespace APIs.Repositories
+//{
+//    public class SellRepository : ISellRepository
+//    {
+//        public void CreateBookListing(Book book) => new BookDAO().AddNewBook(book);
 
-        public void UpdateBookListing(BookListing item) => new SellDAO().UpdateBookListing(item);
+//        public void UpdateBookListing(Book book) => new BookDAO().UpdateBook(book);
 
-        public void RemoveFromBookListing(Guid itemId) => new SellDAO().DeleteBookListing(itemId);
+//        public void DeleteBookListing(Guid bookId) => new BookDAO().DeleteBook(bookId);
 
-        public List<BookListing> GetBookListingBySellerId(Guid sellerId) => new SellDAO().GetBookListingBySellerId(sellerId);
-        public List<BookListing> GetBookListingByName(string listName) => new SellDAO().GetBookListingByName(listName);
-        public void AddToInventory(Inventory item) => new SellDAO().AddInventoryItem(item);
+//        public List<Book> GetAllBookListings() => new BookDAO().GetAllBook();
 
-        public void UpdateInventoryItem(Inventory item) => new SellDAO().UpdateInventoryItem(item);
+//        public Book GetBookListingById(Guid bookId) => new BookDAO().GetBookById(bookId);
 
-        public void RemoveFromInventory(Guid itemId) => new SellDAO().DeleteInventoryItem(itemId);
+//        public void AddToInventory(InventoryItem item) => new InventoryDAO().AddInventoryItem(item);
 
-        public List<Inventory> GetInventoryItemsBySellerId(Guid sellerId) => new SellDAO().GetInventoryItemsBySellerId(sellerId);
+//        public void UpdateInventoryItem(InventoryItem item) => new InventoryDAO().UpdateInventoryItem(item);
 
-    }
-}
+//        public void RemoveFromInventory(Guid itemId) => new InventoryDAO().DeleteInventoryItem(itemId);
+
+//        public List<InventoryItem> GetInventoryItemsBySellerId(Guid sellerId) => new InventoryDAO().GetInventoryItemsBySellerId(sellerId);
+//    }
+//}
 

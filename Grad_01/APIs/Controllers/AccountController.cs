@@ -17,11 +17,11 @@ namespace APIs.Controllers
     [ApiController]
     public class AccountController: ControllerBase
 	{
-		private readonly IAccountService accService;
+		private readonly IAccountService _accService;
 
         public AccountController(IAccountService service)
         {
-            accService = service;
+            _accService = service;
         }
 
         [HttpPost("SignUp")]
@@ -36,14 +36,14 @@ namespace APIs.Controllers
                 return Ok(status);
             }
             // check if users exists
-            var userExists = accService.FindUserByEmailAsync(model.Email);
+            var userExists = _accService.FindUserByEmailAsync(model.Email);
             if (userExists != null && userExists?.Username != null)
             {
                 status.StatusCode = 0;
                 status.Message = userExists.Username;
                 return Ok(status);
             }
-            AppUser user = accService.Register(model);
+            AppUser user = _accService.Register(model);
             return Ok(user);
         }
 
@@ -58,19 +58,19 @@ namespace APIs.Controllers
                 status.Message = "Please pass all the required fields";
                 return Ok(status);
             }
-            AppUser? user = accService.FindUserByEmailAsync(model.Email);
+            AppUser? user = _accService.FindUserByEmailAsync(model.Email);
             if (user == null)
             {
                 return BadRequest("User not found!");
             }
 
             byte[] salt = Convert.FromHexString(user.Salt);
-            if (!accService.VerifyPassword(model.Password, user.Password, salt, out byte[] result))
+            if (!_accService.VerifyPassword(model.Password, user.Password, salt, out byte[] result))
             {
                 return BadRequest("Wrong password");
             }
-            string token = accService.CreateToken(user);
-            var refreshToken = accService.GenerateRefreshToken();
+            string token = _accService.CreateToken(user);
+            var refreshToken = _accService.GenerateRefreshToken();
 
             var cookieOptions = new CookieOptions
             {
@@ -96,7 +96,7 @@ namespace APIs.Controllers
                     status.Message = "Please pass all the required fields";
                     return Ok(status);
                 }
-                if (accService.GetRoleDetails(data.RoleName) is not null)
+                if (_accService.GetRoleDetails(data.RoleName) is not null)
                 {
                     return BadRequest("Role already existed");
                 }
@@ -107,7 +107,7 @@ namespace APIs.Controllers
                     Description = data.Description
                 };
 
-                accService.AddNewRole(role);
+                _accService.AddNewRole(role);
                 return Ok("New role added");
             }
             catch(Exception e)
@@ -122,7 +122,7 @@ namespace APIs.Controllers
         {
             try
             {
-                Address? address = accService.GetDefaultAddress(userId);
+                Address? address = _accService.GetDefaultAddress(userId);
                 if (address != null)
                 {
                     return Ok(address);
@@ -177,13 +177,20 @@ namespace APIs.Controllers
                     {
                         if (usernameClaim != null)
                         {
-                          Address address = accService.GetDefaultAddress(userId);
+                            Address? address = _accService.GetDefaultAddress(userId);
+                            string rendez = string.Empty;
+
+                            if(address != null && address.Rendezvous != null)
+                            {
+                                rendez = address.Rendezvous;
+                            }
+
                             UserProfile profile = new UserProfile()
                             {
                                 UserId = userId,
                                 Username = usernameClaim.Value,
                                 Role = roleClaim.Value,
-                                Address = address.Rendezvous,
+                                Address = rendez,
                                 Email = emailClaim.Value
                             };
                             return Ok(profile);

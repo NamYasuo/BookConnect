@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusinessObjects.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240314015808_ver1")]
+    [Migration("20240313133147_ver1")]
     partial class ver1
     {
         /// <inheritdoc />
@@ -167,38 +167,6 @@ namespace BusinessObjects.Migrations
                     b.ToTable("Books");
                 });
 
-            modelBuilder.Entity("BusinessObjects.Models.BookListing", b =>
-                {
-                    b.Property<Guid>("AgencyId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("BookId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("DateAdded")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ListDescription")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ListName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("ListingId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.HasIndex("AgencyId");
-
-                    b.HasIndex("BookId");
-
-                    b.ToTable("BookListings");
-                });
-
             modelBuilder.Entity("BusinessObjects.Models.Category", b =>
                 {
                     b.Property<Guid>("CateId")
@@ -265,10 +233,6 @@ namespace BusinessObjects.Migrations
 
                     b.Property<Guid>("SubscriptionId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Token")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("SubRecordId");
 
@@ -544,15 +508,6 @@ namespace BusinessObjects.Migrations
                     b.Property<Guid>("BookId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("DateAdded")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("InventoryId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Price")
-                        .HasColumnType("int");
-
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
@@ -713,25 +668,6 @@ namespace BusinessObjects.Migrations
                         .HasForeignKey("RatingId");
 
                     b.Navigation("Rating");
-                });
-
-            modelBuilder.Entity("BusinessObjects.Models.BookListing", b =>
-                {
-                    b.HasOne("BusinessObjects.Models.Agency", "Agency")
-                        .WithMany()
-                        .HasForeignKey("AgencyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BusinessObjects.Models.Book", "Book")
-                        .WithMany()
-                        .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Agency");
-
-                    b.Navigation("Book");
                 });
 
             modelBuilder.Entity("BusinessObjects.Models.Creative.Chapter", b =>

@@ -386,42 +386,11 @@ namespace BusinessObjects.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BookListings",
-                columns: table => new
-                {
-                    ListingId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    AgencyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    BookId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ListName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ListDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DateAdded = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Quantity = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.ForeignKey(
-                        name: "FK_BookListings_Agencies_AgencyId",
-                        column: x => x.AgencyId,
-                        principalTable: "Agencies",
-                        principalColumn: "AgencyId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_BookListings_Books_BookId",
-                        column: x => x.BookId,
-                        principalTable: "Books",
-                        principalColumn: "ProductId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Inventories",
                 columns: table => new
                 {
-                    InventoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     AgencyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     BookId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Price = table.Column<int>(type: "int", nullable: false),
-                    DateAdded = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -447,8 +416,7 @@ namespace BusinessObjects.Migrations
                     SubRecordId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     BillingId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     SubscriptionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    EventType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Token = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    EventType = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -556,16 +524,6 @@ namespace BusinessObjects.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BookListings_AgencyId",
-                table: "BookListings",
-                column: "AgencyId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_BookListings_BookId",
-                table: "BookListings",
-                column: "BookId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Books_RatingId",
                 table: "Books",
                 column: "RatingId");
@@ -666,9 +624,6 @@ namespace BusinessObjects.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Baskets");
-
-            migrationBuilder.DropTable(
-                name: "BookListings");
 
             migrationBuilder.DropTable(
                 name: "CategoryLists");

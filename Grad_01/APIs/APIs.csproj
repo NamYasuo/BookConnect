@@ -17,6 +17,7 @@
     <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.12" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="8.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
   </ItemGroup>
    <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
@@ -41,7 +42,6 @@
     <None Remove="Utils\Paging\" />
     <None Remove="FileSystem\" />
     <None Remove="Services\Interfaces\" />
-    <None Remove="Hub\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Mapper\" />
@@ -58,6 +58,5 @@
     <Folder Include="Utils\Paging\" />
     <Folder Include="FileSystem\" />
     <Folder Include="Services\Interfaces\" />
-    <Folder Include="Hub\" />
   </ItemGroup>
 </Project>

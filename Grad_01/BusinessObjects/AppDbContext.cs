@@ -1,3 +1,4 @@
+﻿using System.Reflection.Emit;
 using BusinessObjects.Models;
 using BusinessObjects.Models.Creative;
 using BusinessObjects.Models.E_com.Trading;
@@ -10,8 +11,8 @@ using Microsoft.Extensions.Configuration;
 
 namespace BusinessObjects
 {
-    public class AppDbContext : DbContext
-    {
+	public class AppDbContext: DbContext
+	{
         public AppDbContext() { }
         public AppDbContext(DbContextOptions<AppDbContext> o) : base(o) { }
 
@@ -21,7 +22,6 @@ namespace BusinessObjects
         public virtual DbSet<Basket> Baskets { get; set; } = null!;
         public virtual DbSet<Cart> Carts { get; set; } = null!;
         public virtual DbSet<Inventory> Inventories { get; set; } = null!;
-        public virtual DbSet<BookListing> BookListings { get; set; } = null!;
         public virtual DbSet<Order> Orders { get; set; } = null!;
         public virtual DbSet<Book> Books { get; set; } = null!;
 
@@ -77,7 +77,6 @@ namespace BusinessObjects
                 );
             base.OnModelCreating(builder); ;
             builder.Entity<Inventory>().HasNoKey();
-            builder.Entity<BookListing>().HasNoKey();
             builder.Entity<Basket>().HasNoKey();
             builder.Entity<RatingRecord>().HasNoKey();
             builder.Entity<CategoryList>().HasNoKey();
