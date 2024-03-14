@@ -6,8 +6,9 @@ namespace BusinessObjects.DTO
         public string PaymentContent { get; set; } = string.Empty;
         public string PaymentCurrency { get; set; } = "VND";
         public int? RequiredAmount { get; set; }
-        //public string? PaymentLanguage { get; set; } = "vn";
         public string? ReferenceId { get; set; }
+        //public string? PaymentLanguage { get; set; } = "vn";
+
         //public string? PaymentDestinationId { get; set; } = string.Empty;
         //public string? Signature { get; set; } = string.Empty;
     }

@@ -41,6 +41,7 @@
     <None Remove="Utils\Paging\" />
     <None Remove="FileSystem\" />
     <None Remove="Services\Interfaces\" />
+    <None Remove="Hub\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Mapper\" />
@@ -57,5 +58,6 @@
     <Folder Include="Utils\Paging\" />
     <Folder Include="FileSystem\" />
     <Folder Include="Services\Interfaces\" />
+    <Folder Include="Hub\" />
   </ItemGroup>
 </Project>
