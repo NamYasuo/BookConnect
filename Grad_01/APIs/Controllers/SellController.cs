@@ -3,8 +3,12 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using APIs.DTO;
 using APIs.Repositories.Interfaces;
+using APIs.Services;
+using APIs.Services.Interfaces;
+using BusinessObjects.DTO;
 using BusinessObjects.Models;
 using BusinessObjects.Models.Ecom;
+using DataAccess.DAO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,19 +16,18 @@ namespace APIs.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-
     public class SellerController : ControllerBase
     {
         private readonly ISellRepository _sellRepository;
-
         public SellerController(ISellRepository sellRepository)
         {
             _sellRepository = sellRepository;
         }
+
         // Book Listings Endpoints
 
         [HttpPost("AddBookListing")]
-        public IActionResult AddBookListing([FromBody] BookListing item)
+        public IActionResult AddBookListing([FromBody] BookListingManageDTOs item)
         {
             try
             {
@@ -38,7 +41,7 @@ namespace APIs.Controllers
         }
 
         [HttpPut("UpdateBookListing")]
-        public IActionResult UpdateBookListing([FromBody] BookListing item)
+        public IActionResult UpdateBookListing([FromBody] BookListingManageDTOs item)
         {
             try
             {
@@ -65,12 +68,12 @@ namespace APIs.Controllers
             }
         }
 
-        [HttpGet("GetBookListingBySellerId/{sellerId}")]
-        public IActionResult GetBookListingBySellerId(Guid sellerId)
+        [HttpGet("GetBookListingById/{Id}")]
+        public IActionResult GetBookListingBySellerId(Guid Id)
         {
             try
             {
-                var items = _sellRepository.GetBookListingBySellerId(sellerId);
+                var items = _sellRepository.GetBookListingById(Id);
                 return Ok(items);
             }
             catch (Exception e)
@@ -96,7 +99,7 @@ namespace APIs.Controllers
         // Inventory Endpoints
 
         [HttpPost("AddInventoryItem")]
-        public IActionResult AddInventoryItem([FromBody] Inventory item)
+        public IActionResult AddInventoryItem([FromBody] InventoryManageDTOs item)
         {
             try
             {
@@ -110,7 +113,7 @@ namespace APIs.Controllers
         }
 
         [HttpPut("UpdateInventoryItem")]
-        public IActionResult UpdateInventoryItem([FromBody] Inventory item)
+        public IActionResult UpdateInventoryItem([FromBody] InventoryManageDTOs item)
         {
             try
             {
@@ -137,12 +140,12 @@ namespace APIs.Controllers
             }
         }
 
-        [HttpGet("GetInventoryItemsBySellerId/{sellerId}")]
-        public IActionResult GetInventoryItemsBySellerId(Guid sellerId)
+        [HttpGet("GetInventoryItemsById/{Id}")]
+        public IActionResult GetInventoryItemsBySellerId(Guid Id)
         {
             try
             {
-                var items = _sellRepository.GetInventoryItemsBySellerId(sellerId);
+                var items = _sellRepository.GetInventoryItemsById(Id);
                 return Ok(items);
             }
             catch (Exception e)
@@ -151,4 +154,5 @@ namespace APIs.Controllers
             }
         }
     }
+
 }

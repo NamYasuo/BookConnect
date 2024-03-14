@@ -1,24 +1,25 @@
 using System;
 using System.Collections.Generic;
-using APIs.DTO;
+using BusinessObjects.DTO;
 using BusinessObjects.Models;
+
 
 namespace APIs.Services.Interfaces
 {
     public interface ISellService
     {
         // Book Listing Services
-        void AddToBookListing(BookListing item);
-        void UpdateBookListing(BookListing item);
+        void AddToBookListing(BookListingManageDTOs item);
+        void UpdateBookListing(BookListingManageDTOs item);
         void RemoveFromBookListing(Guid itemId);
-        List<BookListing> GetBookListingBySellerId(Guid sellerId);
+        List<BookListing> GetBookListingById(Guid Id);
         List<BookListing> GetBookListingByName(string listName);
 
         // Inventory Services
-        void AddToInventory(Inventory item);
-        void UpdateInventoryItem(Inventory item);
+        void AddToInventory(InventoryManageDTOs item);
+        void UpdateInventoryItem(InventoryManageDTOs item);
         void RemoveFromInventory(Guid itemId);
-        List<Inventory> GetInventoryItemsBySellerId(Guid sellerId);
+        List<Inventory> GetInventoryItemsById(Guid Id);
 
         //// Communication Services
         //void SendMessageToBuyer(Guid sellerId, Guid buyerId, string message);

@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using APIs.DTO;
+using BusinessObjects.DTO;
 using BusinessObjects.Models;
 using APIs.Services.Interfaces;
 using APIs.Repositories.Interfaces;
@@ -15,22 +15,22 @@ namespace APIs.Services
 
 
         // Book Listing Services
-        public void AddToBookListing(BookListing item) => _sellRepository.AddToBookListing(item);
+        public void AddToBookListing(BookListingManageDTOs item) => _sellRepository.AddToBookListing(item);
 
-        public void UpdateBookListing(BookListing item) => _sellRepository.UpdateBookListing(item);
+        public void UpdateBookListing(BookListingManageDTOs item) => _sellRepository.UpdateBookListing(item);
 
         public void RemoveFromBookListing(Guid itemId) => _sellRepository.RemoveFromBookListing(itemId);
 
-        public List<BookListing> GetBookListingBySellerId(Guid sellerId) => _sellRepository.GetBookListingBySellerId(sellerId);
+        public List<BookListing> GetBookListingById(Guid Id) => _sellRepository.GetBookListingById(Id);
         public List<BookListing> GetBookListingByName(string listName) => _sellRepository.GetBookListingByName(listName);
         // Inventory Services
-        public void AddToInventory(Inventory item) => _sellRepository.AddToInventory(item);
+        public void AddToInventory(InventoryManageDTOs item) => _sellRepository.AddToInventory(item);
 
-        public void UpdateInventoryItem(Inventory item) => _sellRepository.UpdateInventoryItem(item);
+        public void UpdateInventoryItem(InventoryManageDTOs item) => _sellRepository.UpdateInventoryItem(item);
 
         public void RemoveFromInventory(Guid itemId) => _sellRepository.RemoveFromInventory(itemId);
 
-        public List<Inventory> GetInventoryItemsBySellerId(Guid sellerId) => _sellRepository.GetInventoryItemsBySellerId(sellerId);
+        public List<Inventory> GetInventoryItemsById(Guid Id) => _sellRepository.GetInventoryItemsById(Id);
 
         //// Communication Services
         //public void SendMessageToBuyer(Guid sellerId, Guid buyerId, string message) => _messageService.SendMessage(sellerId, buyerId, message);
