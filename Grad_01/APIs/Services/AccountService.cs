@@ -43,6 +43,7 @@ namespace APIs.Repositories.Interfaces
                 Email = model.Email,
                 Password = Convert.ToHexString(pwdHash),
                 Salt = Convert.ToHexString(salt),
+                IsValidated = false,
                 RoleId = GetRoleDetails("BaseUser").RoleId,
             };
             accountDAO.CreateAccount(user);
@@ -127,18 +128,8 @@ namespace APIs.Repositories.Interfaces
 
         public Address GetDefaultAddress(Guid userId) => new AddressDAO().GetUserDefaultAddress(userId);
 
-        //public UserProfile? GetUserProfile(string token)
-        //{
-        //    UserProfile? profile = new UserProfile();
-        //    try
-        //    {
-               
-        //    }
-        //    catch(Exception e)
-        //    {
-        //        throw new Exception(e.Message);
-        //    }
-        //}
+        //Account validation
+        public int SetUserIsValidated(bool choice, Guid userId) => new AccountDAO().SetIsAccountValid(choice, userId);
     }
 }
 

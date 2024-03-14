@@ -80,10 +80,9 @@ namespace APIs.Controllers
                             EndDate = startDate.AddDays(tierDuration),
                             Status = "active",
                         };
-                        return Ok(newSub);
-                        //int result = _subService.AddNewSub(newSub);
-                        //if (result > 0) return Ok("Successful!");
-                        //else return BadRequest("Sub fail!");
+                        int result = _subService.AddNewSub(newSub);
+                        if (result > 0) return Ok("Successful!");
+                        else return BadRequest("Sub fail!");
                     }
                     else return BadRequest("Can't sub to your own tier");
                 }

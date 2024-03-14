@@ -10,5 +10,11 @@ namespace BusinessObjects.DTO
         public string? Address { get; set; }
         //public string Rating { get; set; } = null!;
     }
+
+    public class UserValidationDTO
+    {
+        public Guid userId { get; set; }
+        public bool choice { get; set; }
+    }
 }
 

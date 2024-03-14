@@ -40,6 +40,7 @@ namespace APIs.Services
 
 		public int DeleteWorkById(Guid workId) => new WorkDAO().DeleteWorkById(workId);
 
+
         //------------------------------CHAPTER ZONE-----------------------------------//
 
 		public Chapter? GetChapterById(Guid chapterId) => new ChapterDAO().GetChapterById(chapterId);
@@ -49,7 +50,16 @@ namespace APIs.Services
         public int UpdateChapter(Chapter chapter) => new ChapterDAO().UpdateChapter(chapter);
 
 		public int DeleteChapterById(Guid chapterId) => new ChapterDAO().DeleteChapterById(chapterId);
-         
+
+        public int SetWorkType(Guid workId, string type)
+        {
+            throw new NotImplementedException();
+        }
+
+        public int SetWorkPrice(Guid workId, decimal price)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 

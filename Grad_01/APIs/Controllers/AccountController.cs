@@ -204,6 +204,25 @@ namespace APIs.Controllers
                 throw new Exception(e.Message);
             }
         }
+
+        [HttpPut("set-is-account-validated")]
+        public IActionResult SetIsAccountValid([FromBody] UserValidationDTO dto)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    int result = _accService.SetUserIsValidated(dto.choice, dto.userId);
+                    IActionResult apiResult = (result > 0) ? Ok("Successful!") : BadRequest("No change!");
+                    return apiResult;
+                }
+                return BadRequest("Model invalid");
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
     }
 }
 
