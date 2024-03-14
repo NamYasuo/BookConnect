@@ -25,6 +25,7 @@ namespace APIs.Services.Interfaces
 
         //Validate services
         public int SetUserIsValidated(bool choice, Guid userId);
+        public bool IsUserValidated(Guid userId);
     }
 }
 

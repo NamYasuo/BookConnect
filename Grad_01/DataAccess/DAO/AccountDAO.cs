@@ -193,6 +193,26 @@ namespace DataAccess.DAO
                 throw new Exception(e.Message);
             }
         }
+
+        public bool IsUserValidated(Guid userId)
+        {
+            try
+            {
+                using(var context = new AppDbContext())
+                {
+                    AppUser? user = context.AppUsers.Where(u => u.UserId == userId).SingleOrDefault();
+                    if(user != null)
+                    {
+                        return user.IsValidated;
+                    }
+                    return false;
+                }
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
     }
 }
 

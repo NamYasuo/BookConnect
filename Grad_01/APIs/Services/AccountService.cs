@@ -130,6 +130,9 @@ namespace APIs.Repositories.Interfaces
 
         //Account validation
         public int SetUserIsValidated(bool choice, Guid userId) => new AccountDAO().SetIsAccountValid(choice, userId);
+
+        public bool IsUserValidated(Guid userId) => new AccountDAO().IsUserValidated(userId);
+        
     }
 }
 

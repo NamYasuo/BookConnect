@@ -31,6 +31,7 @@ namespace APIs.Services
 				Author = new AccountDAO().GetNameById(work.AuthorId),
 				Type = work.Type,
 				Status = work.Status,
+				Price = work.Price.ToString(),
 				CoverDir = work.CoverDir,
 				BackgroundDir = work.BackgroundDir,
 				Description = work.Description
@@ -51,15 +52,12 @@ namespace APIs.Services
 
 		public int DeleteChapterById(Guid chapterId) => new ChapterDAO().DeleteChapterById(chapterId);
 
-        public int SetWorkType(Guid workId, string type)
-        {
-            throw new NotImplementedException();
-        }
+		public int SetWorkType(Guid workId, string type) => new WorkDAO().SetWorkType(workId, type);
 
-        public int SetWorkPrice(Guid workId, decimal price)
-        {
-            throw new NotImplementedException();
-        }
+		public int SetWorkPrice(Guid workId, decimal price) => new WorkDAO().SetWorkPrice(workId, price);
+       
+		public bool IsWorkOwner(Guid workId, Guid userId) => new WorkDAO().IsWorkCreator(userId, workId);
+
     }
 }
 

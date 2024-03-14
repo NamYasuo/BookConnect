@@ -191,7 +191,7 @@ namespace APIs.Controllers
                                 Username = usernameClaim.Value,
                                 Role = roleClaim.Value,
                                 Address = rendez,
-                                Email = emailClaim.Value
+                                Email = emailClaim.Value,
                             };
                             return Ok(profile);
                         }

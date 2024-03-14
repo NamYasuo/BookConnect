@@ -24,6 +24,8 @@ namespace APIs.Services.Interfaces
 		public int UpdateChapter(Chapter chapter);
 		public int DeleteChapterById(Guid chapterId);
 
+        //Author
+        public bool IsWorkOwner(Guid workId, Guid userId);
     }
 }
 
