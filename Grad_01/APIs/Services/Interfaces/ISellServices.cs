@@ -1,25 +1,32 @@
 using System;
 using System.Collections.Generic;
+using APIs.DTO;
 using BusinessObjects.Models;
 
-namespace APIs.Repositories.Interfaces
+namespace APIs.Services.Interfaces
 {
-    public interface ISellRepository
+    public interface ISellService
     {
-        // Methods for managing book listings
+        // Book Listing Services
         void AddToBookListing(BookListing item);
         void UpdateBookListing(BookListing item);
         void RemoveFromBookListing(Guid itemId);
         List<BookListing> GetBookListingBySellerId(Guid sellerId);
         List<BookListing> GetBookListingByName(string listName);
 
-
-        // Methods for managing inventory
+        // Inventory Services
         void AddToInventory(Inventory item);
         void UpdateInventoryItem(Inventory item);
         void RemoveFromInventory(Guid itemId);
         List<Inventory> GetInventoryItemsBySellerId(Guid sellerId);
+
+        //// Communication Services
+        //void SendMessageToBuyer(Guid sellerId, Guid buyerId, string message);
+
+        //// Order Processing Services
+        //string ProcessOrder(Guid orderId);
+        //string UpdateOrderStatus(Guid orderId, string newStatus);
+        ////string UpdateShippingInformation(Guid orderId, ShippingInfoDTO shippingInfo);
     }
 }
-
 

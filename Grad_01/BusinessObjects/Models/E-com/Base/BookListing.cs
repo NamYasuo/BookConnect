@@ -1,20 +1,21 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 
 namespace BusinessObjects.Models
 {
-    public class Inventory
+
+    public class BookListing
     {
         [Key]
-        public Guid InventoryId { get; set; }
+        public Guid ListingId { get; set; }
 
         public Guid AgencyId { get; set; }
 
         public Guid BookId { get; set; }
+        public string ListName { get; set; }
+        public string ListDescription { get; set; } = string.Empty;
 
-        public int Price { get; set; }
         public DateTime DateAdded { get; set; }
 
         public int Quantity { get; set; }
@@ -24,5 +25,6 @@ namespace BusinessObjects.Models
 
         [ForeignKey("BookId"), JsonIgnore]
         public virtual Book Book { get; set; } = null!;
+
     }
 }
