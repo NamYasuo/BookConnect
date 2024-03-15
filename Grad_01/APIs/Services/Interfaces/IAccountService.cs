@@ -1,5 +1,6 @@
 ﻿using System;
 using APIs.DTO;
+using BusinessObjects.DTO;
 using BusinessObjects.Models;
 using DataAccess.DTO;
 using Microsoft.AspNetCore.Identity;
@@ -26,6 +27,10 @@ namespace APIs.Services.Interfaces
         //Validate services
         public int SetUserIsValidated(bool choice, Guid userId);
         public bool IsUserValidated(Guid userId);
+
+        //Agency registration
+        public string RegisterAgency(AgencyRegistrationDTO dto);
+        public bool IsSeller(Guid userId);
     }
 }
 

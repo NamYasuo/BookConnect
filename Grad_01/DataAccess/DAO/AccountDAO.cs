@@ -213,6 +213,47 @@ namespace DataAccess.DAO
                 throw new Exception(e.Message);
             }
         }
+
+        //Agency registration
+        public int SetIsAgency(bool choice, Guid userId)
+        {
+            try
+            {
+                using(var context = new AppDbContext())
+                {
+                    AppUser? user = context.AppUsers.Where(u => u.UserId == userId).SingleOrDefault();
+                    if(user != null)
+                    {
+                        user.IsSeller = choice;
+                    }
+                    return context.SaveChanges();
+                }
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public bool IsSeller(Guid userId)
+        {
+            try
+            {
+                using (var context = new AppDbContext())
+                {
+                    AppUser? user = context.AppUsers.Where(u => u.UserId == userId).SingleOrDefault();
+                    if (user != null)
+                    {
+                        return user.IsSeller;
+                    }
+                    return false;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
     }
 }
 

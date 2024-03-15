@@ -51,6 +51,21 @@ namespace DataAccess.DAO.Ecom
 			}
 		}
 
+		public int AddNewAgency(Agency agency)
+		{
+			try
+			{
+				using(var context = new AppDbContext())
+				{
+					context.Agencies.Add(agency);
+					return context.SaveChanges();
+				}
+			}
+			catch(Exception e)
+			{
+				throw new Exception(e.Message);
+			}
+		}
 	}
 }
 

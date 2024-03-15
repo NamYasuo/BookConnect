@@ -162,7 +162,7 @@ namespace APIs.Controllers
 
         [HttpGet, Authorize]
         [Route("get-user-profile")]
-        public async Task<IActionResult> GetUserProfile()
+        public IActionResult GetUserProfile()
         {
             try
             {
@@ -192,6 +192,9 @@ namespace APIs.Controllers
                                 Role = roleClaim.Value,
                                 Address = rendez,
                                 Email = emailClaim.Value,
+                                IsValidated = _accService.IsUserValidated(userId),
+                                IsSeller = _accService.IsSeller(userId)
+
                             };
                             return Ok(profile);
                         }
@@ -223,6 +226,40 @@ namespace APIs.Controllers
                 throw new Exception(e.Message);
             }
         }
+
+        [HttpPost("register-agency")]
+        public IActionResult RegisterAgency([FromBody] AgencyRegistrationDTO dto)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    Guid userId = Guid.Empty;
+                    var userIdClaim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "userId");
+                    if(userIdClaim != null)
+                    {
+                        userId = Guid.Parse(userIdClaim.Value);
+                    }
+                    if (_accService.IsUserValidated(userId) == true)
+                    {
+                        string result = _accService.RegisterAgency(dto);
+                        if (result == "Successful!")
+                        {
+                            return Ok(result);
+                        }
+                        else return BadRequest(result);
+                    }
+                    else return BadRequest("Account's not validated!");
+                }
+                else return BadRequest("Model invalid!");
+               
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
     }
 }
 
