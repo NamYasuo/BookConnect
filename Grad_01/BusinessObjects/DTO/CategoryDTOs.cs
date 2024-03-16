@@ -10,5 +10,10 @@ namespace BusinessObjects.DTO
 		public IFormFile? CateImg { get; set; }
 		public string? Description { get; set; }
 	}
+
+	public class UploadCloudinaryDTO
+	{
+		public IFormFile file { get; set; } = null!;
+	}
 }
 

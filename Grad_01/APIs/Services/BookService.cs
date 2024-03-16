@@ -61,7 +61,7 @@ namespace APIs.Services
 
         //-----------------------------------Book category------------------------------------------------//
 
-        public int AddBookToCategory(Guid bookId, Guid cateId) => new BookDAO().AddBookToCategory(bookId, cateId);
+        public int AddBookToCategory(Guid bookId, List<Guid> cateIds) => new BookDAO().AddBookToCategory(bookId, cateIds);
 
 
         public bool IsBookAlreadyInCate(Guid bookId, Guid cateId) => new BookDAO().IsBookAlreadyInCate(bookId, cateId);

@@ -18,11 +18,12 @@ namespace APIs.Controllers
 	{
 		private readonly IWorkService _workService;
 		private readonly IAccountService _accountService;
+		private readonly ICloudinaryService _cloudinaryService;
 		private FileSaver _fileSaver;
-		public WorkController(IWorkService workService, IWebHostEnvironment env, IAccountService accountService)
+		public WorkController(IWorkService workService, IAccountService accountService, ICloudinaryService cloudinaryService)
 		{
+			_cloudinaryService = cloudinaryService;
 			_workService = workService;
-			_fileSaver = new FileSaver();
 			_accountService = accountService;
 		}
 
@@ -41,12 +42,22 @@ namespace APIs.Controllers
 					string backgroundDir = "";
 					if (dto.Cover != null)
 					{
-						coverDir = _fileSaver.FileSaveAsync(dto.Cover, "src/assets/FileSystem/" + authorName + "/" + dto.Title + "/Cover");
+						var saveCoverResult = _cloudinaryService.UploadImage(dto.Cover, "Works/" + authorName + "/" + dto.Title + "/Cover");
+						if(saveCoverResult.StatusCode != 200)
+						{
+							return BadRequest(saveCoverResult.Message);
+						}
+                        coverDir = saveCoverResult.Data;
 					}
 					if (dto.Background != null)
 					{
-						backgroundDir = _fileSaver.FileSaveAsync(dto.Background, "src/assets/FileSystem/" + authorName + "/" + dto.Title + "/Background");
-					}
+                        var saveBgrResult = _cloudinaryService.UploadImage(dto.Background, "Works/" + authorName + "/" + dto.Title + "/Background");
+                        if (saveBgrResult.StatusCode != 200)
+                        {
+                            return BadRequest(saveBgrResult.Message);
+                        }
+                        backgroundDir = saveBgrResult.Data;
+                    }
 
 					string result = _workService.AddNewWork(new Work()
 					{
@@ -140,14 +151,17 @@ namespace APIs.Controllers
 			try
 			{
 				WorkDetailsDTO work = _workService.GetWorkDetails(workId);
-				if (work.BackgroundDir != null && work.BackgroundDir != "")
+
+                if (work.BackgroundDir != null && work.BackgroundDir != "")
 				{
-					_fileSaver.FileDelete(work.BackgroundDir);
+					//_fileSaver.FileDelete(work.BackgroundDir);
+					_cloudinaryService.DeleteImage(work.BackgroundDir, "Works/" + work.Author + "/" + work.Title + "/Background");
 				}
 				if (work.CoverDir != null && work.CoverDir != "")
 				{
-					_fileSaver.FileDelete(work.CoverDir);
-				}
+                    //_fileSaver.FileDelete(work.CoverDir);
+                    _cloudinaryService.DeleteImage(work.CoverDir, "Works/" + work.Author + "/" + work.Title + "/Cover");
+                }
 				int result = _workService.DeleteWorkById(workId);
 				if (result > 0) return Ok("Successful!");
 				else return BadRequest("Fail to delete!");
@@ -217,6 +231,7 @@ namespace APIs.Controllers
 						if (oldImgPath != null)
 						{
 							_fileSaver.FileDelete(oldImgPath);
+							//_cloudinaryService.DeleteImage(oldImgPath);
 						}
 						newImgPath = _fileSaver.FileSaveAsync(chapter.ChapterFile, "src/assets/FileSystem/" + authorName + "/" + workName + "/" + "Chapters");
 					}

@@ -198,17 +198,21 @@ namespace DataAccess.DAO
 
 		//-----------------------------------Book category------------------------------------------------//
 
-		public int AddBookToCategory(Guid bookId, Guid cateId)
+		public int AddBookToCategory(Guid bookId, List<Guid> cateIds)
 		{
 			try
 			{
 				using(var context = new AppDbContext())
 				{
-                    string insertQuery = $"insert into CategoryLists(CategoryId, BookId) values (@cateId, @bookId)";
+					int result = 0;
+					foreach(Guid cateId in cateIds)
+					{
+                        string insertQuery = $"insert into CategoryLists(CategoryId, BookId) values (@cateId, @bookId)";
 
-					int result = context.Database.ExecuteSqlRaw(insertQuery,
-						new SqlParameter("@cateId", cateId),
-						new SqlParameter("@bookId", bookId));
+                        result += context.Database.ExecuteSqlRaw(insertQuery,
+                            new SqlParameter("@cateId", cateId),
+                            new SqlParameter("@bookId", bookId));
+                    }
 					return result;
 				}
 			}

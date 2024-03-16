@@ -38,6 +38,7 @@ builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ICloudinaryService, CloudinaryService>();
 
 //Repositories
 builder.Services.AddScoped<ICartRepository, CartRepository>();

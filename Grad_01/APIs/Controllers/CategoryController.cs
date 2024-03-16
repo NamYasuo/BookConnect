@@ -1,8 +1,11 @@
 ﻿using System;
+using APIs.Services;
 using APIs.Services.Interfaces;
+using APIs.Utils.Paging;
 using BusinessObjects.DTO;
 using BusinessObjects.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace APIs.Controllers
 {
@@ -11,9 +14,12 @@ namespace APIs.Controllers
     public class CategoryController: ControllerBase
 	{
 		private readonly ICategoryService _cateServices;
-		public CategoryController(ICategoryService cateServices)
+		private readonly ICloudinaryService _clouinaryService;
+
+		public CategoryController(ICategoryService cateServices, ICloudinaryService cloudinaryService)
 		{
 			_cateServices = cateServices;
+			_clouinaryService = cloudinaryService;
 		}
 
 		[HttpPost("add-category")]
@@ -42,11 +48,28 @@ namespace APIs.Controllers
 		}
 
 		[HttpGet("get-all-category")]
-		public IActionResult GetAllCategory()
-		{
-			try
+		public IActionResult GetAllCategory([FromQuery] PagingParams @params)
+        {
+            try
 			{
-				return Ok(_cateServices.GetAllCategory());
+				var chapters = _cateServices.GetAllCategory(@params);
+
+
+                if (chapters != null)
+                {
+                    var metadata = new
+                    {
+                        chapters.TotalCount,
+                        chapters.PageSize,
+                        chapters.CurrentPage,
+                        chapters.TotalPages,
+                        chapters.HasNext,
+                        chapters.HasPrevious
+                    };
+                    Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+                    return Ok(chapters);
+                }
+                else return BadRequest("No chapter!!!");
 			}
 			catch(Exception e)
 			{
@@ -112,6 +135,7 @@ namespace APIs.Controllers
 				throw new Exception(e.Message);
 			}
 		}
-	}
+
+    }
 }
 

@@ -2,6 +2,7 @@
 using BusinessObjects.Models;
 using Microsoft.AspNetCore.Mvc;
 using APIs.Services.Interfaces;
+using System.Net;
 
 namespace APIs.Controllers
 {
@@ -71,17 +72,30 @@ namespace APIs.Controllers
 
         //-----------------------------------Book category------------------------------------------------//
         [HttpPost("category/add-book-to-category")]
-        public IActionResult AddBookToCate(Guid bookId, Guid cateId)
+        public IActionResult AddBookToCate(AddBookToCateDTO dto)
         {
             try
             {
-                if(!_bookService.IsBookAlreadyInCate(bookId, cateId))
+                if (ModelState.IsValid)
                 {
-                    int changes = _bookService.AddBookToCategory(bookId, cateId);
+                    List<Guid> validCates = new List<Guid>();
+                    foreach (Guid id in dto.CateIds)
+                    {
+                        if (!_bookService.IsBookAlreadyInCate(dto.BookId, id))
+                        {
+                            validCates.Add(id);
+                        }
+                    }
+                    if(validCates.Count == 0)
+                    {
+                        return Ok("This book's already in these/this cart(s)");
+                    }
+                    int changes = _bookService.AddBookToCategory(dto.BookId, validCates);
                     IActionResult result = (changes > 0) ? Ok("Successful!") : BadRequest("Add fail!");
                     return result;
-                } return BadRequest("Already in this category!");
-               
+                }
+                return BadRequest("Model invalid!");
+
             }
             catch(Exception e)
             {

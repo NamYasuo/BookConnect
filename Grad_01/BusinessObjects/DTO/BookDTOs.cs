@@ -30,6 +30,12 @@ namespace BusinessObjects.DTO
         public Guid AgencyId { get; set; }
         public string AgencyName { get; set; } = null!;
     }
+
+    public class AddBookToCateDTO
+    {
+        public Guid BookId { get; set; }
+        public List<Guid> CateIds { get; set; } = null!;
+    }
 }
 
 
