@@ -40,7 +40,7 @@ namespace DataAccess.DAO.E_com
             {
                 using (var context = new AppDbContext())
                 {
-                    post = context.Posts.Where(p => p.UserId == postId).FirstOrDefault();
+                    post = context.Posts.Where(p => p.PostId == postId).FirstOrDefault();
 
                 }
             }
@@ -53,14 +53,14 @@ namespace DataAccess.DAO.E_com
             else throw new NullReferenceException();
         }
         //Add new post
-        public void AddNewPost(Post post)
+        public int AddNewPost(Post post)
         {
             try
             {
                 using (var context = new AppDbContext())
                 {
-                    context.Add(post);
-                    context.SaveChanges();
+                    context.Posts.Add(post);
+                    return context.SaveChanges();
                 }
             }
             catch (Exception e)
@@ -69,14 +69,14 @@ namespace DataAccess.DAO.E_com
             }
         }
         //Modify post
-        public void UpdatePost(Post post)
+        public int UpdatePost(Post post)
         {
             try
             {
                 using (var context = new AppDbContext())
                 {
                     context.Posts.Update(post);
-                    context.SaveChanges();
+                    return context.SaveChanges();
                 }
             }
             catch (Exception e)
@@ -85,7 +85,7 @@ namespace DataAccess.DAO.E_com
             }
         }
         //Delete post by id
-        public void DeletePost(Guid postId)
+        public void DeletePostById(Guid postId)
         {
             try
             {
@@ -114,7 +114,11 @@ namespace DataAccess.DAO.E_com
                 {
                     foreach (Guid i in postIds)
                     {
-                        listPosts.Add(context.Posts.Where(p => p.UserId == i).FirstOrDefault());
+                        Post? post = context.Posts.Where(p => p.PostId == i).SingleOrDefault();
+                        if (post != null)
+                        {
+                            listPosts.Add(post);
+                        }
                     }
                     return listPosts;
                 }

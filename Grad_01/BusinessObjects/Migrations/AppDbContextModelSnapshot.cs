@@ -182,6 +182,7 @@ namespace BusinessObjects.Migrations
                     b.Property<string>("ImageDir")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
                     b.HasKey("CateId");
 
                     b.ToTable("Categories");
@@ -481,6 +482,7 @@ namespace BusinessObjects.Migrations
                 {
                     b.Property<Guid>("RatingId")
                         .HasColumnType("uniqueidentifier");
+
                     b.Property<double>("OverallRating")
                         .HasColumnType("float");
 
@@ -723,6 +725,7 @@ namespace BusinessObjects.Migrations
 
                     b.Navigation("AppUser");
                 });
+
             modelBuilder.Entity("BusinessObjects.Models.Creative.Work", b =>
                 {
                     b.HasOne("BusinessObjects.Models.AppUser", "Author")

@@ -43,7 +43,7 @@ namespace APIs.Controllers
 					if (dto.Cover != null)
 					{
 						coverDir = _fileSaver.FileSaveAsync(dto.Cover, "src/assets/FileSystem/" + authorName + "/" + dto.Title + "/Cover");
-					}
+                    }
 					if (dto.Background != null)
 					{
 						backgroundDir = _fileSaver.FileSaveAsync(dto.Background, "src/assets/FileSystem/" + authorName + "/" + dto.Title + "/Background");

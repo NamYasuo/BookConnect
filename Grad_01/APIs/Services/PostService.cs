@@ -1,4 +1,5 @@
 ﻿using APIs.Services.Interfaces;
+using BusinessObjects.DTO.Trading;
 using BusinessObjects.Models.Creative;
 using BusinessObjects.Models.E_com.Trading;
 using DataAccess.DAO;
@@ -8,23 +9,17 @@ namespace APIs.Services
 {
     public class PostService: IPostService
     {
-        public void AddNewPost(Post post) => new PostDAO().AddNewPost(post);
+        public int AddNewPost(Post post) => new PostDAO().AddNewPost(post);
 
-        public void DeletePost(Post post)
+        public AddPostDTOs AddNewPost(Guid postId)
         {
             throw new NotImplementedException();
         }
 
-        public Post GetPost(int id)
-        {
-            throw new NotImplementedException();
-        }
+        public void DeletePostById(Guid postId) => new PostDAO().DeletePostById(postId);
 
-        public Post GetPostById(int id)
-        {
-            throw new NotImplementedException();
-        }
+        public Post GetPostById(Guid postId) => new PostDAO().GetPostById(postId);
 
-        public void UpdatePost(Post post) => new PostDAO().UpdatePost(post);
+        public int UpdatePost(Post post) => new PostDAO().UpdatePost(post);
     }
 }
