@@ -37,6 +37,7 @@ builder.Services.AddScoped<IWorkService, WorkService>();
 builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 //Repositories
 builder.Services.AddScoped<ICartRepository, CartRepository>();

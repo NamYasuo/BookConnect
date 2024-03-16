@@ -74,74 +74,7 @@ namespace APIs.Controllers
             return BadRequest(result);
         }
 
-        //		[HttpPost]
-        //        [Route("create-order")]
-        //        public async Task<IActionResult> CheckoutAsync([FromBody] CheckoutDTO request)
-        //        {
-        //            decimal totalAmount = _orderService.GetTotalAmount(request.Products);
-
-        //            NewTransactionDTO newTransDTO = new NewTransactionDTO()
-        //            {
-        //                PaymentContent = "pay me please",
-        //                PaymentCurrency = "vnd",
-        //                RequiredAmount = totalAmount
-        //            };
-
-        //            PaymentReturnDTO? data = null;
-
-        //            using (HttpClient client = new HttpClient())
-        //            {
-
-        //                // Convert the request data to JSON
-        //                var json = Newtonsoft.Json.JsonConvert.SerializeObject(newTransDTO);
-
-        //                // Prepare the HTTP request content
-        //                var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
-
-        //                // Make the POST request and include the request content in the body
-        //                HttpResponseMessage response = await client.PostAsync("https://localhost:7138/api/Payment/vnpay/create-vnpay-link", content);
-
-        //                // Check the response status code
-        //                if (response.IsSuccessStatusCode)
-        //                {
-        //                    // Request successful
-        //                    string responseJson = await response.Content.ReadAsStringAsync();
-
-        //                    data = JsonConvert.DeserializeObject<PaymentReturnDTO>(responseJson);
-        //                }
-        //                else
-        //                {
-        //                    // Request failed
-        //                    Console.WriteLine("API request failed with status code: " + response.StatusCode);
-        //                }
-        //            }
-
-        //            Guid orderId = Guid.NewGuid();
-        //            NewOrderDTO dto = new NewOrderDTO()
-        //            {
-        //                OrderId = orderId,
-        //                CustomerId = request.CustomerId,
-        //                Status = data.PaymentStatus,
-        //                Notes = data.PaymentMessage,
-        //                PaymentId = Guid.Parse(data.PaymentId),
-        //                AddressId = request.AddressId,
-        //            };
-        //            string result = _orderService.CreateNewOrder(dto);
-
-        //            if (result == "Successfully!")
-        //            {
-        //                string result2 = _orderService.TakeProductFromCartOptional(request.CustomerId, orderId, request.Products);
-
-        //                if (result2 == "Successfully!")
-        //                {
-        //                    return Ok("Successfully!");
-        //                }
-        //                return BadRequest(result2);
-        //            }
-        //            return BadRequest(result);
-        //        }
-        //    }
-        //}
+       
         [HttpPost]
         [Route("check-out")]
         public async Task<IActionResult> CheckoutAsync([FromBody] PreCheckoutDTO dto)

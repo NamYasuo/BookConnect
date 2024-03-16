@@ -17,44 +17,44 @@ namespace BusinessObjects
         public AppDbContext(DbContextOptions<AppDbContext> o) : base(o) { }
 
         //Base services DbSets
-        public virtual DbSet<AppUser> AppUsers { get; set; } = null!;
-        public virtual DbSet<Agency> Agencies { get; set; } = null!;
-        public virtual DbSet<Basket> Baskets { get; set; } = null!;
-        public virtual DbSet<Cart> Carts { get; set; } = null!;
-        public virtual DbSet<Inventory> Inventories { get; set; } = null!;
-        public virtual DbSet<Order> Orders { get; set; } = null!;
-        public virtual DbSet<Book> Books { get; set; } = null!;
+        public virtual DbSet<AppUser> AppUsers { get; set; }
+        public virtual DbSet<Agency> Agencies { get; set; } 
+        public virtual DbSet<Basket> Baskets { get; set; } 
+        public virtual DbSet<Cart> Carts { get; set; } 
+        public virtual DbSet<Inventory> Inventories { get; set; } 
+        public virtual DbSet<Order> Orders { get; set; } 
+        public virtual DbSet<Book> Books { get; set; }
 
         //Subscribtion services DbSets
-        public virtual DbSet<Tier> Tiers { get; set; } = null!;
-        public virtual DbSet<Subscription> Subscriptions { get; set; } = null!;
-        public virtual DbSet<SubRecord> SubRecords { get; set; } = null!;
+        public virtual DbSet<Tier> Tiers { get; set; } 
+        public virtual DbSet<Subscription> Subscriptions { get; set; } 
+        public virtual DbSet<SubRecord> SubRecords { get; set; } 
 
 
         //Rating services DbSets
-        public virtual DbSet<Rating> Ratings { get; set; } = null!;
-        public virtual DbSet<RatingRecord> RatingRecords { get; set; } = null!;
+        public virtual DbSet<Rating> Ratings { get; set; }
+        public virtual DbSet<RatingRecord> RatingRecords { get; set; } 
 
         //Payment service DbSets 
         //public virtual DbSet<PaymentDetails> PaymentDetails { get; set; } = null!;
-        public virtual DbSet<TransactionRecord> Transactions { get; set; } = null!;
+        public virtual DbSet<TransactionRecord> Transactions { get; set; } 
         //public virtual Db
 
         //Trading services DbSets
-        public virtual DbSet<Post> Posts { get; set; } = null!;
+        public virtual DbSet<Post> Posts { get; set; } 
 
         //Utility DbSets
-        public virtual DbSet<Role> Roles { get; set; } = null!;
-        public virtual DbSet<TokenInfo> TokenInfos { get; set; } = null!;
+        public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<TokenInfo> TokenInfos { get; set; } 
         public virtual DbSet<Category> Categories { get; set; }
-        public virtual DbSet<CategoryList> CategoryLists { get; set; } = null!;
-        public virtual DbSet<Address> Addresses { get; set; } = null!;
-        public virtual DbSet<CICMedia> CICMedias { get; set; } = null!;
+        public virtual DbSet<CategoryList> CategoryLists { get; set; } 
+        public virtual DbSet<Address> Addresses { get; set; } 
+        public virtual DbSet<CICMedia> CICMedias { get; set; } 
 
 
         //Creative services DbSet
-        public virtual DbSet<Chapter> Chapters { get; set; } = null!;
-        public virtual DbSet<Work> Works { get; set; } = null!;
+        public virtual DbSet<Chapter> Chapters { get; set; } 
+        public virtual DbSet<Work> Works { get; set; } 
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

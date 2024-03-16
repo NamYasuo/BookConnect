@@ -52,7 +52,7 @@ namespace DataAccess.DAO
             {
                 using (var context = new AppDbContext())
                 {
-                    Work = context.Works.Where(b => b.Titile == title).FirstOrDefault();
+                    Work = context.Works.Where(b => b.Title == title).FirstOrDefault();
                 }
             }
             catch (Exception e)
@@ -75,7 +75,7 @@ namespace DataAccess.DAO
                     {
                         results.Add(new WorkIdTitleDTO
                         {
-                            Title = w.Titile,
+                            Title = w.Title,
                             WorkId = w.WorkId
                         });
                     }
@@ -89,7 +89,6 @@ namespace DataAccess.DAO
 
         }
 
-
         //------------------------------ADD-------------------------------------//
         //Add new Work
         public string AddNewWork(Work work)
@@ -100,7 +99,7 @@ namespace DataAccess.DAO
                 using (var context = new AppDbContext())
                 {
                     //Check dupllicate work
-                    if (!context.Works.Any(w => w.Titile == work.Titile))
+                    if (!context.Works.Any(w => w.Title == work.Title))
                     {
                         context.Works.Add(work);
                         result = context.SaveChanges();

@@ -27,7 +27,7 @@ namespace APIs.Services
 			WorkDetailsDTO result = new WorkDetailsDTO()
 			{
 				WorkId = workId,
-				Title = work.Titile,
+				Title = work.Title,
 				Author = new AccountDAO().GetNameById(work.AuthorId),
 				Type = work.Type,
 				Status = work.Status,

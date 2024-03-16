@@ -51,7 +51,7 @@ namespace APIs.Controllers
 					string result = _workService.AddNewWork(new Work()
 					{
 						WorkId = Guid.NewGuid(),
-						Titile = dto.Title,
+						Title = dto.Title,
 						AuthorId = dto.AuthorId,
 						Type = dto.Type,
 						Status = dto.Status,
