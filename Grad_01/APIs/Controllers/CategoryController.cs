@@ -61,9 +61,13 @@ namespace APIs.Controllers
 			{
 				if (ModelState.IsValid)
 				{
+					if(dto.CateId == null)
+					{
+						return BadRequest("Category id is cannot be null!");
+					} 
 					Category cate = new Category
 					{
-						CateId = dto.CateId,
+						CateId = (Guid)dto.CateId,
 						CateName = dto.CateName,
 						ImageDir = " handle later!",
 						Description = dto.Description

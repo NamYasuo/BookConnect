@@ -68,5 +68,54 @@ namespace APIs.Controllers
                 throw new Exception(e.Message);
             }
         }
+
+        //-----------------------------------Book category------------------------------------------------//
+        [HttpPost("category/add-book-to-category")]
+        public IActionResult AddBookToCate(Guid bookId, Guid cateId)
+        {
+            try
+            {
+                if(!_bookService.IsBookAlreadyInCate(bookId, cateId))
+                {
+                    int changes = _bookService.AddBookToCategory(bookId, cateId);
+                    IActionResult result = (changes > 0) ? Ok("Successful!") : BadRequest("Add fail!");
+                    return result;
+                } return BadRequest("Already in this category!");
+               
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        [HttpDelete("category/remove-book-from-category")]
+        public IActionResult RemoveBookFromCate(Guid bookId, Guid cateId)
+        {
+            try
+            {
+                int changes = _bookService.RemoveBookFromCate(bookId, cateId);
+                IActionResult result = (changes > 0) ? Ok("Successful!") : BadRequest("remove fail!");
+                return result;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        [HttpGet("category/get-all-cate-of-book")]
+        public IActionResult GetAllCategoryOfBook(Guid bookId)
+        {
+            try
+            {
+                return Ok(_bookService.GetAllCategoryOfBook(bookId));
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
     }
 }

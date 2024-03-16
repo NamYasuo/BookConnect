@@ -19,6 +19,13 @@ namespace APIs.Services.Interfaces
 
 
         List<SEODTO> ListSEO(string searchTerm);
+
+        //-----------------------------------Book category------------------------------------------------//
+        int AddBookToCategory(Guid bookId, Guid cateId);
+        bool IsBookAlreadyInCate(Guid bookId, Guid cateId);
+        int RemoveBookFromCate(Guid bookId, Guid cateId);
+        List<Category> GetAllCategoryOfBook(Guid bookId);
+
     }
 }
 
