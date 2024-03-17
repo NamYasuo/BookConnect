@@ -19,7 +19,7 @@ namespace APIs.Services.Interfaces
         public void AddNewRole(Role role);
         public Role GetRoleDetails(string roleName);
         public string? GetUsernameById(Guid userId);
-        public bool IsBanned(Guid userId);
+        public Task<bool> IsBanned(Guid userId);
 
         //Address services
         public List<Address> GetAllUserAdderess(Guid userId);

@@ -175,7 +175,7 @@ namespace APIs.Repositories.Interfaces
 
         public bool IsSeller(Guid userId) => new AccountDAO().IsSeller(userId);
 
-        public bool IsBanned(Guid userId) => new AccountDAO().IsBanned(userId);
+        public Task<bool> IsBanned(Guid userId) => new AccountDAO().IsBanned(userId);
        
     }
 }

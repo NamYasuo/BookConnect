@@ -3,6 +3,7 @@ using BusinessObjects.Models;
 using BusinessObjects.Models.Creative;
 using BusinessObjects.Models.E_com.Trading;
 using BusinessObjects.Models.Ecom;
+using BusinessObjects.Models.Ecom.Base;
 using BusinessObjects.Models.Ecom.Payment;
 using BusinessObjects.Models.Ecom.Rating;
 using BusinessObjects.Models.Utils;
@@ -24,6 +25,7 @@ namespace BusinessObjects
         public virtual DbSet<Inventory> Inventories { get; set; } 
         public virtual DbSet<Order> Orders { get; set; } 
         public virtual DbSet<Book> Books { get; set; }
+        public virtual DbSet<BanRecord> BanRecords { get; set; }
 
         //Subscribtion services DbSets
         public virtual DbSet<Tier> Tiers { get; set; } 

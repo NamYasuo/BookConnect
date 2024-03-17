@@ -24,7 +24,7 @@ namespace BusinessObjects.DTO
     {
         public Guid UserId { get; set; }
         public string Reason{ get; set; } = null!;
-        public bool Choice { get; set; }
+        public TimeSpan? Duration { get; set; }
     }
 }
 

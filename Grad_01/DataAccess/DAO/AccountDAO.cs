@@ -2,6 +2,7 @@
 using BusinessObjects;
 using BusinessObjects.DTO;
 using BusinessObjects.Models;
+using BusinessObjects.Models.Ecom.Base;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.DAO
@@ -180,16 +181,27 @@ namespace DataAccess.DAO
             }
         }
 
-        public bool IsBanned(Guid userId)
+        public async Task<bool> IsBanned(Guid userId)
         {
             try
             {
                 using (var context = new AppDbContext())
                 {
-                    AppUser? user = context.AppUsers.Where(u => u.UserId == userId).SingleOrDefault();
-                    if (user != null)
+                    DateTime? latestUnbannedDate = context.BanRecords
+                    .Where(r => r.TargetUserId == userId)
+                    .OrderByDescending(r => r.UnbannedDate)
+                    .Select(r => r.UnbannedDate)
+                    .FirstOrDefault();
+
+                    if(latestUnbannedDate < DateTime.Now)
                     {
-                        return user.IsBanned;
+                        AppUser? user = context.AppUsers.Where(u => u.UserId == userId).SingleOrDefault();
+                        if (user != null)
+                        {
+                            user.IsBanned = false;
+                            await context.SaveChangesAsync();
+                        }
+                        return true;
                     }
                     return false;
                 }
@@ -248,7 +260,7 @@ namespace DataAccess.DAO
         /*-----------------END POST-------------------*/
 
 
-        /*---------------BEGIN UPDATE-------------------*/
+        /*---------------BEGIN PUT-------------------*/
 
         public int SetIsAccountValid(bool choice, Guid userId)
         {
@@ -310,7 +322,7 @@ namespace DataAccess.DAO
             }
         }
 
-        /*-----------------END UPDATE-------------------*/
+        /*-----------------END -------------------*/
 
 
         /*----------------BEGIN DELETE-----------------------*/

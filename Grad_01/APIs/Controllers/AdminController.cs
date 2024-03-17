@@ -1,6 +1,7 @@
 ﻿using System;
 using APIs.Services.Interfaces;
 using BusinessObjects.DTO;
+using BusinessObjects.Models.Ecom.Base;
 using Microsoft.AspNetCore.Mvc;
 
 namespace APIs.Controllers
@@ -20,10 +21,36 @@ namespace APIs.Controllers
 		{
 			try
 			{
-				int changes = _adminService.SetIsBanned(dto.Choice, dto.UserId);
-				IActionResult result = (changes > 0) ? Ok("Successful!") : BadRequest("Fail!");
+				TimeSpan duration = (TimeSpan)((dto.Duration != null) ? dto.Duration : TimeSpan.FromMinutes(15));
+				
+				int recordChanges = _adminService.AddBanRecord(new BanRecord
+				{
+					BanRecordId = Guid.NewGuid(),
+					BannedDate = DateTime.Now,
+					UnbannedDate = DateTime.Now.Add(duration),
+					BanReason = dto.Reason,
+					UnBanReason = "",
+					TargetUserId = dto.UserId
+				});
+				int accChanges = _adminService.SetIsBanned(true, dto.UserId);
+				IActionResult result = (accChanges > 0 && recordChanges > 0) ? Ok("Successful!") : BadRequest("Fail!");
 				return result;
 			}
+			catch(Exception e)
+			{
+				throw new Exception(e.Message);
+			}
+		}
+
+		[HttpPut("force-unban-account")]
+		public IActionResult ForceUnban(BanUserDTO dto)
+		{
+			try
+			{
+				int changes = _adminService.ForceUnban(dto.UserId, dto.Reason);
+                IActionResult result = (changes > 0) ? Ok("Successful!") : BadRequest("Fail!");
+                return result;
+            }
 			catch(Exception e)
 			{
 				throw new Exception(e.Message);

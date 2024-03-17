@@ -199,7 +199,7 @@ namespace APIs.Controllers
                                 Email = emailClaim.Value,
                                 IsValidated = _accService.IsUserValidated(userId),
                                 IsSeller = _accService.IsSeller(userId),
-                                IsBanned = _accService.IsBanned(userId)
+                                IsBanned = _accService.IsBanned(userId).Result
                             };
                             return Ok(profile);
                         }
