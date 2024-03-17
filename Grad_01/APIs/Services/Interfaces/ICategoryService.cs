@@ -11,6 +11,8 @@ namespace APIs.Services.Interfaces
         int UpdateCategory(Category cate);
 		int DeleteCategory(Guid cateId);
 		Category GetCategoryById(Guid cateId);
-	}
+		string GetOldImgPath(Guid cateId);
+
+    }
 }
 

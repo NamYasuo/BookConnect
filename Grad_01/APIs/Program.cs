@@ -111,7 +111,7 @@ app.UseCors(builder =>
 {
     builder.AllowAnyOrigin()
     .AllowAnyMethod()
-    .AllowAnyHeader();
+    .AllowAnyHeader().WithExposedHeaders("Access-Control-Allow-Headers");
 });
 //app.UseCors("CORSPolicy");
 

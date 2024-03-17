@@ -24,6 +24,9 @@ namespace APIs.Services
         public int UpdateCategory(Category cate) => new CategoryDAO().UpdateCategory(cate);
 
         public Category GetCategoryById(Guid cateId) => new CategoryDAO().GetCategoryById(cateId);
+
+        public string GetOldImgPath(Guid cateId) => new CategoryDAO().GetOldImgPath(cateId);
+        
     }
 }
 

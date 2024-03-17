@@ -97,6 +97,24 @@ namespace DataAccess.DAO
                 throw new Exception(e.Message);
             }
         }
-	}
+
+        public string GetOldImgPath(Guid cateId)
+        {
+            try
+            {
+                using(var context = new AppDbContext())
+                {
+                    Category? cate = context.Categories.Where(c => c.CateId == cateId).SingleOrDefault();
+                    string result = (cate != null && cate.ImageDir != null) ?
+                        cate.ImageDir : "";
+                    return result;
+                }
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+    }
 }
 

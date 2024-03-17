@@ -29,13 +29,23 @@ namespace APIs.Controllers
 			{
 				if (ModelState.IsValid)
 				{
-					Category cate = new Category
+                    string imgUrl = string.Empty;
+                    if (dto.CateImg != null)
 					{
+						CloudinaryResponseDTO cloudRsp
+						= _clouinaryService.UploadImage(dto.CateImg, "Categories/Book");
+						if (cloudRsp.StatusCode == 200 && cloudRsp.Data != null)
+						{
+							imgUrl = cloudRsp.Data;
+						}
+					}
+                        Category cate = new Category
+						{
 						CateId = Guid.NewGuid(),
 						CateName = dto.CateName,
-						ImageDir = "Handle later!",
+						ImageDir = imgUrl,
 						Description = dto.Description
-					};
+						};
 					int changes = _cateServices.AddCategory(cate);
 					IActionResult result = (changes > 0) ? Ok("Successful!") : BadRequest("Add fail!");
 					return result;
@@ -84,15 +94,31 @@ namespace APIs.Controllers
 			{
 				if (ModelState.IsValid)
 				{
-					if(dto.CateId == null)
-					{
-						return BadRequest("Category id is cannot be null!");
-					} 
+                    if (dto.CateId == null)
+                    {
+                        return BadRequest("Category id is cannot be null!");
+                    }
+                    string imgUrl = string.Empty;
+                    if (dto.CateImg != null)
+                    {
+						string oldImg = _cateServices.GetOldImgPath((Guid)dto.CateId);
+
+                        if (oldImg != "")
+						{
+							_clouinaryService.DeleteImage(oldImg, "Categories/Book");
+						}
+                        CloudinaryResponseDTO cloudRsp
+                        = _clouinaryService.UploadImage(dto.CateImg, "Categories/Book");
+                        if (cloudRsp.StatusCode == 200 && cloudRsp.Data != null)
+                        {
+                            imgUrl = cloudRsp.Data;
+                        }
+                    }
 					Category cate = new Category
 					{
 						CateId = (Guid)dto.CateId,
 						CateName = dto.CateName,
-						ImageDir = " handle later!",
+						ImageDir = imgUrl,
 						Description = dto.Description
 					};
 
@@ -126,7 +152,14 @@ namespace APIs.Controllers
 		{
 			try
 			{
-				int changes = _cateServices.DeleteCategory(cateId);
+                string imgUrl = string.Empty;
+                string oldImg = _cateServices.GetOldImgPath(cateId);
+
+                    if (oldImg != "")
+                    {
+                        _clouinaryService.DeleteImage(oldImg, "Categories/Book");
+                    }
+                    int changes = _cateServices.DeleteCategory(cateId);
                 IActionResult result = (changes > 0) ? Ok("Successful!") : BadRequest("Delete fail!");
 				return result;
             }
