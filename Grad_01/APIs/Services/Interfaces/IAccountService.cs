@@ -19,6 +19,7 @@ namespace APIs.Services.Interfaces
         public void AddNewRole(Role role);
         public Role GetRoleDetails(string roleName);
         public string? GetUsernameById(Guid userId);
+        public bool IsBanned(Guid userId);
 
         //Address services
         public List<Address> GetAllUserAdderess(Guid userId);
@@ -29,7 +30,7 @@ namespace APIs.Services.Interfaces
         public bool IsUserValidated(Guid userId);
 
         //Agency registration
-        public string RegisterAgency(AgencyRegistrationDTO dto);
+        public string RegisterAgency(AgencyRegistrationDTO dto, string logoUrl);
         public bool IsSeller(Guid userId);
     }
 }

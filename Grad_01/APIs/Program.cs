@@ -39,6 +39,7 @@ builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICloudinaryService, CloudinaryService>();
+builder.Services.AddScoped<IAdminService, AdminService>();
 
 //Repositories
 builder.Services.AddScoped<ICartRepository, CartRepository>();
@@ -111,7 +112,7 @@ app.UseCors(builder =>
 {
     builder.AllowAnyOrigin()
     .AllowAnyMethod()
-    .AllowAnyHeader().WithExposedHeaders("Access-Control-Allow-Headers");
+    .AllowAnyHeader().WithExposedHeaders("X-Pagination");
 });
 //app.UseCors("CORSPolicy");
 

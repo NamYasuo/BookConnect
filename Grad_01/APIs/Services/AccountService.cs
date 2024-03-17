@@ -135,15 +135,15 @@ namespace APIs.Repositories.Interfaces
         public bool IsUserValidated(Guid userId) => new AccountDAO().IsUserValidated(userId);
 
         //Agency Registration
-        public string RegisterAgency(AgencyRegistrationDTO dto)
+        public string RegisterAgency(AgencyRegistrationDTO dto, string logoUrl)
         {
             //register post address
-            AddressDAO dao = new AddressDAO();
+            AddressDAO addressDAO = new AddressDAO();
             AccountDAO accDAO = new AccountDAO();
             AgencyDAO agencyDAO = new AgencyDAO();
 
             Guid addressId = Guid.NewGuid();
-            int newAddress = dao.AddNewAddress(new Address
+            int newAddress = addressDAO.AddNewAddress(new Address
             {
                 AddressId = addressId,
                 Rendezvous = dto.Rendezvous,
@@ -157,6 +157,7 @@ namespace APIs.Repositories.Interfaces
                     AgencyId = Guid.NewGuid(),
                     AgencyName = dto.AgencyName,
                     PostAddressId = addressId,
+                    LogoUrl = logoUrl,
                     BusinessType = dto.BusinessType,
                     OwnerId = dto.OwnerId
                 });
@@ -173,7 +174,9 @@ namespace APIs.Repositories.Interfaces
         }
 
         public bool IsSeller(Guid userId) => new AccountDAO().IsSeller(userId);
-      
+
+        public bool IsBanned(Guid userId) => new AccountDAO().IsBanned(userId);
+       
     }
 }
 

@@ -13,6 +13,7 @@ namespace BusinessObjects.Models
 		public string AgencyName { get; set; } = null!;
 		public Guid OwnerId { get; set; }
         public Guid PostAddressId { get; set; }
+        public string? LogoUrl { get; set; }
         public string BusinessType { get; set; } = null!;
 
         [ForeignKey("OwnerId"), JsonIgnore]

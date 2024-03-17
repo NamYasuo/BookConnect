@@ -16,6 +16,7 @@ namespace BusinessObjects.Models
 		public string Salt { get; set; } = null!;
 		public bool IsValidated { get; set; } = false;
 		public bool IsSeller { get; set; } = false;
+		public bool IsBanned { get; set; } = false;
 		public Guid RoleId { get; set; }
 
 		[ForeignKey("RoleId"), JsonIgnore]

@@ -10,6 +10,7 @@ namespace BusinessObjects.DTO
         public string? Address { get; set; }
         public bool IsValidated { get; set; }
         public bool IsSeller { get; set; }
+        public bool IsBanned { get; set; }
         //public string Rating { get; set; } = null!;
     }
 
@@ -17,6 +18,13 @@ namespace BusinessObjects.DTO
     {
         public Guid userId { get; set; }
         public bool choice { get; set; }
+    }
+
+    public class BanUserDTO
+    {
+        public Guid UserId { get; set; }
+        public string Reason{ get; set; } = null!;
+        public bool Choice { get; set; }
     }
 }
 

@@ -1,4 +1,6 @@
 ﻿using System;
+using Microsoft.AspNetCore.Http;
+
 namespace BusinessObjects.DTO
 {
 	public class NameAndIdDTO
@@ -11,6 +13,7 @@ namespace BusinessObjects.DTO
 	{
 		public Guid OwnerId { get; set; }
 		public string AgencyName { get; set; } = null!;
+	    public IFormFile? LogoImg { get; set; } 
 		public string Rendezvous { get; set; } = null!;
 		public string BusinessType { get; set; } = null!;
     }

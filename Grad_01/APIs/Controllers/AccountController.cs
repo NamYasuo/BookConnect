@@ -18,9 +18,11 @@ namespace APIs.Controllers
     public class AccountController: ControllerBase
 	{
 		private readonly IAccountService _accService;
+        private readonly ICloudinaryService _cloudinaryService;
 
-        public AccountController(IAccountService service)
+        public AccountController(IAccountService service, ICloudinaryService cloudinaryService)
         {
+            _cloudinaryService = cloudinaryService;
             _accService = service;
         }
 
@@ -33,7 +35,7 @@ namespace APIs.Controllers
             {
                 status.StatusCode = 0;
                 status.Message = "Please pass all the required fields";
-                return Ok(status);
+                return BadRequest(status);
             }
             // check if users exists
             var userExists = _accService.FindUserByEmailAsync(model.Email);
@@ -64,24 +66,27 @@ namespace APIs.Controllers
                 return BadRequest("User not found!");
             }
 
-            byte[] salt = Convert.FromHexString(user.Salt);
-            if (!_accService.VerifyPassword(model.Password, user.Password, salt, out byte[] result))
+            if(!user.IsBanned)
             {
-                return BadRequest("Wrong password");
+                byte[] salt = Convert.FromHexString(user.Salt);
+                if (!_accService.VerifyPassword(model.Password, user.Password, salt, out byte[] result))
+                {
+                    return BadRequest("Wrong password");
+                }
+                string token = _accService.CreateToken(user);
+                var refreshToken = _accService.GenerateRefreshToken();
+
+                var cookieOptions = new CookieOptions
+                {
+                    HttpOnly = true,
+                    Expires = refreshToken.ExpiredDate
+                };
+                Response.Cookies.Append("refreshToken", refreshToken.RefreshToken, cookieOptions);
+
+                //Add refreshtoken to database from Service -> dao
+                return Ok(token);
             }
-            string token = _accService.CreateToken(user);
-            var refreshToken = _accService.GenerateRefreshToken();
-
-            var cookieOptions = new CookieOptions
-            {
-                HttpOnly = true,
-                Expires = refreshToken.ExpiredDate
-            };
-            Response.Cookies.Append("refreshToken", refreshToken.RefreshToken, cookieOptions);
-
-            //Add refreshtoken to database from Service -> dao
-            return Ok(token);
-
+            return BadRequest("Account is banned!");
         }
 
         [HttpPost("AddRole")]
@@ -193,8 +198,8 @@ namespace APIs.Controllers
                                 Address = rendez,
                                 Email = emailClaim.Value,
                                 IsValidated = _accService.IsUserValidated(userId),
-                                IsSeller = _accService.IsSeller(userId)
-
+                                IsSeller = _accService.IsSeller(userId),
+                                IsBanned = _accService.IsBanned(userId)
                             };
                             return Ok(profile);
                         }
@@ -234,15 +239,22 @@ namespace APIs.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    Guid userId = Guid.Empty;
                     var userIdClaim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "userId");
-                    if(userIdClaim != null)
+
+                    string logoUrl = "";
+
+                    Guid userId = (userIdClaim != null) ? Guid.Parse(userIdClaim.Value) : Guid.Empty;
+
+                    if (dto.LogoImg != null)
                     {
-                        userId = Guid.Parse(userIdClaim.Value);
+                        CloudinaryResponseDTO cldRspDTO = _cloudinaryService.UploadImage(dto.LogoImg, "Agencies/" + dto.AgencyName + "/Logo");
+                        logoUrl = (cldRspDTO.StatusCode == 200 && cldRspDTO.Data != null)
+                      ? cldRspDTO.Data : "";
                     }
+
                     if (_accService.IsUserValidated(userId) == true)
                     {
-                        string result = _accService.RegisterAgency(dto);
+                        string result = _accService.RegisterAgency(dto, logoUrl);
                         if (result == "Successful!")
                         {
                             return Ok(result);
