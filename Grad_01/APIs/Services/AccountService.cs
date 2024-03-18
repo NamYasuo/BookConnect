@@ -3,11 +3,13 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using APIs.Services.Intefaces;
+using BusinessObjects;
 using BusinessObjects.DTO;
 using BusinessObjects.Models;
 using DataAccess.DAO;
 using DataAccess.DTO;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.IdentityModel.Tokens;
 
@@ -116,6 +118,9 @@ namespace APIs.Services.Interfaces
             pwdHash = hash;
         }
 
+        
+
+        
         public void AddNewRole(Role role) => new AccountDAO().AddNewRole(role);
 
         public Role GetRoleDetails(string roleName) => new AccountDAO().GetRolesDetails(roleName);
@@ -125,8 +130,60 @@ namespace APIs.Services.Interfaces
 
         public Address GetDefaultAddress(Guid userId) => new AddressDAO().GetUserDefaultAddress(userId);
 
+        public void UpdateUserProfile(Guid userId, string username, string? address = null)
+        => new AccountDAO().UpdateUserProfile(userId, username, address);
+
         //public AppUser GetUserProfile(Guid userId) => new AccountDAO().GetUserProfile(userId);
-        
+        public void UpdateAddress(Guid userId, Guid? addressId, string cityProvince, string district, string subDistrict, string rendezvous, bool isDefault)
+        {
+            try
+            {
+                using (var context = new AppDbContext())
+                {
+                    if (addressId.HasValue)
+                    {
+                        // Update existing address
+                        var existingAddress = context.Addresses.FirstOrDefault(a => a.UserId == userId && a.AddressId == addressId);
+
+                        if (existingAddress == null)
+                        {
+                            throw new Exception("Address not found.");
+                        }
+
+                        existingAddress.City_Province = cityProvince;
+                        existingAddress.District = district;
+                        existingAddress.SubDistrict = subDistrict;
+                        existingAddress.Rendezvous = rendezvous;
+                        existingAddress.Default = isDefault;
+                    }
+                    else
+                    {
+                        // Create new address
+                        var newAddress = new Address
+                        {
+                            AddressId = Guid.NewGuid(),
+                            UserId = userId,
+                            City_Province = cityProvince,
+                            District = district,
+                            SubDistrict = subDistrict,
+                            Rendezvous = rendezvous,
+                            Default = isDefault
+                        };
+
+                        context.Addresses.Add(newAddress);
+                    }
+
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error updating address: " + e.Message);
+            }
+        }
+
+
+
     }
 }
 

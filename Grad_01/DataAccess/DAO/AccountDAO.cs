@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using BusinessObjects;
 using BusinessObjects.DTO;
 using BusinessObjects.Models;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.DAO
@@ -156,39 +158,51 @@ namespace DataAccess.DAO
                 throw new Exception(e.Message);
             }
         }
+        public void UpdateUserProfile(Guid userId, string username, string? address = null)
+        {
+            try
+            {
+                using (var context = new AppDbContext())
+                {
+                    // Find the user by user ID
+                    var user = context.AppUsers.FirstOrDefault(u => u.UserId == userId);
 
-        //public AppUser GetUserProfile(Guid userId)
-        //{
-        //    AppUser? user = null;
-        //    try
-        //    {
-        //        using (var context = new AppDbContext())
-        //        {
-        //            user = context.AppUsers.Where(u => u.UserId == userId).FirstOrDefault();
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        throw new Exception(e.Message);
-        //    }
+                    if (user != null)
+                    {
+                        // Update username if provided
+                        if (username != null)
+                        {
+                            user.Username = username;
+                        }
 
-        //    return user;
-        //}
-        //public UserProfile GetUserProfile(Guid userId)
-        //{
-        //    try
-        //    {
-        //        UserProfile profile = new UserProfile();
-        //        using (var context = new AppDbContext())
-        //        {
+                        // Address update (using address string)
+                        if (address != null)
+                        {
+                            
+                        }
 
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        throw new Exception(e.Message);
-        //    }
-        //}
+                        context.AppUsers.Update(user);
+                        context.SaveChanges();
+                    }
+                    else
+                    {
+                        // Throw an exception or handle the case where user not found
+                        throw new Exception("User not found");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+        
+
+
+
+
+
+
     }
 }
 

@@ -22,6 +22,10 @@ namespace APIs.Services.Intefaces
         public List<Address> GetAllUserAdderess(Guid userId);
         public Address GetDefaultAddress(Guid userId);
         //public AppUser GetUserProfile(Guid userId);
+        public void UpdateUserProfile(Guid userId, string username, string? address = null);
+        public void UpdateAddress(Guid userId, Guid? addressId, string cityProvince, string district, string subDistrict, string rendezvous, bool isDefault);
+
+
     }
 }
 

@@ -136,6 +136,23 @@ namespace APIs.Controllers
             }
         }
 
+
+        [HttpPut]
+        [Route("update-profile")]
+        public IActionResult UpdateUserProfile(Guid userId, string username, string? address = null)
+        {
+            try
+            {
+                accService.UpdateUserProfile(userId, username, address);
+                return Ok("Profile updated successfully");
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e.Message);
+            }
+        }
+
+
         [HttpPost]
         [Route("upload-cic")]
         public async Task<IActionResult> OnPostUploadAsync(List<IFormFile> files, Guid userId)
@@ -160,44 +177,61 @@ namespace APIs.Controllers
 
             return Ok(new { count = files.Count, size });
         }
-
-        [HttpGet, Authorize]
-        [Route("get-user-profile")]
-        public async Task<IActionResult> GetUserProfile()
+        [HttpPut]
+        [Route("update-address/{addressId?}")]
+        public IActionResult UpdateAddress(Guid userId, Guid? addressId, string cityProvince, string district, string subDistrict, string rendezvous, bool isDefault)
         {
             try
             {
-                var userIdClaim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "userId");
-                var roleClaim = HttpContext.User.FindFirst(ClaimTypes.Role);
-                var usernameClaim = HttpContext.User.FindFirst(ClaimTypes.Name);
-                var emailClaim = HttpContext.User.FindFirst(ClaimTypes.Email);
-                if (userIdClaim != null)
-                {
-                    var userId = Guid.Parse(userIdClaim.Value);
-                    if (roleClaim != null)
-                    {
-                        if (usernameClaim != null)
-                        {
-                          Address address = accService.GetDefaultAddress(userId);
-                            UserProfile profile = new UserProfile()
-                            {
-                                UserId = userId,
-                                Username = usernameClaim.Value,
-                                Role = roleClaim.Value,
-                                Address = address.Rendezvous,
-                                Email = emailClaim.Value
-                            };
-                            return Ok(profile);
-                        }
-                        else return BadRequest("Username claim not found!!!");
-                    } else return BadRequest("Role claim not found!!!");
-                } else return BadRequest("User ID claim not found!!!");
+                // Call the service method to update or create the address
+                accService.UpdateAddress(userId, addressId, cityProvince, district, subDistrict, rendezvous, isDefault);
+
+                return Ok("Address updated successfully");
             }
             catch (Exception e)
             {
-                throw new Exception(e.Message);
+                return StatusCode(500, $"An error occurred: {e.Message}");
             }
         }
+
+
+        //[HttpGet, Authorize]
+        //[Route("get-user-profile")]
+        //public async Task<IActionResult> GetUserProfile()
+        //{
+        //    try
+        //    {
+        //        var userIdClaim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "userId");
+        //        var roleClaim = HttpContext.User.FindFirst(ClaimTypes.Role);
+        //        var usernameClaim = HttpContext.User.FindFirst(ClaimTypes.Name);
+        //        var emailClaim = HttpContext.User.FindFirst(ClaimTypes.Email);
+        //        if (userIdClaim != null)
+        //        {
+        //            var userId = Guid.Parse(userIdClaim.Value);
+        //            if (roleClaim != null)
+        //            {
+        //                if (usernameClaim != null)
+        //                {
+        //                  Address address = accService.GetDefaultAddress(userId);
+        //                    UserProfile profile = new UserProfile()
+        //                    {
+        //                        UserId = userId,
+        //                        Username = usernameClaim.Value,
+        //                        Role = roleClaim.Value,
+        //                        Address = address.Rendezvous,
+        //                        Email = emailClaim.Value
+        //                    };
+        //                    return Ok(profile);
+        //                }
+        //                else return BadRequest("Username claim not found!!!");
+        //            } else return BadRequest("Role claim not found!!!");
+        //        } else return BadRequest("User ID claim not found!!!");
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        throw new Exception(e.Message);
+        //    }
+        //}
     }
 }
 
