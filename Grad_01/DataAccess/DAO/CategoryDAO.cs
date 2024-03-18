@@ -115,6 +115,28 @@ namespace DataAccess.DAO
                 throw new Exception(e.Message);
             }
         }
+
+        public List<Category> GetCategoryByName(string inputString)
+        {
+            try
+            {
+                using(var context = new AppDbContext())
+                {
+                    List<Category> result = new List<Category>();
+                    var matchedCates = context.Categories
+                    .Where(c => c.CateName.Contains(inputString))
+                    .ToList();
+                    if(matchedCates.Count > 0)
+                    {
+                        result = matchedCates;
+                    } return result;
+                }
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
     }
 }
 

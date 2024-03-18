@@ -26,7 +26,11 @@ namespace APIs.Services
         public Category GetCategoryById(Guid cateId) => new CategoryDAO().GetCategoryById(cateId);
 
         public string GetOldImgPath(Guid cateId) => new CategoryDAO().GetOldImgPath(cateId);
-        
+
+        public List<Category> GetCategoryByName(string inputString, PagingParams param)
+        {
+            return PagedList<Category>.ToPagedList(new CategoryDAO().GetCategoryByName(inputString).OrderBy(c => c.CateName).AsQueryable(), param.PageNumber, param.PageSize);
+        }
     }
 }
 

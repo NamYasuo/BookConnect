@@ -169,6 +169,22 @@ namespace APIs.Controllers
 			}
 		}
 
+        [HttpGet("search-category")]
+        public IActionResult SearchCategory(string? inputString, [FromQuery] PagingParams param)
+        {
+            try
+			{
+				if (inputString != null && inputString != "")
+				{
+                    return Ok(_cateServices.GetCategoryByName(inputString, param));
+				}
+                    return Ok(_cateServices.GetAllCategory(param));
+            }
+            catch (Exception e)
+			{
+				throw new Exception(e.Message);
+			}
+		}
     }
 }
 
