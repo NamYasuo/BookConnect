@@ -2,6 +2,7 @@
 using BusinessObjects;
 using BusinessObjects.DTO;
 using BusinessObjects.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.DAO.Ecom
 {
@@ -59,6 +60,74 @@ namespace DataAccess.DAO.Ecom
 				{
 					context.Agencies.Add(agency);
 					return context.SaveChanges();
+				}
+			}
+			catch(Exception e)
+			{
+				throw new Exception(e.Message);
+			}
+		}
+
+		public Agency GetAgencyById(Guid agencyId)
+		{
+			try
+			{
+				using(var context = new AppDbContext())
+				{
+					Agency? result = context.Agencies.Where(a => a.AgencyId == agencyId).SingleOrDefault();
+					if (result == null) { return new Agency(); }
+					else return result;
+                }
+			}
+			catch(Exception e)
+			{
+				throw new Exception(e.Message);
+			}
+		}
+
+		public int UpadateAgency(Agency updatedData)
+		{
+			try
+			{
+				using(var context = new AppDbContext())
+				{
+					context.Agencies.Update(updatedData);
+					return context.SaveChanges();
+				}
+			}
+			catch(Exception e)
+			{
+				throw new Exception(e.Message);
+			}
+		}
+
+		public Address? GetCurrentAddress(Guid agencyId)
+		{
+			try
+			{
+				using(var context = new AppDbContext())
+                {
+                    Address? address = (from ad in context.Addresses
+                                       join ag in context.Agencies on ad.AddressId equals ag.PostAddressId
+                                       select ad).SingleOrDefault();
+                    return address;
+                }
+			}
+			catch(Exception e)
+			{
+				throw new Exception(e.Message);
+			}
+		}
+
+		public string? GetCurrentLogoUrl(Guid agencyId)
+		{
+			try
+			{
+				using(var context = new AppDbContext())
+				{
+					Agency? agency = context.Agencies.Where(a => a.AgencyId == agencyId).SingleOrDefault();
+					string? result = (agency != null) ? agency.LogoUrl : null;
+					return result;
 				}
 			}
 			catch(Exception e)

@@ -201,9 +201,9 @@ namespace DataAccess.DAO
                             user.IsBanned = false;
                             await context.SaveChangesAsync();
                         }
-                        return true;
+                        return false;
                     }
-                    return false;
+                    return true;
                 }
             }
             catch (Exception e)

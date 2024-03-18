@@ -176,7 +176,46 @@ namespace APIs.Repositories.Interfaces
         public bool IsSeller(Guid userId) => new AccountDAO().IsSeller(userId);
 
         public Task<bool> IsBanned(Guid userId) => new AccountDAO().IsBanned(userId);
-       
+
+        public Agency GetAgencyById(Guid agencyId) => new AgencyDAO().GetAgencyById(agencyId);
+
+        public int UpdateAgency(AgencyUpdateDTO updatedData, string? updatedLogoUrl)
+        {
+            AddressDAO addressDAO = new AddressDAO();
+            AgencyDAO agencyDAO = new AgencyDAO();
+            Guid addressId = Guid.Empty;
+
+            Address? oldAddress = agencyDAO.GetCurrentAddress(updatedData.AgencyId);
+            if(oldAddress != null) addressId = oldAddress.AddressId;
+
+            if (oldAddress != null && oldAddress.Rendezvous != null && updatedData.PostAddress != null)
+            {
+                if(!oldAddress.Rendezvous.Equals(updatedData.PostAddress))
+                {
+                    Address newAddress = new Address
+                    {
+                        AddressId = Guid.NewGuid(),
+                        City_Province = null,
+                        District = null,
+                        SubDistrict = null,
+                        Rendezvous = updatedData.PostAddress
+                    };
+                    if (addressDAO.AddNewAddress(newAddress) > 0) addressId = newAddress.AddressId;
+                }
+            }
+
+            string? logoUrl = (updatedLogoUrl != null) ? updatedLogoUrl : agencyDAO.GetCurrentLogoUrl(updatedData.AgencyId);
+
+            return agencyDAO.UpadateAgency(new Agency
+            {
+                AgencyId = updatedData.AgencyId,
+                AgencyName = updatedData.AgencyName,
+                PostAddressId = addressId,
+                BusinessType = updatedData.BusinessType,
+                LogoUrl = logoUrl,
+                OwnerId = updatedData.OwnerId,
+            });
+        }
     }
 }
 

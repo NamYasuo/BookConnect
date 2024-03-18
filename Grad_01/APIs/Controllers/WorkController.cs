@@ -66,6 +66,7 @@ namespace APIs.Controllers
 						AuthorId = dto.AuthorId,
 						Type = dto.Type,
 						Status = dto.Status,
+						Price = 10000,
 						CoverDir = coverDir,
 						BackgroundDir = backgroundDir,
 						Description = dto.Description

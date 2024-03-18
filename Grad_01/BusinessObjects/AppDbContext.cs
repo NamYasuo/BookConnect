@@ -90,11 +90,13 @@ namespace BusinessObjects
            .HasForeignKey(sr => sr.SubscriptionId)
            .OnDelete(DeleteBehavior.Restrict);
 
-            //builder.Entity<SubscriptionModel>()
-            //.HasOne(s => s.TierList)
-            //.WithMany()
-            //.HasForeignKey(s => s.TierId)
-            //.OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<Agency>()
+            .HasOne(a => a.PostAddress)
+            .WithMany()
+            .HasForeignKey(a => a.PostAddressId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+            
         }
     }
 }

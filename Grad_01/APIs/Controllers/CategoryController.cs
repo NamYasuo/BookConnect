@@ -98,10 +98,10 @@ namespace APIs.Controllers
                     {
                         return BadRequest("Category id is cannot be null!");
                     }
-                    string imgUrl = string.Empty;
+                    string imgUrl = _cateServices.GetOldImgPath((Guid)dto.CateId);
                     if (dto.CateImg != null)
                     {
-						string oldImg = _cateServices.GetOldImgPath((Guid)dto.CateId);
+						string oldImg = imgUrl;
 
                         if (oldImg != "")
 						{

@@ -167,7 +167,7 @@ namespace APIs.Controllers
 
         [HttpGet, Authorize]
         [Route("get-user-profile")]
-        public IActionResult GetUserProfile()
+        public async Task<IActionResult> GetUserProfile()
         {
             try
             {
@@ -199,7 +199,7 @@ namespace APIs.Controllers
                                 Email = emailClaim.Value,
                                 IsValidated = _accService.IsUserValidated(userId),
                                 IsSeller = _accService.IsSeller(userId),
-                                IsBanned = _accService.IsBanned(userId).Result
+                                IsBanned = await _accService.IsBanned(userId)
                             };
                             return Ok(profile);
                         }
@@ -233,7 +233,7 @@ namespace APIs.Controllers
         }
 
         [HttpPost("register-agency")]
-        public IActionResult RegisterAgency([FromBody] AgencyRegistrationDTO dto)
+        public IActionResult RegisterAgency([FromForm] AgencyRegistrationDTO dto)
         {
             try
             {
@@ -272,6 +272,36 @@ namespace APIs.Controllers
             }
         }
 
+        [HttpGet("get-agency-by-id")]
+        public IActionResult GetAgencyById(Guid agencyId)
+        {
+            try
+            {
+                Agency result = _accService.GetAgencyById(agencyId);
+                IActionResult response = (result.AgencyName != null) ? Ok(result) : NotFound("Agency doesn't exist!");
+                return response;
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+        [HttpPut("update-agency")]
+        public IActionResult UpdateAgency([FromForm] AgencyUpdateDTO dto)
+        {
+            string? logoUrl = null;
+
+            if (dto.LogoImg != null)
+            {
+                CloudinaryResponseDTO cldRspDTO = _cloudinaryService.UploadImage(dto.LogoImg, "Agencies/" + dto.AgencyName + "/Logo");
+                logoUrl = (cldRspDTO.StatusCode == 200 && cldRspDTO.Data != null)
+              ? cldRspDTO.Data : null;
+            }
+
+            int changes = _accService.UpdateAgency(dto, logoUrl);
+            IActionResult response = (changes > 0) ? Ok("Successful!") : Ok("No changes");
+            return response;
+        }
     }
 }
 
