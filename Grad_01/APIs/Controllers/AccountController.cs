@@ -140,30 +140,30 @@ namespace APIs.Controllers
             }
         }
 
-        [HttpPost]
-        [Route("upload-cic")]
-        public async Task<IActionResult> OnPostUploadAsync(List<IFormFile> files, Guid userId)
-        {
-            long size = files.Sum(f => f.Length);
+        //[HttpPost]
+        //[Route("upload-cic")]
+        //public async Task<IActionResult> OnPostUploadAsync(List<IFormFile> files, Guid userId)
+        //{
+        //    long size = files.Sum(f => f.Length);
 
-            foreach (var formFile in files)
-            {
-                if (formFile.Length > 0)
-                {
-                    var filePath = Path.GetTempFileName();
+        //    foreach (var formFile in files)
+        //    {
+        //        if (formFile.Length > 0)
+        //        {
+        //            var filePath = Path.GetTempFileName();
 
-                    using (var stream = System.IO.File.Create(filePath))
-                    {
-                        await formFile.CopyToAsync(stream);
-                    }
-                }
-            }
+        //            using (var stream = System.IO.File.Create(filePath))
+        //            {
+        //                await formFile.CopyToAsync(stream);
+        //            }
+        //        }
+        //    }
 
-            // Process uploaded files
-            // Don't rely on or trust the FileName property without validation.
+        //    // Process uploaded files
+        //    // Don't rely on or trust the FileName property without validation.
 
-            return Ok(new { count = files.Count, size });
-        }
+        //    return Ok(new { count = files.Count, size });
+        //}
 
         [HttpGet, Authorize]
         [Route("get-user-profile")]
@@ -182,30 +182,35 @@ namespace APIs.Controllers
                     {
                         if (usernameClaim != null)
                         {
-                            Address? address = _accService.GetDefaultAddress(userId);
-                            string rendez = string.Empty;
-
-                            if(address != null && address.Rendezvous != null)
+                            if (emailClaim != null)
                             {
-                                rendez = address.Rendezvous;
+                                Address? address = _accService.GetDefaultAddress(userId);
+                                string rendez = string.Empty;
+
+                                if (address != null && address.Rendezvous != null)
+                                {
+                                    rendez = address.Rendezvous;
+                                }
+
+                                UserProfile profile = new UserProfile()
+                                {
+                                    UserId = userId,
+                                    Username = usernameClaim.Value,
+                                    Role = roleClaim.Value,
+                                    Address = rendez,
+                                    Email = emailClaim.Value,
+                                    IsValidated = _accService.IsUserValidated(userId),
+                                    IsSeller = _accService.IsSeller(userId),
+                                    IsBanned = await _accService.IsBanned(userId),
+                                    Agecies = _accService.GetOwnerAgencies(userId)
+                                };
+                                return Ok(profile);
                             }
-
-                            UserProfile profile = new UserProfile()
-                            {
-                                UserId = userId,
-                                Username = usernameClaim.Value,
-                                Role = roleClaim.Value,
-                                Address = rendez,
-                                Email = emailClaim.Value,
-                                IsValidated = _accService.IsUserValidated(userId),
-                                IsSeller = _accService.IsSeller(userId),
-                                IsBanned = await _accService.IsBanned(userId)
-                            };
-                            return Ok(profile);
+                            else return NotFound("Email claim not found!");
                         }
-                        else return BadRequest("Username claim not found!!!");
-                    } else return BadRequest("Role claim not found!!!");
-                } else return BadRequest("User ID claim not found!!!");
+                        else return NotFound("Username claim not found!!!");
+                    } else return NotFound("Role claim not found!!!");
+                } else return NotFound("User ID claim not found!!!");
             }
             catch (Exception e)
             {

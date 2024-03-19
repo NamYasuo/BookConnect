@@ -85,6 +85,21 @@ namespace DataAccess.DAO.Ecom
 			}
 		}
 
+		public List<Agency> GetAgencyByOwnerId(Guid ownerId)
+		{
+			try
+			{
+				using (var context = new AppDbContext())
+				{
+					return context.Agencies.Where(a => a.OwnerId == ownerId).ToList();
+				}
+			}
+			catch (Exception e)
+			{
+				throw new Exception(e.Message);
+			}
+		}
+
 		public int UpadateAgency(Agency updatedData)
 		{
 			try

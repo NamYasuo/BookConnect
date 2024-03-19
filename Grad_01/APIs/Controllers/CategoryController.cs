@@ -172,15 +172,30 @@ namespace APIs.Controllers
         [HttpGet("search-category")]
         public IActionResult SearchCategory(string? inputString, [FromQuery] PagingParams param)
         {
-            try
+			try
 			{
+				var cates = _cateServices.GetAllCategory(param);
 				if (inputString != null && inputString != "")
 				{
-                    return Ok(_cateServices.GetCategoryByName(inputString, param));
+					cates = _cateServices.GetCategoryByName(inputString, param);
 				}
-                    return Ok(_cateServices.GetAllCategory(param));
-            }
-            catch (Exception e)
+                if (cates != null)
+                {
+                    var metadata = new
+                    {
+                        cates.TotalCount,
+                        cates.PageSize,
+                        cates.CurrentPage,
+                        cates.TotalPages,
+                        cates.HasNext,
+                        cates.HasPrevious
+                    };
+                    Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+                    return Ok(cates);
+                }
+                return Ok(cates);
+			}
+			catch (Exception e)
 			{
 				throw new Exception(e.Message);
 			}

@@ -135,6 +135,8 @@ namespace APIs.Repositories.Interfaces
         public bool IsUserValidated(Guid userId) => new AccountDAO().IsUserValidated(userId);
 
         //Agency Registration
+        public List<Agency> GetOwnerAgencies(Guid ownerId) => new AgencyDAO().GetAgencyByOwnerId(ownerId);
+
         public string RegisterAgency(AgencyRegistrationDTO dto, string logoUrl)
         {
             //register post address
@@ -178,6 +180,7 @@ namespace APIs.Repositories.Interfaces
         public Task<bool> IsBanned(Guid userId) => new AccountDAO().IsBanned(userId);
 
         public Agency GetAgencyById(Guid agencyId) => new AgencyDAO().GetAgencyById(agencyId);
+
 
         public int UpdateAgency(AgencyUpdateDTO updatedData, string? updatedLogoUrl)
         {

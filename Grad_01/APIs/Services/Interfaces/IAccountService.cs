@@ -30,6 +30,7 @@ namespace APIs.Services.Interfaces
         bool IsUserValidated(Guid userId);
 
         //Agency registration
+        List<Agency> GetOwnerAgencies(Guid ownerId);
         string RegisterAgency(AgencyRegistrationDTO dto, string logoUrl);
         bool IsSeller(Guid userId);
         Agency GetAgencyById(Guid agencyId);

@@ -12,7 +12,7 @@ namespace APIs.Services.Interfaces
 		int DeleteCategory(Guid cateId);
 		Category GetCategoryById(Guid cateId);
 		string GetOldImgPath(Guid cateId);
-		List<Category> GetCategoryByName(string inputString, PagingParams param);
+        PagedList<Category> GetCategoryByName(string inputString, PagingParams param);
     }
 }
 
