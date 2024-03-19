@@ -2,11 +2,13 @@
 using APIs.Services;
 using APIs.Services.Interfaces;
 using APIs.Utils.Base;
+using APIs.Utils.Paging;
 using BusinessObjects.DTO;
 using BusinessObjects.DTO.Trading;
 using BusinessObjects.Models.Creative;
 using BusinessObjects.Models.E_com.Trading;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace APIs.Controllers
 {
@@ -22,7 +24,7 @@ namespace APIs.Controllers
             _fileSaver = new FileSaver();
             _accountService = accountService;
         }
-
+        //---------------------------------------------POST-------------------------------------------------------//
         [HttpPost("add-new-post")]
         public IActionResult AddNewPost([FromForm] AddPostDTOs dto)
         {
@@ -51,7 +53,7 @@ namespace APIs.Controllers
                     }
                     return BadRequest("Add false");
                 }
-                return BadRequest("Model Invalid");
+                return BadRequest("Post Invalid");
             }
             catch (Exception e)
             {
@@ -122,5 +124,60 @@ namespace APIs.Controllers
                 return StatusCode(500, response);
             }
         }
+
+        //---------------------------------------------COMMENT-------------------------------------------------------//
+        [HttpGet("get-comment-by-post-id")]
+        public IActionResult GetCommentByPostId(Guid postId, [FromQuery] PagingParams @params)
+        {
+            try
+            {
+                var comment = _postService.GetCommentByPostId(postId, @params);
+
+
+                if (comment != null)
+                {
+                    var metadata = new
+                    {
+                        comment.TotalCount,
+                        comment.PageSize,
+                        comment.CurrentPage,
+                        comment.TotalPages,
+                        comment.HasNext,
+                        comment.HasPrevious
+                    };
+                    Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+                    return Ok(comment);
+                }
+                else return BadRequest("No chapter!!!");
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+        /*
+         * [HttpPost("add-comment")]
+public IActionResult AddComment(Guid postId, CommentDTO comment)
+{
+    try
+    {
+        var post = _postService.GetPostById(postId);
+        if (post == null)
+        {
+            return NotFound("Post not found");
+        }
+
+        // Thực hiện các xử lý kiểm tra và lưu trữ comment vào cơ sở dữ liệu
+        // Sử dụng _postService hoặc một dịch vụ tương ứng để xử lý thêm comment
+
+        // Trả về phản hồi thành công nếu comment được lưu thành công
+        return Ok("Comment added successfully!");
+    }
+    catch (Exception e)
+    {
+        throw new Exception(e.Message);
+    }
+}
+        */
     }
 }

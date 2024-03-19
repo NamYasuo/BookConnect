@@ -5,6 +5,7 @@ using BusinessObjects.Models.E_com.Trading;
 using BusinessObjects.Models.Ecom;
 using BusinessObjects.Models.Ecom.Payment;
 using BusinessObjects.Models.Ecom.Rating;
+using BusinessObjects.Models.Trading;
 using BusinessObjects.Models.Utils;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -30,7 +31,7 @@ namespace BusinessObjects
         public virtual DbSet<Subscription> Subscriptions { get; set; } = null!;
         public virtual DbSet<SubRecord> SubRecords { get; set; } = null!;
 
-
+        public virtual DbSet<TransactionRecord> Transactions { get; set; } = null!;
         //Rating services DbSets
         public virtual DbSet<Rating> Ratings { get; set; } = null!;
         public virtual DbSet<RatingRecord> RatingRecords { get; set; } = null!;
@@ -40,6 +41,7 @@ namespace BusinessObjects
 
         //Trading services DbSets
         public virtual DbSet<Post> Posts { get; set; } = null!;
+        public virtual DbSet<Comment> Comments { get; set; } = null!;
 
         //Utility DbSets
         public virtual DbSet<Role> Roles { get; set; } = null!;
