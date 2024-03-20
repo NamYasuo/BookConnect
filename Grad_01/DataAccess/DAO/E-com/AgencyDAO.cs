@@ -150,6 +150,21 @@ namespace DataAccess.DAO.Ecom
 				throw new Exception(e.Message);
 			}
 		}
+
+		public List<Agency> GetAllAgency()
+		{
+			try
+			{
+				using(var context = new AppDbContext())
+				{
+					return context.Agencies.ToList();
+				}
+			}
+			catch(Exception e)
+			{
+				throw new Exception(e.Message);
+			}
+		}
 	}
 }
 

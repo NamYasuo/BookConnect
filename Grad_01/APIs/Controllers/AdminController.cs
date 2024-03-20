@@ -1,8 +1,12 @@
 ﻿using System;
+using APIs.Services;
 using APIs.Services.Interfaces;
+using APIs.Utils.Paging;
 using BusinessObjects.DTO;
+using BusinessObjects.Models.Creative;
 using BusinessObjects.Models.Ecom.Base;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace APIs.Controllers
 {
@@ -50,6 +54,35 @@ namespace APIs.Controllers
 				int changes = _adminService.ForceUnban(dto.UserId, dto.Reason);
                 IActionResult result = (changes > 0) ? Ok("Successful!") : BadRequest("Fail!");
                 return result;
+            }
+			catch(Exception e)
+			{
+				throw new Exception(e.Message);
+			}
+		}
+
+        [HttpGet("get-all-agency")]
+        public IActionResult GetAllAgency([FromQuery] PagingParams param)
+        {
+            try
+			{
+                var results = _adminService.GetAllAgency(param);
+
+                if (results != null)
+                {
+                    var metadata = new
+                    {
+                        results.TotalCount,
+                        results.PageSize,
+                        results.CurrentPage,
+                        results.TotalPages,
+                        results.HasNext,
+                        results.HasPrevious
+                    };
+                    Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+                    return Ok(results);
+                }
+                else return Ok(results);
             }
 			catch(Exception e)
 			{

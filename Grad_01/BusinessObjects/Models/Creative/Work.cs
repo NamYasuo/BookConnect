@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using BusinessObjects.Models.Utils;
 using Newtonsoft.Json;
 
 namespace BusinessObjects.Models.Creative
@@ -17,7 +18,11 @@ namespace BusinessObjects.Models.Creative
         public decimal? Price { get; set; } 
         public string? CoverDir { get; set; }
         public string? BackgroundDir { get; set; }
-        public string? Description { get; set; } 
+        public string? Description { get; set; }
+        public Guid StatId { get; set; }
+
+        [ForeignKey("StatId"), JsonIgnore]
+        public virtual Statistic Stats { get; set; } = null!;
 
         [ForeignKey("AuthorId"), JsonIgnore]
         public virtual AppUser Author { get; set; } = null!;

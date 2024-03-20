@@ -51,7 +51,8 @@ namespace BusinessObjects
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<CategoryList> CategoryLists { get; set; } 
         public virtual DbSet<Address> Addresses { get; set; } 
-        public virtual DbSet<CICMedia> CICMedias { get; set; } 
+        public virtual DbSet<CICMedia> CICMedias { get; set; }
+        public virtual DbSet<Statistic> Statistics { get; set; }
 
 
         //Creative services DbSet
