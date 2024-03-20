@@ -10,6 +10,7 @@ namespace BusinessObjects.Models
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Guid CateId { get; set; }
 		public string CateName { get; set; } = null!;
+		public string ImageDir { get; set; } = null!;
 		public string? Description { get; set; }
 	}
 }

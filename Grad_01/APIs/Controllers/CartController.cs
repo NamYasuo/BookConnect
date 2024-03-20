@@ -1,6 +1,7 @@
 ﻿using System;
 using APIs.DTO.Ecom;
 using APIs.Repositories.Interfaces;
+using APIs.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace APIs.Controllers
@@ -10,14 +11,16 @@ namespace APIs.Controllers
     public class CartController: ControllerBase
 	{
 		private readonly ICartRepository _cartRepo;
+        private readonly IOrderService _orderService;
 
-		public CartController(ICartRepository cartRepository)
+		public CartController(ICartRepository cartRepository, IOrderService orderService)
 		{
+            _orderService = orderService;
 			_cartRepo = cartRepository;
 		}
 
         [HttpPost]
-        [Route("add-products-to-cart")]
+        [Route("update-products-to-cart")]
         public IActionResult AddListProductToCart([FromBody] List<ProductToCartDTO> data)
         {
             if (ModelState.IsValid)
@@ -26,6 +29,10 @@ namespace APIs.Controllers
                 {
                     foreach(ProductToCartDTO d in data)
                     {
+                        if (_orderService.GetCurrentStock(d.ProductId) < d.Quantity)
+                        {
+                            return BadRequest("Can't purchase more product than inside stock!" + d.ProductId);
+                        }
                         int result = _cartRepo.AddProductToCart(d.ProductId, d.CartId, d.Quantity);
                     }
                     return Ok();
@@ -46,7 +53,7 @@ namespace APIs.Controllers
             {
                 List<CartDetailsDTO> result = _cartRepo.GetCartDetails(userId);
 
-                if (result.Count == 0) return Ok("Blank cart!");
+                if (result.Count == 0) return Ok(new List<CartDetailsDTO>());
 
                 else return Ok(result);
             }
@@ -69,6 +76,21 @@ namespace APIs.Controllers
                 throw new Exception(e.Message);
             }
         }
-	}
+
+        [HttpDelete]
+        [Route("delete-product-from-cart")]
+        public IActionResult DeleteProductFromCart(Guid productId, Guid cartId, int quantity)
+        {
+            try
+            {
+                _cartRepo.DeleteProductFromCart(productId, cartId, quantity);
+                return Ok("Product deleted from cart successfully!");
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+    }
 }
 

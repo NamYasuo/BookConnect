@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using BusinessObjects.DTO;
 using BusinessObjects.Models;
@@ -8,7 +8,7 @@ using System.ComponentModel.Design;
 
 namespace APIs.Services
 {
-    public class SellService
+    public class SellService 
     {
         private readonly IOrderService _orderService;
         private readonly ISellService _sellRepository;

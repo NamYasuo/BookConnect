@@ -51,7 +51,7 @@ namespace APIs.Controllers
                 result = _bookService.GetAllBook();
                 return Ok(result);
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 throw new Exception(e.Message);
             }
@@ -64,7 +64,7 @@ namespace APIs.Controllers
             {
                 return Ok(_bookService.GetBookDetailsById(bookId));
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 throw new Exception(e.Message);
             }

@@ -1,6 +1,6 @@
-using System;
+﻿using System;
 
-namespace BusinessObjects.Models
+namespace BusinessObjects.Models.Utils
 {
     public class Sell
     {

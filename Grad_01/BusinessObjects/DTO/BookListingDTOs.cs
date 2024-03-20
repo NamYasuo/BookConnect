@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +11,7 @@ namespace BusinessObjects.DTO
         public Guid ListingId { get; set; }
 
         public Guid BookId { get; set; }
-        public string ListName { get; set; }
+        public string? ListName { get; set; }
         public string ListDescription { get; set; } = string.Empty;
 
         public DateTime DateAdded { get; set; }

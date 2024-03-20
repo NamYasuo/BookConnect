@@ -11,8 +11,8 @@ using Microsoft.Extensions.Configuration;
 
 namespace BusinessObjects
 {
-    public class AppDbContext : DbContext
-    {
+	public class AppDbContext: DbContext
+	{
         public AppDbContext() { }
         public AppDbContext(DbContextOptions<AppDbContext> o) : base(o) { }
 
@@ -22,6 +22,7 @@ namespace BusinessObjects
         public virtual DbSet<Basket> Baskets { get; set; } = null!;
         public virtual DbSet<Cart> Carts { get; set; } = null!;
         public virtual DbSet<Inventory> Inventories { get; set; } = null!;
+        public virtual DbSet<Ads> Ad { get; set; } = null!;
         public virtual DbSet<BookListing> BookListings { get; set; } = null!;
         public virtual DbSet<Order> Orders { get; set; } = null!;
         public virtual DbSet<Book> Books { get; set; } = null!;
@@ -70,8 +71,7 @@ namespace BusinessObjects
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Role>().HasData(
-                new Role
-                {
+                new Role {
                     RoleId = Guid.Parse("2da9143d-559c-40b5-907d-0d9c8d714c6c"),
                     RoleName = "BaseUser",
                     Description = "Role for base user?"

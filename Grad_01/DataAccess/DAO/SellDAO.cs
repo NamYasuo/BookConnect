@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using BusinessObjects;
 using BusinessObjects.DTO;
@@ -86,12 +86,11 @@ namespace DataAccess.DAO
 
         public List<BookListing> GetBookListingById(Guid Id)
         {
-            try
+            try { 
+            using (var context = new AppDbContext())
             {
-                using (var context = new AppDbContext())
-                {
-                    return context.BookListings.Where(i => i.ListingId == Id).ToList();
-                }
+                return context.BookListings.Where(i => i.ListingId == Id).ToList();
+            }
             }
             catch (Exception e)
             {
@@ -100,14 +99,13 @@ namespace DataAccess.DAO
         }
         public List<BookListing> GetBookListingByName(string listName)
         {
-            try
+            try { 
+            using (var context = new AppDbContext())
             {
-                using (var context = new AppDbContext())
-                {
-                    return context.BookListings
-                           .Where(bl => bl.ListName.Contains(listName))
-                           .ToList();
-                }
+                return context.BookListings
+                       .Where(bl => bl.ListName.Contains(listName))
+                       .ToList();
+            }
             }
             catch (Exception e)
             {

@@ -17,6 +17,12 @@ namespace APIs.Repositories
         public List<CartDetailsDTO> GetCartDetails(Guid userId)
             => new CartDAO().GetCartDetails(userId);
         public string GetUserCartId(Guid userId) => new CartDAO().GetUserCartId(userId);
+
+        public void DeleteProductFromCart(Guid productId, Guid cartId, int quantity)
+      => new CartDAO().DeleteProductFromCart(productId, cartId, quantity);
+
+        public bool IsCartExist(Guid userId) => new CartDAO().IsCartExists(userId);
+       
     }
 }
 

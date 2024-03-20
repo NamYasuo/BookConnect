@@ -9,7 +9,7 @@ namespace BusinessObjects.Models.Ecom.Rating
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Guid RatingId { get; set; }
-		public Guid OverallRating { get; set; }
+		public double OverallRating { get; set; }
 	}
 }
 

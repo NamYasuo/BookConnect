@@ -1,4 +1,4 @@
-using BusinessObjects.Models;
+﻿using BusinessObjects.Models;
 using BusinessObjects.Models.Ecom.Rating;
 using System;
 using System.Collections.Generic;
@@ -27,6 +27,8 @@ namespace BusinessObjects.DTO
         public DateTime? PublishDate { get; set; }
         public string Type { get; set; } = null!;
         public string Author { get; set; } = null!;
+        public string? CoverDir { get; set; }
+        public string? BackgroundDir { get; set; }
         public double Rating { get; set; }
         public Guid AgencyId { get; set; }
         public string AgencyName { get; set; } = null!;

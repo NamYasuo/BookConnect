@@ -1,5 +1,6 @@
 ﻿using System;
 using BusinessObjects;
+using BusinessObjects.DTO;
 using BusinessObjects.Models;
 using BusinessObjects.Models.Creative;
 
@@ -25,21 +26,21 @@ namespace DataAccess.DAO
 			return works;
 		}
         //Get work by id
-        public Work GetWorkById(Guid WorkId)
+        public Work GetWorkById(Guid workId)
         {
-            Work? Work = new Work();
+            Work? work = new Work();
             try
             {
                 using (var context = new AppDbContext())
                 {
-                    Work = context.Works.Where(b => b.WorkId == WorkId).FirstOrDefault();
+                    work = context.Works.Where(b => b.WorkId == workId).FirstOrDefault();
                 }
             }
             catch (Exception e)
             {
                 throw new Exception(e.Message);
             }
-            if (Work != null) return Work;
+            if (work != null) return work;
             else throw new NullReferenceException();
         }
 
@@ -67,19 +68,18 @@ namespace DataAccess.DAO
         {
             try
             {
+                int result = 0;
                 using (var context = new AppDbContext())
                 {
-                    //Dupllicate work
-                    Work? duplicate = context.Works.Where(w => w.Titile == work.Titile).FirstOrDefault();
-                    if(duplicate == null)
+                    //Check dupllicate work
+                    if (!context.Works.Any(w => w.Titile == work.Titile))
                     {
-                        context.Add(work);
-                        int result = context.SaveChanges();
+                        context.Works.Add(work);
+                        result = context.SaveChanges();
                         if (result > 0) return "Successfully!";
                         else return "Fail to update to database";
                     }
                     return "Work existed!";
-                   
                 }
             }
             catch (Exception e)
@@ -106,19 +106,21 @@ namespace DataAccess.DAO
         }
 
         //Delete Work by id
-        public void DeleteWork(Guid workId)
+        public int DeleteWorkById(Guid workId)
         {
             try
             {
+                int result = 0;
                 using (var context = new AppDbContext())
                 {
                     Work work = GetWorkById(workId);
                     if (work != null)
                     {
                         context.Works.Remove(work);
-                        context.SaveChanges();
+                        result = context.SaveChanges();
                     }
                 }
+                return result;
             }
             catch (Exception e)
             {
@@ -126,6 +128,33 @@ namespace DataAccess.DAO
             }
         }
 
+        public List<WorkIdTitleDTO>? GetTitleAndIdByAuthorId(Guid authorId)
+        {
+            try
+            {
+                List<WorkIdTitleDTO>? results = new List<WorkIdTitleDTO>();
+                using(var context = new AppDbContext())
+                {
+                   List<Work> works = context.Works.Where(w => w.AuthorId == authorId).ToList();
+                   foreach(Work w in works)
+                    {
+                        results.Add(new WorkIdTitleDTO
+                        {
+                            Title = w.Titile,
+                            WorkId = w.WorkId
+                        });
+                    }
+                }
+                return results;
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            
+        }
+
+    
     }
 }
 
