@@ -89,6 +89,94 @@ namespace APIs.Controllers
 				throw new Exception(e.Message);
 			}
 		}
-	}
+
+        [HttpGet("get-all-user")]
+        public IActionResult GetAllUser([FromQuery] PagingParams param)
+        {
+            try
+            {
+                var results = _adminService.GetAllUser(param);
+
+                if (results != null)
+                {
+                    var metadata = new
+                    {
+                        results.TotalCount,
+                        results.PageSize,
+                        results.CurrentPage,
+                        results.TotalPages,
+                        results.HasNext,
+                        results.HasPrevious
+                    };
+                    Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+                    return Ok(results);
+                }
+                else return Ok(results);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        [HttpGet("get-all-role")]
+        public IActionResult GetAllRole([FromQuery] PagingParams param)
+        {
+            try
+            {
+                var results = _adminService.GetAllRole(param);
+
+                if (results != null)
+                {
+                    var metadata = new
+                    {
+                        results.TotalCount,
+                        results.PageSize,
+                        results.CurrentPage,
+                        results.TotalPages,
+                        results.HasNext,
+                        results.HasPrevious
+                    };
+                    Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+                    return Ok(results);
+                }
+                else return Ok(results);
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        [HttpDelete("delete-role")]
+        public IActionResult DeleteRole(Guid roleId)
+        {
+            try
+            {
+                int changes = _adminService.DeleteRole(roleId);
+                IActionResult result = (changes > 0) ? Ok("Successful!") : Ok("Fail!");
+                return result;
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        [HttpPut("change-user-role")]
+        public IActionResult ChangeAccountRole([FromBody] ChangeRoleDTO dto)
+        {
+            try
+            {
+                int changes = _adminService.ChangeAccountRole(dto.UserId, dto.RoleId);
+                IActionResult result = (changes > 0) ? Ok("Successful!") : Ok("Fail!");
+                return result;
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+    }
 }
 

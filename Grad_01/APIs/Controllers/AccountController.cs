@@ -192,7 +192,7 @@ namespace APIs.Controllers
                                     rendez = address.Rendezvous;
                                 }
 
-                                UserProfile profile = new UserProfile()
+                                UserProfileDTO profile = new UserProfileDTO()
                                 {
                                     UserId = userId,
                                     Username = usernameClaim.Value,
@@ -202,7 +202,7 @@ namespace APIs.Controllers
                                     IsValidated = _accService.IsUserValidated(userId),
                                     IsSeller = _accService.IsSeller(userId),
                                     IsBanned = await _accService.IsBanned(userId),
-                                    Agecies = _accService.GetOwnerAgencies(userId)
+                                    Agencies = _accService.GetOwnerAgencies(userId)
                                 };
                                 return Ok(profile);
                             }

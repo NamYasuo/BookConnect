@@ -58,7 +58,7 @@ namespace APIs.Repositories.Interfaces
             List<Claim> claims = new List<Claim>()
             {
                 new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.Role, "BaseUser"),
+                new Claim(ClaimTypes.Role, new RoleDAO().GetRoleById(user.RoleId).RoleName),
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim("userId", user.UserId.ToString()),
             };

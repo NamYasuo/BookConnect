@@ -101,6 +101,24 @@ namespace DataAccess.DAO
             }
         }
 
+        public Role GetRoleById(Guid roleId)
+        {
+            try
+            {
+                Role result;
+                using (var context = new AppDbContext())
+                {
+                    Role? dbResult = context.Roles.Where(r => r.RoleId == roleId).SingleOrDefault();
+                    result = (dbResult != null) ? dbResult : new Role();
+                }
+                return result;
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
         /*------------------END GET-------------------*/
 
         /*------------------BEGIN CHECK-------------------*/
@@ -261,6 +279,24 @@ namespace DataAccess.DAO
 
 
         /*---------------BEGIN PUT-------------------*/
+        public int ChangeAccountRole(Guid userId, Guid roleId)
+        {
+            try
+            {
+                using(var context = new AppDbContext())
+                {
+                    AppUser? record = context.AppUsers.Where(u => u.UserId == userId).SingleOrDefault();
+                    if(record != null)
+                    {
+                        record.RoleId = roleId;
+                    } return context.SaveChanges();
+                }
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
 
         public int SetIsAccountValid(bool choice, Guid userId)
         {

@@ -3,7 +3,7 @@ using BusinessObjects.Models;
 
 namespace BusinessObjects.DTO
 {
-	public class UserProfile
+	public class UserProfileDTO
 	{
         public Guid? UserId { get; set; }
         public string? Username { get; set; }
@@ -13,7 +13,7 @@ namespace BusinessObjects.DTO
         public bool IsValidated { get; set; }
         public bool IsSeller { get; set; }
         public bool IsBanned { get; set; }
-        public List<Agency>? Agecies { get; set; }
+        public List<Agency>? Agencies { get; set; }
         //public string Rating { get; set; } = null!;
     }
 
