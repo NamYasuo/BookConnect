@@ -25,7 +25,7 @@ namespace DataAccess.DAO
                         BookId = item.BookId,
                         ListName = item.ListName,
                         ListDescription = item.ListDescription,
-                        DateAdded = item.DateAdded,
+                        DateAdded = DateTime.Now,
                         Quantity = item.Quantity
                     };
                     context.BookListings.Add(entity);
@@ -51,7 +51,7 @@ namespace DataAccess.DAO
                         existingItem.BookId = item.BookId;
                         existingItem.ListName = item.ListName;
                         existingItem.ListDescription = item.ListDescription;
-                        existingItem.DateAdded = item.DateAdded;
+                        existingItem.DateAdded = DateTime.Now;
                         existingItem.Quantity = item.Quantity;
 
                         context.SaveChanges();
@@ -128,7 +128,7 @@ namespace DataAccess.DAO
                         InventoryId = item.InventoryId,
                         BookId = item.BookId,
                         Price = item.Price,
-                        DateAdded = item.DateAdded,
+                        DateAdded = DateTime.Now,
                         Quantity = item.Quantity
                     };
                     context.Inventories.Add(entity);
@@ -152,7 +152,7 @@ namespace DataAccess.DAO
                     {
                         existingItem.BookId = item.BookId;
                         existingItem.Price = item.Price;
-                        existingItem.DateAdded = item.DateAdded;
+                        existingItem.DateAdded = DateTime.Now;
                         existingItem.Quantity = item.Quantity;
 
                         context.SaveChanges();
@@ -236,7 +236,7 @@ namespace DataAccess.DAO
                     {
                         existingItem.Description = item.Description;
                         existingItem.Donors = item.Donors;
-                        existingItem.DateAdded = item.DateAdded;
+                        existingItem.DateAdded = DateTime.Now;
                         context.SaveChanges();
                     }
                 }

@@ -128,8 +128,10 @@ namespace DataAccess.DAO
                         Name = item.Name,
                         Description = item.Description,
                         Price = (decimal)item.Price,
-                        CreatedDate = item.CreatedDate,
+                        CreatedDate = DateTime.Now,
                         PublishDate = item.PublishDate,
+                        CoverDir = item.CoverDir,
+                        BackgroundDir = item.BackgroundDir,
                         Type = item.Type,
                         Author = item.Author
                     };
@@ -156,8 +158,10 @@ namespace DataAccess.DAO
                         existingItem.ProductId = item.ProductId;
                         existingItem.Name = item.Name;
                         existingItem.Description = item.Description;
-                        existingItem.CreatedDate = item.CreatedDate;
+                        existingItem.CreatedDate = DateTime.Now;
                         existingItem.PublishDate = item.PublishDate;
+                        existingItem.CoverDir = item.CoverDir;
+                        existingItem.BackgroundDir = item.BackgroundDir;
                         existingItem.Author = item.Author;
                         existingItem.Type = item.Type;
                         context.SaveChanges();
