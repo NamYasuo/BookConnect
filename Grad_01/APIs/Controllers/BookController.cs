@@ -73,25 +73,11 @@ namespace APIs.Controllers
         // Book CRUD Endpoints with DTOs
 
         [HttpPost("AddBook")]
-        public IActionResult AddBook([FromBody] BookDetailsDTO bookDTO)
+        public IActionResult AddNewBook([FromBody] BookDetailsDTO item)
         {
             try
             {
-                // Convert BookDTO to Book entity
-                var book = new Book
-                {
-                    // Map properties from DTO to entity
-                    Name = bookDTO.Name,
-                    Description = bookDTO.Description,
-                    Price = bookDTO.Price ?? 0,
-                    CreatedDate = bookDTO.CreatedDate,
-                    PublishDate = bookDTO.PublishDate,
-                    Type = bookDTO.Type
-                };
-
-                // Call service method to add the book
-                _bookService.AddNewBook(book);
-
+                _bookService.AddNewBook(item);
                 return Ok();
             }
             catch (Exception e)
@@ -101,27 +87,11 @@ namespace APIs.Controllers
         }
 
         [HttpPut("UpdateBook")]
-        public IActionResult UpdateBook([FromBody] BookDetailsDTO bookDTO)
+        public IActionResult UpdateBook([FromBody] BookDetailsDTO item)
         {
             try
             {
-                // Convert BookDTO to Book entity
-                var book = new Book
-                {
-                    // Map properties from DTO to entity
-                    ProductId = bookDTO.ProductId,
-                    Name = bookDTO.Name,
-                    Description = bookDTO.Description,
-                    Price = bookDTO.Price ?? 0,
-                    CreatedDate = bookDTO.CreatedDate,
-                    PublishDate = bookDTO.PublishDate,
-                    Type = bookDTO.Type,
-                    // Stock property might not be in Book entity, adjust accordingly
-                };
-
-                // Call service method to update the book
-                _bookService.UpdateBook(book);
-
+                _bookService.UpdateBook(item);
                 return Ok();
             }
             catch (Exception e)

@@ -21,6 +21,12 @@ namespace APIs.Services.Interfaces
         void RemoveFromInventory(Guid itemId);
         List<Inventory> GetInventoryItemsById(Guid Id);
 
+        // Inventory Services
+        void AddToAds(AdsManageDTOs item);
+        void UpdateAds(InventoryManageDTOs item);
+        void RemoveFromAds(Guid itemId);
+        List<Inventory> GetAdsById(Guid Id);
+        void UpdateAds(AdsManageDTOs item);
         //// Communication Services
         //void SendMessageToBuyer(Guid sellerId, Guid buyerId, string message);
 

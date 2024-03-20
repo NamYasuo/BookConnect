@@ -153,6 +153,66 @@ namespace APIs.Controllers
                 return BadRequest(e.Message);
             }
         }
+
+
+        // Ads Endpoints
+
+        [HttpPost("AddAds")]
+        public IActionResult AddAds([FromBody] AdsManageDTOs item)
+        {
+            try
+            {
+                _sellRepository.AddToAds(item);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpPut("UpdateAds")]
+        public IActionResult UpdateAds([FromBody] AdsManageDTOs item)
+        {
+            try
+            {
+                _sellRepository.UpdateAds(item);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpDelete("DeleteAds/{itemId}")]
+        public IActionResult DeleteAds(Guid itemId)
+        {
+            try
+            {
+                _sellRepository.RemoveFromAds(itemId);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpGet("GetAdsById/{Id}")]
+        public IActionResult GetAdsById(Guid Id)
+        {
+            try
+            {
+                var items = _sellRepository.GetAdsById(Id);
+                return Ok(items);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
     }
 
 }

@@ -24,6 +24,13 @@ namespace APIs.Repositories
         public void RemoveFromInventory(Guid itemId) => new SellDAO().DeleteInventoryItem(itemId);
 
         public List<Inventory> GetInventoryItemsById(Guid Id) => new SellDAO().GetInventoryItemsById(Id);
+        public void AddToAds(AdsManageDTOs item) => new SellDAO().AddAds(item);
+
+        public void UpdateAds(AdsManageDTOs item) => new SellDAO().UpdateAds(item);
+
+        public void RemoveFromAds(Guid itemId) => new SellDAO().DeleteAds(itemId);
+
+        public List<Ads> GetAdsById(Guid Id) => new SellDAO().GetAdsById(Id);
 
     }
 }

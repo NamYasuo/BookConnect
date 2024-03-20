@@ -31,7 +31,14 @@ namespace APIs.Services
         public void RemoveFromInventory(Guid itemId) => _sellRepository.RemoveFromInventory(itemId);
 
         public List<Inventory> GetInventoryItemsById(Guid Id) => _sellRepository.GetInventoryItemsById(Id);
+        // Ads Services
+        public void AddToAds(AdsManageDTOs item) => _sellRepository.AddToAds(item);
 
+        public void UpdateAds(AdsManageDTOs item) => _sellRepository.UpdateAds(item);
+
+        public void RemoveFromAds(Guid itemId) => _sellRepository.RemoveFromAds(itemId);
+
+        public List<Inventory> GetAdsById(Guid Id) => _sellRepository.GetAdsById(Id);
         //// Communication Services
         //public void SendMessageToBuyer(Guid sellerId, Guid buyerId, string message) => _messageService.SendMessage(sellerId, buyerId, message);
 

@@ -20,6 +20,12 @@ namespace APIs.Repositories.Interfaces
         void UpdateInventoryItem(InventoryManageDTOs item);
         void RemoveFromInventory(Guid itemId);
         List<Inventory> GetInventoryItemsById(Guid Id);
+
+        // Methods for managing ads
+        void AddToAds(AdsManageDTOs item);
+        void UpdateAds(AdsManageDTOs item);
+        void RemoveFromAds(Guid itemId);
+        List<Ads> GetAdsById(Guid Id);
     }
 }
 

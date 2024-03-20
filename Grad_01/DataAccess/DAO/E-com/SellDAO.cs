@@ -11,7 +11,7 @@ namespace DataAccess.DAO
 {
     public class SellDAO
     {
-        // Book Listing CRUD operations
+        // Book Listing operations
 
         public void AddBookListing(BookListingManageDTOs item)
         {
@@ -192,6 +192,88 @@ namespace DataAccess.DAO
                 using (var context = new AppDbContext())
                 {
                     return context.Inventories.Where(i => i.InventoryId == Id).ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        // Ads operations
+
+        public void AddAds(AdsManageDTOs item)
+        {
+            try
+            {
+                using (var context = new AppDbContext())
+                {
+                    var entity = new Ads
+                    {
+                        AdsId = item.AdsId,
+                        Donors = item.Donors,
+                        Description = item.Description,
+                        DateAdded = item.DateAdded
+                    };
+                    context.Ad.Add(entity);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public void UpdateAds(AdsManageDTOs item)
+        {
+            try
+            {
+                using (var context = new AppDbContext())
+                {
+                    var existingItem = context.Ad.FirstOrDefault(i => i.AdsId == item.AdsId);
+                    if (existingItem != null)
+                    {
+                        existingItem.Description = item.Description;
+                        existingItem.Donors = item.Donors;
+                        existingItem.DateAdded = item.DateAdded;
+                        context.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public void DeleteAds(Guid itemId)
+        {
+            try
+            {
+                using (var context = new AppDbContext())
+                {
+                    var item = context.Ad.FirstOrDefault(i => i.AdsId == itemId);
+                    if (item != null)
+                    {
+                        context.Ad.Remove(item);
+                        context.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public List<Ads> GetAdsById(Guid Id)
+        {
+            try
+            {
+                using (var context = new AppDbContext())
+                {
+                    return context.Ad.Where(i => i.AdsId == Id).ToList();
                 }
             }
             catch (Exception e)
