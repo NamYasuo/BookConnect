@@ -18,6 +18,7 @@ namespace BusinessObjects.Models.Trading
         public Guid PostId { get; set; }
         public Guid CommenterId { get; set; }
         public string Description { get; set; }
+        public DateTime Created { get; set; } = DateTime.Now;
         [ForeignKey("PostId"), JsonIgnore]
         public virtual Post Post { get; set; } = null!;
     }

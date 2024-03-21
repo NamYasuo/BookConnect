@@ -19,7 +19,8 @@ namespace APIs.Services.Interfaces
         AddPostDTOs AddNewPost(Guid postId);
 
         //---------------------------------------------COMMENT-------------------------------------------------------//
-        public PagedList<Comment>? GetCommentByPostId(Guid postId, PagingParams @params);
+        public int AddComment(Comment comment);
+        public PagedList<Comment> GetCommentByPostId(Guid postId, PagingParams @params);
         public int UpdateComment(Comment comment);
     }
 }

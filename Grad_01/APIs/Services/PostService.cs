@@ -10,7 +10,7 @@ using DataAccess.DAO.E_com;
 
 namespace APIs.Services
 {
-    public class PostService: IPostService
+    public class PostService : IPostService
     {
         //---------------------------------------------POST-------------------------------------------------------//
         public int AddNewPost(Post post) => new PostDAO().AddNewPost(post);
@@ -27,11 +27,13 @@ namespace APIs.Services
         public int UpdatePost(Post post) => new PostDAO().UpdatePost(post);
 
         //---------------------------------------------COMMENT-------------------------------------------------------//
-        public PagedList<Comment> GetCommentByPostId(Guid postId, PagingParams parameters)
+        
+        PagedList<Comment> IPostService.GetCommentByPostId(Guid postId, PagingParams @params)
         {
-            return PagedList<Comment>.ToPagedList(new CommentDAO().GetCommentByPostID(postId)?.OrderBy(ch => ch.Description).AsQueryable(), parameters.PageNumber, parameters.PageSize);
+            return PagedList<Comment>.ToPagedList(new CommentDAO().GetCommentByPostID(postId)?.OrderBy(ch => ch.Description).AsQueryable(), @params.PageNumber, @params.PageSize);
         }
 
+        public int AddComment(Comment comment) => new CommentDAO().AddComment(comment);
         public int UpdateComment(Comment comment) => new CommentDAO().UpdateComment(comment);
     }
 }

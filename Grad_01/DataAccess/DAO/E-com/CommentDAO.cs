@@ -31,6 +31,24 @@ namespace DataAccess.DAO.E_com
             }
         }
 
+        //Add Comment
+        public int AddComment(Comment comment)
+        {
+            try
+            {
+                using (var context = new AppDbContext())
+                {
+                    context.Comments.Add(comment);
+                    return context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        //Update Comment
         public int UpdateComment(Comment comment)
         {
             int result = 0;

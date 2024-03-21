@@ -7,6 +7,8 @@ using BusinessObjects.DTO;
 using BusinessObjects.DTO.Trading;
 using BusinessObjects.Models.Creative;
 using BusinessObjects.Models.E_com.Trading;
+using BusinessObjects.Models.Trading;
+using DataAccess.DAO.E_com;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -155,29 +157,32 @@ namespace APIs.Controllers
                 throw new Exception(e.Message);
             }
         }
-        /*
-         * [HttpPost("add-comment")]
-public IActionResult AddComment(Guid postId, CommentDTO comment)
-{
-    try
-    {
-        var post = _postService.GetPostById(postId);
-        if (post == null)
+
+        [HttpPost("add-comment")]
+        public IActionResult AddComment([FromForm] AddCommentDTO comment)
         {
-            return NotFound("Post not found");
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    int result = _postService.AddComment(new Comment()
+                    {
+                        CommentId = Guid.NewGuid(),
+                        Description = comment.Description,
+                        Created = DateTime.Now
+                    });
+                    if (result > 0)
+                    {
+                        return Ok();
+                    }
+                    return BadRequest("Add false");
+                }
+                return BadRequest("Comment Invalid");
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
-
-        // Thực hiện các xử lý kiểm tra và lưu trữ comment vào cơ sở dữ liệu
-        // Sử dụng _postService hoặc một dịch vụ tương ứng để xử lý thêm comment
-
-        // Trả về phản hồi thành công nếu comment được lưu thành công
-        return Ok("Comment added successfully!");
-    }
-    catch (Exception e)
-    {
-        throw new Exception(e.Message);
-    }
-}
-        */
     }
 }

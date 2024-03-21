@@ -36,6 +36,20 @@ namespace BusinessObjects.DTO.Trading
         public Guid CommenterId { get; set; }
         public string Description { get; set; }
     }
+
+    public class AddCommentDTO
+    {
+        public Guid UserId { get; set; }
+        public Guid PostId { get; set; }
+        public string Description { get; set; }
+    }
+
+    public class UpdateCommentDTO
+    {
+        public Guid UserId { get; set; }
+        public Guid PostId { get; set; }
+        public string Description { get; set; }
+    }
 }
 /*  public class Comment
     {
