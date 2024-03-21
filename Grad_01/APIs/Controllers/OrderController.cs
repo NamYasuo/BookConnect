@@ -29,6 +29,7 @@ namespace APIs.Controllers
   
             Guid orderId = Guid.NewGuid();
             NewOrderDTO newOrder = new NewOrderDTO();
+           
 
             switch (request.PaymentMethod)
             {
@@ -64,12 +65,6 @@ namespace APIs.Controllers
                 string result2 = _orderService.TakeProductFromCartOptional(request.CustomerId, orderId, request.Products);
 
                 return Ok(result2);
-
-                //if (result2 == "Successfully!")
-                //{
-                //    return Ok("Successfully!HIHI");
-                //}
-                //return BadRequest(result2);
             }
             return BadRequest(result);
         }

@@ -45,6 +45,7 @@ namespace DataAccess.DAO
 				{
 					book = context.Books.Where(b => b.ProductId == bookId).FirstOrDefault();
 				}
+				int stock = new AgencyDAO().GetProductStock(bookId);
 				if (book != null)
 				{
 					NameAndIdDTO agency = new AgencyDAO().GetNameAndId(bookId);
@@ -63,6 +64,8 @@ namespace DataAccess.DAO
 						PublishDate = book.PublishDate,
 						//public string? Type { get; set; } = null!;
 						Type = book.Type,
+						Stock = stock,
+
 						//public int? Quantity { get; set; }
 						//public double Rating { get; set; }
 						Rating = 5,

@@ -10,6 +10,7 @@ using BusinessObjects.Models.Ecom.Payment;
 using APIs.Utils.Extensions;
 using BusinessObjects.DTO;
 using Azure.Core;
+using Microsoft.AspNetCore.Authorization;
 
 namespace APIs.Controllers
 {
@@ -52,6 +53,7 @@ namespace APIs.Controllers
             TransactionRecord transaction = new TransactionRecord()
             {
                 //PaymentId = dto.PaymentId,
+                //UserId = userId,
                 PaymentDate = dto.PaymentDate,
                 PaymentMessage = dto.PaymentMessage,
                 TransactionId = Guid.Parse(dto.PaymentRefId),
@@ -68,7 +70,6 @@ namespace APIs.Controllers
 
                 string redirectUrl = "http://localhost:5000/checkout-result?refId=" + returnModel.PaymentRefId;  // Replace with your desired URL
                 return Redirect(redirectUrl);
-
             }
      
             return BadRequest(returnModel);

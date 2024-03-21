@@ -119,6 +119,7 @@ namespace DataAccess.DAO
             }
         }
 
+        //public List<AppUser> GetUserByRole()
         /*------------------END GET-------------------*/
 
         /*------------------BEGIN CHECK-------------------*/
