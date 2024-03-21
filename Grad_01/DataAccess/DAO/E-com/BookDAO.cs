@@ -2,7 +2,11 @@
 using BusinessObjects;
 using BusinessObjects.DTO;
 using BusinessObjects.Models;
+using BusinessObjects.Models.Ecom;
+using BusinessObjects.Models.Utils;
 using DataAccess.DAO.Ecom;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.DAO
 {
@@ -132,7 +136,7 @@ namespace DataAccess.DAO
                         CoverDir = item.CoverDir,
                         BackgroundDir = item.BackgroundDir,
                         Type = item.Type,
-						Author = item.Author
+                        Author = item.Author
                     };
                     context.Books.Add(entity);
                     context.SaveChanges();
@@ -159,7 +163,7 @@ namespace DataAccess.DAO
                         existingItem.Description = item.Description;
                         existingItem.CreatedDate = DateTime.Now;
                         existingItem.PublishDate = item.PublishDate;
-                        existingItem.CoverDir= item.CoverDir;
+                        existingItem.CoverDir = item.CoverDir;
                         existingItem.BackgroundDir = item.BackgroundDir;
                         existingItem.Author = item.Author;
                         existingItem.Type = item.Type;
@@ -224,6 +228,91 @@ namespace DataAccess.DAO
         {
             throw new NotImplementedException();
         }
-    }
+        //-----------------------------------Book category------------------------------------------------//
+
+        public int AddBookToCategory(Guid bookId, List<Guid> cateIds)
+		{
+			try
+			{
+				using(var context = new AppDbContext())
+				{
+					int result = 0;
+					foreach(Guid cateId in cateIds)
+					{
+                        string insertQuery = $"insert into CategoryLists(CategoryId, BookId) values (@cateId, @bookId)";
+
+                        result += context.Database.ExecuteSqlRaw(insertQuery,
+                            new SqlParameter("@cateId", cateId),
+                            new SqlParameter("@bookId", bookId));
+                    }
+					return result;
+				}
+			}
+			catch(Exception e)
+			{
+				throw new Exception(e.Message);
+			}
+		}
+
+		public List<Category> GetAllCategoryOfBook(Guid bookId)
+		{
+			try
+			{
+				using(var context = new AppDbContext())
+				{
+					List<Category> result = new List<Category>();
+					List<CategoryList> listCate = context.CategoryLists.Where(o => o.BookId == bookId).ToList();
+					foreach(CategoryList c in listCate)
+					{
+						var cate = context.Categories.Where(d => d.CateId == c.CategoryId).SingleOrDefault();
+						if(cate != null)
+						{
+                            result.Add(cate);
+                        }
+                    }
+					return result;
+				}
+			}
+			catch(Exception e)
+			{
+				throw new Exception(e.Message);
+			}
+		}
+
+		public bool IsBookAlreadyInCate(Guid bookId, Guid cateId)
+		{
+			try
+			{
+				using(var context = new AppDbContext())
+				{
+					return context.CategoryLists.Any(c => c.BookId == bookId && c.CategoryId == cateId);
+				}
+			}
+			catch(Exception e)
+			{
+				throw new Exception(e.Message);
+			}
+		}
+		public int RemoveBookFromCate(Guid bookId, Guid cateId)
+		{
+			try
+			{
+				using(var context = new AppDbContext())
+				{
+                    string insertQuery = $"delete from CategoryLists where CategoryId = @cateId and  BookId = @bookId";
+
+                    int result = context.Database.ExecuteSqlRaw(insertQuery,
+                        new SqlParameter("@cateId", cateId),
+                        new SqlParameter("@bookId", bookId));
+                    return result;
+                }
+			}
+			catch(Exception e)
+			{
+				throw new Exception(e.Message);
+			}
+		}
+
+	}
 }
 

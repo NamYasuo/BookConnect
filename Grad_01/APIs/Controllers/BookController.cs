@@ -2,7 +2,7 @@
 using BusinessObjects.Models;
 using Microsoft.AspNetCore.Mvc;
 using APIs.Services.Interfaces;
-using DataAccess.DAO;
+using System.Net;
 
 namespace APIs.Controllers
 {
@@ -16,7 +16,47 @@ namespace APIs.Controllers
         {
             _bookService = bookService;
         }
+        [HttpPost("AddBook")]
+        public IActionResult AddNewBook([FromBody] BookDetailsDTO item)
+        {
+            try
+            {
+                _bookService.AddNewBook(item);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
 
+        [HttpPut("UpdateBook")]
+        public IActionResult UpdateBook([FromBody] BookDetailsDTO item)
+        {
+            try
+            {
+                _bookService.UpdateBook(item);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpDelete("DeleteBook/{bookId}")]
+        public IActionResult DeleteBook(Guid bookId)
+        {
+            try
+            {
+                _bookService.DeleteBook(bookId);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
         [HttpGet("search")]
         public IActionResult SearchProductsByName([FromQuery] string searchTerm)
         {
@@ -70,47 +110,64 @@ namespace APIs.Controllers
             }
         }
 
-        // Book CRUD Endpoints with DTOs
-
-        [HttpPost("AddBook")]
-        public IActionResult AddNewBook([FromBody] BookDetailsDTO item)
+        //-----------------------------------Book category------------------------------------------------//
+        [HttpPost("category/add-book-to-category")]
+        public IActionResult AddBookToCate(AddBookToCateDTO dto)
         {
             try
             {
-                _bookService.AddNewBook(item);
-                return Ok();
+                if (ModelState.IsValid)
+                {
+                    List<Guid> validCates = new List<Guid>();
+                    foreach (Guid id in dto.CateIds)
+                    {
+                        if (!_bookService.IsBookAlreadyInCate(dto.BookId, id))
+                        {
+                            validCates.Add(id);
+                        }
+                    }
+                    if(validCates.Count == 0)
+                    {
+                        return Ok("This book's already in these/this cart(s)");
+                    }
+                    int changes = _bookService.AddBookToCategory(dto.BookId, validCates);
+                    IActionResult result = (changes > 0) ? Ok("Successful!") : BadRequest("Add fail!");
+                    return result;
+                }
+                return BadRequest("Model invalid!");
+
             }
-            catch (Exception e)
+            catch(Exception e)
             {
-                return BadRequest(e.Message);
+                throw new Exception(e.Message);
             }
         }
 
-        [HttpPut("UpdateBook")]
-        public IActionResult UpdateBook([FromBody] BookDetailsDTO item)
+        [HttpDelete("category/remove-book-from-category")]
+        public IActionResult RemoveBookFromCate(Guid bookId, Guid cateId)
         {
             try
             {
-                _bookService.UpdateBook(item);
-                return Ok();
+                int changes = _bookService.RemoveBookFromCate(bookId, cateId);
+                IActionResult result = (changes > 0) ? Ok("Successful!") : BadRequest("remove fail!");
+                return result;
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message);
+                throw new Exception(e.Message);
             }
         }
 
-        [HttpDelete("DeleteBook/{bookId}")]
-        public IActionResult DeleteBook(Guid bookId)
+        [HttpGet("category/get-all-cate-of-book")]
+        public IActionResult GetAllCategoryOfBook(Guid bookId)
         {
             try
             {
-                _bookService.DeleteBook(bookId);
-                return Ok();
+                return Ok(_bookService.GetAllCategoryOfBook(bookId));
             }
-            catch (Exception e)
+            catch(Exception e)
             {
-                return BadRequest(e.Message);
+                throw new Exception(e.Message);
             }
         }
 

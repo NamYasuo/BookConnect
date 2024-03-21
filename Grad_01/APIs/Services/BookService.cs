@@ -10,6 +10,15 @@ namespace APIs.Services
 {
     public class BookService : IBookService
     {
+        void IBookService.UpdateBook(BookDetailsDTO item)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IBookService.AddNewBook(BookDetailsDTO item)
+        {
+            throw new NotImplementedException();
+        }
 
         public List<Book> GetAllBook() => new BookDAO().GetAllBook();
 
@@ -59,14 +68,18 @@ namespace APIs.Services
             }
         }
 
-        void IBookService.UpdateBook(BookDetailsDTO item)
-        {
-            throw new NotImplementedException();
-        }
+        //-----------------------------------Book category------------------------------------------------//
 
-        void IBookService.AddNewBook(BookDetailsDTO item)
-        {
-            throw new NotImplementedException();
-        }
+        public int AddBookToCategory(Guid bookId, List<Guid> cateIds) => new BookDAO().AddBookToCategory(bookId, cateIds);
+
+
+        public bool IsBookAlreadyInCate(Guid bookId, Guid cateId) => new BookDAO().IsBookAlreadyInCate(bookId, cateId);
+
+
+        public int RemoveBookFromCate(Guid bookId, Guid cateId) => new BookDAO().RemoveBookFromCate(bookId, cateId);
+
+
+        public List<Category> GetAllCategoryOfBook(Guid bookId) => new BookDAO().GetAllCategoryOfBook(bookId);
+     
     }
 }

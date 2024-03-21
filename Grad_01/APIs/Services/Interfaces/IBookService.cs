@@ -16,11 +16,17 @@ namespace APIs.Services.Interfaces
         public void UpdateBook(Book item);
         public void DeleteBook(Guid bookId);
         public List<Book> GetBookListById(List<Guid> bookIds);
-
-
-        List<SEODTO> ListSEO(string searchTerm);
         void UpdateBook(BookDetailsDTO item);
         void AddNewBook(BookDetailsDTO item);
+
+        List<SEODTO> ListSEO(string searchTerm);
+
+        //-----------------------------------Book category------------------------------------------------//
+        int AddBookToCategory(Guid bookId, List<Guid> cateId);
+        bool IsBookAlreadyInCate(Guid bookId, Guid cateId);
+        int RemoveBookFromCate(Guid bookId, Guid cateId);
+        List<Category> GetAllCategoryOfBook(Guid bookId);
+
     }
 }
 

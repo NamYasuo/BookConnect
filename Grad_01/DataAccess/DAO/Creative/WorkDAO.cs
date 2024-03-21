@@ -8,7 +8,7 @@ namespace DataAccess.DAO
 {
 	public class WorkDAO
 	{
-		//Get all
+		//------------------------------GET-------------------------------------//
 		public List<Work> GetAllWork()
 		{
 			List<Work> works = new List<Work>();
@@ -52,7 +52,7 @@ namespace DataAccess.DAO
             {
                 using (var context = new AppDbContext())
                 {
-                    Work = context.Works.Where(b => b.Titile == title).FirstOrDefault();
+                    Work = context.Works.Where(b => b.Title == title).FirstOrDefault();
                 }
             }
             catch (Exception e)
@@ -63,6 +63,33 @@ namespace DataAccess.DAO
             else throw new NullReferenceException();
         }
 
+        public List<WorkIdTitleDTO>? GetTitleAndIdByAuthorId(Guid authorId)
+        {
+            try
+            {
+                List<WorkIdTitleDTO>? results = new List<WorkIdTitleDTO>();
+                using (var context = new AppDbContext())
+                {
+                    List<Work> works = context.Works.Where(w => w.AuthorId == authorId).ToList();
+                    foreach (Work w in works)
+                    {
+                        results.Add(new WorkIdTitleDTO
+                        {
+                            Title = w.Title,
+                            WorkId = w.WorkId
+                        });
+                    }
+                }
+                return results;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+
+        }
+
+        //------------------------------ADD-------------------------------------//
         //Add new Work
         public string AddNewWork(Work work)
         {
@@ -72,7 +99,7 @@ namespace DataAccess.DAO
                 using (var context = new AppDbContext())
                 {
                     //Check dupllicate work
-                    if (!context.Works.Any(w => w.Titile == work.Titile))
+                    if (!context.Works.Any(w => w.Title == work.Title))
                     {
                         context.Works.Add(work);
                         result = context.SaveChanges();
@@ -87,6 +114,8 @@ namespace DataAccess.DAO
                 throw new Exception(e.Message);
             }
         }
+
+        //-----------------------------UPDATE-----------------------------------//
 
         //Modify Work
         public void UpdateWork(Work work)
@@ -105,6 +134,44 @@ namespace DataAccess.DAO
             }
         }
 
+        public int SetWorkPrice(Guid workId, decimal price)
+        {
+            try{
+               using(var context = new AppDbContext())
+                {
+                    Work? work = context.Works.Where(w => w.WorkId == workId).SingleOrDefault();
+                    if(work != null)
+                    {
+                        work.Price = price;
+                    }
+                    return context.SaveChanges();
+                }
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public int SetWorkType(Guid workId, string type)
+        {
+            try{
+                using(var context = new AppDbContext())
+                {
+                    Work? work = context.Works.Where(w => w.WorkId == workId).SingleOrDefault();
+                    if(work != null)
+                    {
+                        work.Type = type;
+                    }
+                    return context.SaveChanges();
+                }
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+        //-----------------------------DELETE-----------------------------------//
         //Delete Work by id
         public int DeleteWorkById(Guid workId)
         {
@@ -128,33 +195,28 @@ namespace DataAccess.DAO
             }
         }
 
-        public List<WorkIdTitleDTO>? GetTitleAndIdByAuthorId(Guid authorId)
+
+        //-----------------------------CHECK-----------------------------------//
+        public bool IsWorkCreator(Guid userId, Guid workId)
         {
             try
             {
-                List<WorkIdTitleDTO>? results = new List<WorkIdTitleDTO>();
                 using(var context = new AppDbContext())
                 {
-                   List<Work> works = context.Works.Where(w => w.AuthorId == authorId).ToList();
-                   foreach(Work w in works)
+                    Work? work = context.Works.Where(w => w.WorkId == workId).SingleOrDefault();
+                    if(work != null)
                     {
-                        results.Add(new WorkIdTitleDTO
-                        {
-                            Title = w.Titile,
-                            WorkId = w.WorkId
-                        });
+                        return work.AuthorId == userId;
                     }
+                    return false;
                 }
-                return results;
             }
             catch(Exception e)
             {
                 throw new Exception(e.Message);
             }
-            
         }
 
-    
     }
 }
 

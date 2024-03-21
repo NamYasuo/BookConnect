@@ -69,12 +69,8 @@ namespace APIs.Controllers
                 string redirectUrl = "http://localhost:5000/checkout-result?refId=" + returnModel.PaymentRefId;  // Replace with your desired URL
                 return Redirect(redirectUrl);
 
-                //return Ok("http://localhost:5000/checkout-result?refId=" + returnModel.PaymentRefId);
             }
-            //    returnModel = processResult.Data.Item1;
-            //    returnUrl = processResult.Data.Item2;
-            //    if (returnUrl.EndsWith("/"))
-            //    returnUrl = returnUrl.Remove(returnUrl.Length - 1, 1);
+     
             return BadRequest(returnModel);
         }
 

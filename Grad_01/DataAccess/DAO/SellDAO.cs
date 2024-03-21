@@ -86,11 +86,12 @@ namespace DataAccess.DAO
 
         public List<BookListing> GetBookListingById(Guid Id)
         {
-            try { 
-            using (var context = new AppDbContext())
+            try
             {
-                return context.BookListings.Where(i => i.ListingId == Id).ToList();
-            }
+                using (var context = new AppDbContext())
+                {
+                    return context.BookListings.Where(i => i.ListingId == Id).ToList();
+                }
             }
             catch (Exception e)
             {
@@ -99,13 +100,14 @@ namespace DataAccess.DAO
         }
         public List<BookListing> GetBookListingByName(string listName)
         {
-            try { 
-            using (var context = new AppDbContext())
+            try
             {
-                return context.BookListings
-                       .Where(bl => bl.ListName.Contains(listName))
-                       .ToList();
-            }
+                using (var context = new AppDbContext())
+                {
+                    return context.BookListings
+                           .Where(bl => bl.ListName.Contains(listName))
+                           .ToList();
+                }
             }
             catch (Exception e)
             {

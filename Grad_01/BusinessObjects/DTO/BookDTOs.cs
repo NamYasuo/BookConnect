@@ -13,9 +13,8 @@ namespace BusinessObjects.DTO
     public class SEODTO
     {
         public Guid BookId { get; set; }
-        public string Title { get; set; } = null!;
+        public string Title { get; set; }
     }
-
 
     public class BookDetailsDTO
     {
@@ -32,6 +31,12 @@ namespace BusinessObjects.DTO
         public double Rating { get; set; }
         public Guid AgencyId { get; set; }
         public string AgencyName { get; set; } = null!;
+    }
+
+    public class AddBookToCateDTO
+    {
+        public Guid BookId { get; set; }
+        public List<Guid> CateIds { get; set; } = null!;
     }
 }
 
