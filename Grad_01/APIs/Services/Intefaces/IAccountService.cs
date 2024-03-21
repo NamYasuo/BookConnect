@@ -25,6 +25,7 @@ namespace APIs.Services.Intefaces
         public void UpdateUserProfile(Guid userId, string username, string? address = null);
         public void UpdateAddress(Guid userId, Guid? addressId, string cityProvince, string district, string subDistrict, string rendezvous, bool isDefault);
 
+        public void RateAndCommentProduct(Guid userId, Guid ratingId, int ratingPoint, string comment);
 
     }
 }

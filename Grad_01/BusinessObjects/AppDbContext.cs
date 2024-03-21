@@ -6,6 +6,7 @@ using BusinessObjects.Models.Ecom.Rating;
 using BusinessObjects.Models.Utils;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System.Reflection.Emit;
 
 namespace BusinessObjects
 {
@@ -60,6 +61,7 @@ namespace BusinessObjects
             builder.Entity<RatingRecord>().HasNoKey();
             builder.Entity<CategoryList>().HasNoKey();
             builder.Entity<CICMedia>().HasNoKey();
+           
         }
     }
 }

@@ -41,36 +41,57 @@ namespace DataAccess.DAO
                 throw new Exception(e.Message);
             }
         }
-        public void UpdateAddress(Address updatedAddress)
+        public void UpdateAddress(Guid userId, Guid? addressId, string cityProvince, string district, string subDistrict, string rendezvous, bool isDefault)
         {
             try
             {
                 using (var context = new AppDbContext())
                 {
-                    var existingAddress = context.Addresses.FirstOrDefault(a => a.AddressId == updatedAddress.AddressId);
-                    if (existingAddress != null)
+                    if (addressId.HasValue)
                     {
-                        // Update properties of the existing address
-                        existingAddress.City_Province = updatedAddress.City_Province;
-                        existingAddress.District = updatedAddress.District;
-                        existingAddress.SubDistrict = updatedAddress.SubDistrict;
-                        existingAddress.Rendezvous = updatedAddress.Rendezvous;
-                        existingAddress.Default = updatedAddress.Default;
+                        // Update existing address
+                        var existingAddress = context.Addresses.FirstOrDefault(a => a.UserId == userId && a.AddressId == addressId);
 
-                        // Save changes to the database
-                        context.SaveChanges();
+                        if (existingAddress == null)
+                        {
+                            throw new Exception("Address not found.");
+                        }
+
+                        existingAddress.City_Province = cityProvince;
+                        existingAddress.District = district;
+                        existingAddress.SubDistrict = subDistrict;
+                        existingAddress.Rendezvous = rendezvous;
+                        existingAddress.Default = isDefault;
                     }
                     else
                     {
-                        throw new ArgumentException("Address not found.");
+                        // Create new address
+                        var newAddress = new Address
+                        {
+                            AddressId = Guid.NewGuid(),
+                            UserId = userId,
+                            City_Province = cityProvince,
+                            District = district,
+                            SubDistrict = subDistrict,
+                            Rendezvous = rendezvous,
+                            Default = isDefault
+                        };
+
+                        context.Addresses.Add(newAddress);
                     }
+
+                    context.SaveChanges();
                 }
             }
             catch (Exception e)
             {
-                throw new Exception(e.Message);
+                throw new Exception("Error updating address: " + e.Message);
             }
         }
+
+
+
     }
 }
+
 

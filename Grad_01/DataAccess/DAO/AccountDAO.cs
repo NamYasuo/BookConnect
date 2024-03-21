@@ -3,6 +3,7 @@ using System.Linq;
 using BusinessObjects;
 using BusinessObjects.DTO;
 using BusinessObjects.Models;
+using BusinessObjects.Models.Ecom.Rating;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
@@ -196,7 +197,42 @@ namespace DataAccess.DAO
                 throw new Exception(e.Message);
             }
         }
-        
+
+
+        public void RateAndCommentProduct(Guid userId, Guid ratingId, int ratingPoint, string comment)
+        {
+            try
+            {
+                using (var context = new AppDbContext())
+                {
+                    // Check if the user has already rated the product
+                    var existingRatingRecord = context.RatingRecords
+                                                     .FromSqlRaw("SELECT * FROM RatingRecords WHERE UserId = {0} AND RatingId = {1}", userId, ratingId)
+                                                     .FirstOrDefault();
+
+                    if (existingRatingRecord != null)
+                    {
+                        // Update existing rating record
+                        context.Database.ExecuteSqlRaw("UPDATE RatingRecords SET RatingPoint = {0}, Comment = {1} WHERE UserId = {2} AND RatingId = {3}", ratingPoint, comment, userId, ratingId);
+                    }
+                    else
+                    {
+                        // Create a new rating record
+                        context.Database.ExecuteSqlRaw("INSERT INTO RatingRecords (RatingId, UserId, RatingPoint, Comment) VALUES ({0}, {1}, {2}, {3})", ratingId, userId, ratingPoint, comment);
+                    }
+
+                    // Save changes to the database
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Error rating and commenting product: {e.Message}");
+            }
+        }
+
+
+
 
 
 

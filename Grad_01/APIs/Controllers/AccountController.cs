@@ -178,7 +178,7 @@ namespace APIs.Controllers
             return Ok(new { count = files.Count, size });
         }
         [HttpPut]
-        [Route("update-address/{addressId?}")]
+        [Route("UpdateAddress")]
         public IActionResult UpdateAddress(Guid userId, Guid? addressId, string cityProvince, string district, string subDistrict, string rendezvous, bool isDefault)
         {
             try
@@ -193,6 +193,26 @@ namespace APIs.Controllers
                 return StatusCode(500, $"An error occurred: {e.Message}");
             }
         }
+
+
+
+        [HttpPost]
+        [Route("rate-and-comment")]
+        public IActionResult RateAndCommentProduct(Guid userId,  Guid ratingId, int ratingPoint, string comment)
+        {
+            try
+            {
+                // Call the service method to rate and comment the product
+                accService.RateAndCommentProduct(userId, ratingId, ratingPoint, comment);
+
+                return Ok("Product rated and commented successfully");
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, $"An error occurred: {e.Message}");
+            }
+        }
+
 
 
         //[HttpGet, Authorize]
