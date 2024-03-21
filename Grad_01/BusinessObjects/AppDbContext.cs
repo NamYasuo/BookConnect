@@ -79,9 +79,7 @@ namespace BusinessObjects
                 }
                 );
             base.OnModelCreating(builder); ;
-            builder.Entity<Inventory>().HasNoKey();
-            builder.Entity<Basket>().HasNoKey();
-            builder.Entity<RatingRecord>().HasNoKey();
+   
             builder.Entity<CategoryList>().HasNoKey();
             builder.Entity<CICMedia>().HasNoKey();
 
