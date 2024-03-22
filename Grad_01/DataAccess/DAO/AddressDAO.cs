@@ -48,7 +48,79 @@ namespace DataAccess.DAO
 				using(var context = new AppDbContext())
 				{
 					context.Addresses.Add(address);
+					if (address.Default)
+					{
+						SetAddressDefault(address.AddressId);
+					}
 					return context.SaveChanges();
+				}
+			}
+			catch(Exception e)
+			{
+				throw new Exception(e.Message);
+			}
+		}
+
+		public int SetAddressDefault(Guid addressId)
+		{
+			try
+			{
+				using(var context = new AppDbContext())
+				{
+					Address? address = context.Addresses.Where(a => a.AddressId == addressId).SingleOrDefault();
+					if(address != null)
+					{
+                        List<Address> records = context.Addresses.Where(a => a.UserId == address.UserId && a.Default && a.AddressId != addressId).ToList();
+                        foreach (Address a in records)
+                        {
+                            a.Default = false;
+                        }
+                        address.Default = true;
+                    }
+                    return context.SaveChanges();
+				}
+			}
+			catch(Exception e)
+			{
+				throw new Exception(e.Message);
+			}
+		}
+
+		public int UpdateAddressDefault(Address address)
+		{
+			try
+			{
+				using(var context = new AppDbContext())
+				{
+					int result = 0;
+					if(address.UserId != null)
+					{
+						if (IsOldAddress(address.AddressId, (Guid)address.UserId))
+						{
+							result += SetAddressDefault(address.AddressId);
+						}
+						else context.Addresses.Add(address);
+						result += context.SaveChanges();
+						SetAddressDefault(address.AddressId);
+						result += context.SaveChanges();
+                    }
+                    result += context.SaveChanges();
+                    return result;
+                }
+			}
+			catch(Exception e)
+			{
+				throw new Exception(e.Message);
+			}
+		}
+
+		public bool IsOldAddress(Guid addressId, Guid userId)
+		{
+			try
+			{
+				using(var context = new AppDbContext())
+				{
+					return context.Addresses.Any(a => a.AddressId == addressId && a.UserId == userId);
 				}
 			}
 			catch(Exception e)

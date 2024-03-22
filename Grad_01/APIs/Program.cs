@@ -40,6 +40,7 @@ builder.Services.AddScoped<ITransactionService, TransactionService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICloudinaryService, CloudinaryService>();
 builder.Services.AddScoped<IAdminService, AdminService>();
+builder.Services.AddScoped<IAddressService, AddressService>();
 
 //Repositories
 builder.Services.AddScoped<ICartRepository, CartRepository>();
