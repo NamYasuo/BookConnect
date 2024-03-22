@@ -20,11 +20,11 @@ namespace APIs.Controllers
     {
         private readonly IPostService _postService;
         private readonly IAccountService _accountService;
-        private FileSaver _fileSaver;
-        public PostController(IPostService postService, IWebHostEnvironment env, IAccountService accountService)
+        private readonly ICloudinaryService _cloudinaryService;
+        public PostController(IPostService postService, ICloudinaryService cloudinaryService, IAccountService accountService)
         {
+            _cloudinaryService = cloudinaryService;
             _postService = postService;
-            _fileSaver = new FileSaver();
             _accountService = accountService;
         }
         //---------------------------------------------POST-------------------------------------------------------//
@@ -35,7 +35,12 @@ namespace APIs.Controllers
             string productDir = "";
             if (dto.ProductImgs != null)
             {
-                productDir = _fileSaver.FileSaveAsync(dto.ProductImgs, "src/assets/FileSystem/" + "post/" + userPost + "/" + dto.Title + "/Cover");// dduowngf link + "post/" + authorName + "/"
+                var saveProductResult = _cloudinaryService.UploadImage(dto.ProductImgs, "Post/" + userPost + "/" + dto.Title + "/Image");
+                if (saveProductResult.StatusCode != 200)
+                {
+                    return BadRequest(saveProductResult.Message);
+                }
+                productDir = saveProductResult.Data;
             }
             try
             {
@@ -46,6 +51,7 @@ namespace APIs.Controllers
                         UserId = dto.UserId,
                         PostId = Guid.NewGuid(),
                         AuthorName = dto.AuthorName,
+                        ImgDir = productDir,
                         Title = dto.Title,
                         Content = dto.Content,
                         CreatedAt = DateTime.Now,
@@ -64,29 +70,37 @@ namespace APIs.Controllers
             }
         }
         [HttpPut("update posts")]
-        public IActionResult UpdatePost([FromForm] UpdatePostDTOs post)
+        public IActionResult UpdatePost([FromForm] UpdatePostDTOs dto)
         {
             try
             {
+                string? userPost = _accountService.GetUsernameById(dto.UserId);
                 string newImgPath = "";
                 if (ModelState.IsValid)
                 {
-                    if (post.ProductImgs != null)
+                    if (dto.ProductImgs != null)
                     {
-                        string? oldImgPath = _postService.GetPostById(post.PostId)?.ImgDir;
+                        string? oldImgPath = _postService.GetPostById(dto.PostId)?.ImgDir;
 
                         if (oldImgPath != null)
                         {
-                            _fileSaver.FileDelete(oldImgPath);
+                            _cloudinaryService.DeleteImage(oldImgPath, "Post/" + userPost + "/" + dto.Title + "/Image");
                         }
-                        newImgPath = _fileSaver.FileSaveAsync(post.ProductImgs, "src/assets/FileSystem/" + "post/" + oldImgPath + "/" + post.Title + "/Cover");//"src/assets/FileSystem/" + "post/" + authorName + "/" + post.Title + "/Cover"
+                        var cloudResponse = _cloudinaryService.UploadImage(dto.ProductImgs, "Post/" + dto.Title + "/Image");
+                        if (cloudResponse.StatusCode != 200)
+                        {
+                            return BadRequest(cloudResponse.Message);
+                        }
+                        newImgPath = cloudResponse.Data;
                     }
                     Post updateData = new Post
                     {
-                        PostId = Guid.NewGuid(),
-                        AuthorName = post.AuthorName,
-                        Title = post.Title,
-                        Content = post.Content,
+                        PostId = dto.PostId,
+                        UserId = dto.UserId,
+                        AuthorName = dto.AuthorName,
+                        ImgDir = newImgPath,
+                        Title = dto.Title,
+                        Content = dto.Content,
                         CreatedAt = DateTime.Now,
                     };
                     if (_postService.UpdatePost(updateData) > 0)
@@ -169,6 +183,7 @@ namespace APIs.Controllers
                     int result = _postService.AddComment(new Comment()
                     {
                         CommentId = Guid.NewGuid(),
+                        PostId = comment.PostId,
                         Description = comment.Description,
                         Created = DateTime.Now
                     });
@@ -179,6 +194,34 @@ namespace APIs.Controllers
                     return BadRequest("Add false");
                 }
                 return BadRequest("Comment Invalid");
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        [HttpPut("Update-Comment")]
+        public IActionResult UpdateComment([FromForm] UpdateCommentDTO comment)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    Comment updateData = new Comment
+                    {
+                        CommentId = comment.CommentId,
+                        PostId = comment.PostId,
+                        Description = comment.Description,
+                        Created = DateTime.Now
+                    };
+                    if (_postService.UpdateComment(updateData) > 0)
+                    {
+                        return Ok("Successful");
+                    }
+                    return BadRequest("Update fail");
+                }
+                return BadRequest("Model state invalid");
             }
             catch (Exception e)
             {

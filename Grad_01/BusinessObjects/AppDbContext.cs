@@ -33,7 +33,6 @@ namespace BusinessObjects
         public virtual DbSet<Subscription> Subscriptions { get; set; } 
         public virtual DbSet<SubRecord> SubRecords { get; set; } 
 
-        public virtual DbSet<TransactionRecord> Transactions { get; set; } = null!;
         //Rating services DbSets
         public virtual DbSet<Rating> Ratings { get; set; }
         public virtual DbSet<RatingRecord> RatingRecords { get; set; } 
@@ -44,8 +43,8 @@ namespace BusinessObjects
         //public virtual Db
 
         //Trading services DbSets
-        public virtual DbSet<Post> Posts { get; set; };
-        public virtual DbSet<Comment> Comments { get; set; };
+        public virtual DbSet<Post> Posts { get; set; }
+        public virtual DbSet<Comment> Comments { get; set; }
 
         //Utility DbSets
         public virtual DbSet<Role> Roles { get; set; }
@@ -95,7 +94,13 @@ namespace BusinessObjects
             .HasForeignKey(a => a.PostAddressId)
             .OnDelete(DeleteBehavior.Restrict);
 
-            
+            builder.Entity<Comment>()
+            .HasOne(a => a.Post)
+            .WithMany()
+            .HasForeignKey(a => a.PostId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+
         }
     }
 }

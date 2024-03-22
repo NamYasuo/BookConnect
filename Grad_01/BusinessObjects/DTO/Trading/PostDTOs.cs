@@ -15,17 +15,18 @@ namespace BusinessObjects.DTO.Trading
         public IFormFile? ProductImgs { get; set; }
         public string? Title { get; set; }
         public string? Content { get; set; }
-        public List<AddPostDTOs> CateId { get; set; } = null!;
+        //public List<AddPostDTOs> CateId { get; set; } = null!;
     }
 
     public class UpdatePostDTOs
     {
         public Guid PostId { get; set; }
+        public Guid UserId { get; set; }
         public string? AuthorName { get; set; } = null!;
         public IFormFile? ProductImgs { get; set; }
         public string? Title { get; set; }
         public string? Content { get; set; }
-        public List<AddPostDTOs> CateId { get; set; } = null!;
+        //public List<AddPostDTOs> CateId { get; set; } = null!;
     }
 
     //Comment
@@ -39,21 +40,20 @@ namespace BusinessObjects.DTO.Trading
 
     public class AddCommentDTO
     {
-        public Guid UserId { get; set; }
         public Guid PostId { get; set; }
         public string Description { get; set; }
     }
 
     public class UpdateCommentDTO
     {
-        public Guid UserId { get; set; }
+        public Guid CommentId { get; set; }
         public Guid PostId { get; set; }
         public string Description { get; set; }
     }
 
     public class DeleteCommentDTO
     {
-        public Guid UserId { get; set; }
+        public Guid CommentId { get; set; }
         public Guid PostId { get; set; }
         public string Description { get; set; }
     }

@@ -4,7 +4,6 @@ using BusinessObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -12,11 +11,9 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusinessObjects.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240306064107_ver1")]
-    partial class ver1
+    partial class AppDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,7 +42,7 @@ namespace BusinessObjects.Migrations
                     b.Property<string>("SubDistrict")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("AddressId");
@@ -64,12 +61,24 @@ namespace BusinessObjects.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("BusinessType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LogoUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<Guid>("OwnerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("PostAddressId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("AgencyId");
 
                     b.HasIndex("OwnerId");
+
+                    b.HasIndex("PostAddressId");
 
                     b.ToTable("Agencies");
                 });
@@ -82,6 +91,15 @@ namespace BusinessObjects.Migrations
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsBanned")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSeller")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsValidated")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -107,6 +125,10 @@ namespace BusinessObjects.Migrations
 
             modelBuilder.Entity("BusinessObjects.Models.Basket", b =>
                 {
+                    b.Property<Guid>("BasketId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("AddedDate")
                         .HasColumnType("datetime2");
 
@@ -124,6 +146,8 @@ namespace BusinessObjects.Migrations
 
                     b.Property<decimal?>("Stored_Price")
                         .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("BasketId");
 
                     b.HasIndex("CartId");
 
@@ -153,9 +177,6 @@ namespace BusinessObjects.Migrations
 
                     b.Property<DateTime?>("PublishDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<int?>("Quantity")
-                        .HasColumnType("int");
 
                     b.Property<Guid?>("RatingId")
                         .HasColumnType("uniqueidentifier");
@@ -195,6 +216,12 @@ namespace BusinessObjects.Migrations
                 {
                     b.Property<Guid>("ChapterId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("ChapterNumber")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Directory")
                         .HasColumnType("nvarchar(max)");
@@ -237,10 +264,6 @@ namespace BusinessObjects.Migrations
                     b.Property<Guid>("SubscriptionId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Token")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("SubRecordId");
 
                     b.HasIndex("BillingId");
@@ -265,9 +288,6 @@ namespace BusinessObjects.Migrations
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("SubcriberId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("SubscriberId")
                         .HasColumnType("uniqueidentifier");
@@ -329,11 +349,17 @@ namespace BusinessObjects.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<decimal?>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid>("StatId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Titile")
+                    b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -344,6 +370,8 @@ namespace BusinessObjects.Migrations
                     b.HasKey("WorkId");
 
                     b.HasIndex("AuthorId");
+
+                    b.HasIndex("StatId");
 
                     b.ToTable("Works");
                 });
@@ -362,6 +390,9 @@ namespace BusinessObjects.Migrations
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("ImgDir")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
@@ -373,6 +404,34 @@ namespace BusinessObjects.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Posts");
+                });
+
+            modelBuilder.Entity("BusinessObjects.Models.Ecom.Base.BanRecord", b =>
+                {
+                    b.Property<Guid>("BanRecordId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("BanReason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("BannedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("TargetUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("UnBanReason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UnbannedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("BanRecordId");
+
+                    b.HasIndex("TargetUserId");
+
+                    b.ToTable("BanRecords");
                 });
 
             modelBuilder.Entity("BusinessObjects.Models.Ecom.Cart", b =>
@@ -425,6 +484,10 @@ namespace BusinessObjects.Migrations
                     b.Property<string>("Notes")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
@@ -434,51 +497,47 @@ namespace BusinessObjects.Migrations
                     b.Property<decimal?>("Total_Price")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<Guid?>("TransactionId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("OrderId");
 
                     b.HasIndex("AddressId");
 
+                    b.HasIndex("TransactionId");
+
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("BusinessObjects.Models.Ecom.Payment.PaymentDetails", b =>
+            modelBuilder.Entity("BusinessObjects.Models.Ecom.Payment.TransactionRecord", b =>
                 {
-                    b.Property<Guid>("PaymentId")
+                    b.Property<Guid?>("TransactionId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Currency")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Language")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastMessage")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("MerchantId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("PaidDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("PaymentGate")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal?>("RequiredAmount")
+                    b.Property<decimal?>("Amount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("Status")
+                    b.Property<string>("PaymentDate")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("PaymentId");
+                    b.Property<string>("PaymentMessage")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("MerchantId");
+                    b.Property<string>("PaymentStatus")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("PaymentDetails");
+                    b.Property<string>("Signature")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("TransactionId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Transactions");
                 });
 
             modelBuilder.Entity("BusinessObjects.Models.Ecom.Rating.Rating", b =>
@@ -496,6 +555,10 @@ namespace BusinessObjects.Migrations
 
             modelBuilder.Entity("BusinessObjects.Models.Ecom.Rating.RatingRecord", b =>
                 {
+                    b.Property<Guid>("RatingRecordId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Comment")
                         .HasColumnType("nvarchar(max)");
 
@@ -508,6 +571,8 @@ namespace BusinessObjects.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.HasKey("RatingRecordId");
+
                     b.HasIndex("RatingId");
 
                     b.HasIndex("UserId");
@@ -517,6 +582,10 @@ namespace BusinessObjects.Migrations
 
             modelBuilder.Entity("BusinessObjects.Models.Inventory", b =>
                 {
+                    b.Property<Guid>("InventoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("AgencyId")
                         .HasColumnType("uniqueidentifier");
 
@@ -525,6 +594,8 @@ namespace BusinessObjects.Migrations
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
+
+                    b.HasKey("InventoryId");
 
                     b.HasIndex("AgencyId");
 
@@ -548,6 +619,14 @@ namespace BusinessObjects.Migrations
                     b.HasKey("RoleId");
 
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            RoleId = new Guid("2da9143d-559c-40b5-907d-0d9c8d714c6c"),
+                            Description = "Role for base user?",
+                            RoleName = "BaseUser"
+                        });
                 });
 
             modelBuilder.Entity("BusinessObjects.Models.TokenInfo", b =>
@@ -579,6 +658,32 @@ namespace BusinessObjects.Migrations
                     b.ToTable("TokenInfos");
                 });
 
+            modelBuilder.Entity("BusinessObjects.Models.Trading.Comment", b =>
+                {
+                    b.Property<Guid>("CommentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CommenterId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("PostId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("CommentId");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("Comments");
+                });
+
             modelBuilder.Entity("BusinessObjects.Models.Utils.CICMedia", b =>
                 {
                     b.Property<string>("Directory")
@@ -599,28 +704,57 @@ namespace BusinessObjects.Migrations
 
             modelBuilder.Entity("BusinessObjects.Models.Utils.CategoryList", b =>
                 {
-                    b.Property<Guid>("BookId")
+                    b.Property<Guid?>("BookId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CategoryListId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("WorkId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasIndex("BookId");
 
                     b.HasIndex("CategoryId");
 
+                    b.HasIndex("WorkId");
+
                     b.ToTable("CategoryLists");
+                });
+
+            modelBuilder.Entity("BusinessObjects.Models.Utils.Statistic", b =>
+                {
+                    b.Property<Guid>("StatId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Interested")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Purchase")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Search")
+                        .HasColumnType("int");
+
+                    b.Property<int>("View")
+                        .HasColumnType("int");
+
+                    b.HasKey("StatId");
+
+                    b.ToTable("Statistics");
                 });
 
             modelBuilder.Entity("BusinessObjects.Models.Address", b =>
                 {
-                    b.HasOne("BusinessObjects.Models.AppUser", "AppUser")
+                    b.HasOne("BusinessObjects.Models.AppUser", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
-                    b.Navigation("AppUser");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("BusinessObjects.Models.Agency", b =>
@@ -631,7 +765,15 @@ namespace BusinessObjects.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("BusinessObjects.Models.Address", "PostAddress")
+                        .WithMany()
+                        .HasForeignKey("PostAddressId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("Owner");
+
+                    b.Navigation("PostAddress");
                 });
 
             modelBuilder.Entity("BusinessObjects.Models.AppUser", b =>
@@ -690,7 +832,7 @@ namespace BusinessObjects.Migrations
 
             modelBuilder.Entity("BusinessObjects.Models.Creative.SubRecord", b =>
                 {
-                    b.HasOne("BusinessObjects.Models.Ecom.Payment.PaymentDetails", "PaymentDetails")
+                    b.HasOne("BusinessObjects.Models.Ecom.Payment.TransactionRecord", "Transaction")
                         .WithMany()
                         .HasForeignKey("BillingId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -702,9 +844,9 @@ namespace BusinessObjects.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("PaymentDetails");
-
                     b.Navigation("Subscription");
+
+                    b.Navigation("Transaction");
                 });
 
             modelBuilder.Entity("BusinessObjects.Models.Creative.Subscription", b =>
@@ -737,7 +879,15 @@ namespace BusinessObjects.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("BusinessObjects.Models.Utils.Statistic", "Stats")
+                        .WithMany()
+                        .HasForeignKey("StatId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Author");
+
+                    b.Navigation("Stats");
                 });
 
             modelBuilder.Entity("BusinessObjects.Models.E_com.Trading.Post", b =>
@@ -749,6 +899,17 @@ namespace BusinessObjects.Migrations
                         .IsRequired();
 
                     b.Navigation("AppUser");
+                });
+
+            modelBuilder.Entity("BusinessObjects.Models.Ecom.Base.BanRecord", b =>
+                {
+                    b.HasOne("BusinessObjects.Models.AppUser", "TargetedUser")
+                        .WithMany()
+                        .HasForeignKey("TargetUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TargetedUser");
                 });
 
             modelBuilder.Entity("BusinessObjects.Models.Ecom.Cart", b =>
@@ -768,18 +929,22 @@ namespace BusinessObjects.Migrations
                         .WithMany()
                         .HasForeignKey("AddressId");
 
+                    b.HasOne("BusinessObjects.Models.Ecom.Payment.TransactionRecord", "Transaction")
+                        .WithMany()
+                        .HasForeignKey("TransactionId");
+
                     b.Navigation("Address");
+
+                    b.Navigation("Transaction");
                 });
 
-            modelBuilder.Entity("BusinessObjects.Models.Ecom.Payment.PaymentDetails", b =>
+            modelBuilder.Entity("BusinessObjects.Models.Ecom.Payment.TransactionRecord", b =>
                 {
-                    b.HasOne("BusinessObjects.Models.AppUser", "Merchant")
+                    b.HasOne("BusinessObjects.Models.AppUser", "User")
                         .WithMany()
-                        .HasForeignKey("MerchantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
-                    b.Navigation("Merchant");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("BusinessObjects.Models.Ecom.Rating.RatingRecord", b =>
@@ -831,6 +996,17 @@ namespace BusinessObjects.Migrations
                     b.Navigation("AppUser");
                 });
 
+            modelBuilder.Entity("BusinessObjects.Models.Trading.Comment", b =>
+                {
+                    b.HasOne("BusinessObjects.Models.E_com.Trading.Post", "Post")
+                        .WithMany()
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Post");
+                });
+
             modelBuilder.Entity("BusinessObjects.Models.Utils.CICMedia", b =>
                 {
                     b.HasOne("BusinessObjects.Models.AppUser", "AppUser")
@@ -846,9 +1022,7 @@ namespace BusinessObjects.Migrations
                 {
                     b.HasOne("BusinessObjects.Models.Book", "Book")
                         .WithMany()
-                        .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BookId");
 
                     b.HasOne("BusinessObjects.Models.Category", "Category")
                         .WithMany()
@@ -856,9 +1030,15 @@ namespace BusinessObjects.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("BusinessObjects.Models.Creative.Work", "Work")
+                        .WithMany()
+                        .HasForeignKey("WorkId");
+
                     b.Navigation("Book");
 
                     b.Navigation("Category");
+
+                    b.Navigation("Work");
                 });
 #pragma warning restore 612, 618
         }
