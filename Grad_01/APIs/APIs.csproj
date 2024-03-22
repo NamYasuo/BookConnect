@@ -10,6 +10,7 @@
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'http' " />
   <ItemGroup>
+    <PackageReference Include="CloudinaryDotNet" Version="1.26.2" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.12" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.14" />
@@ -33,20 +34,8 @@
     <None Remove="Repositories\" />
     <None Remove="Repositories\Interfaces\" />
     <None Remove="Utils\" />
-    <None Remove="Utils\Config\" />
-    <None Remove="Utils\Base\" />
-    <None Remove="Utils\Base\Models\" />
-    <None Remove="Utils\Extensions\" />
-    <None Remove="Utils\VnPay\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Mapper\" />
-    <Folder Include="Services\Payment\" />
-    <Folder Include="Utils\" />
-    <Folder Include="Utils\Config\" />
-    <Folder Include="Utils\Base\" />
-    <Folder Include="Utils\Base\Models\" />
-    <Folder Include="Utils\Extensions\" />
-    <Folder Include="Utils\VnPay\" />
   </ItemGroup>
 </Project>

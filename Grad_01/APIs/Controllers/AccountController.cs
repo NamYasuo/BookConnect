@@ -4,6 +4,7 @@ using System.Security.Claims;
 using System.Text;
 using APIs.DTO;
 using APIs.Services.Intefaces;
+using APIs.Services.Interfaces;
 using BusinessObjects.DTO;
 using BusinessObjects.Models;
 using DataAccess.DTO;
@@ -15,17 +16,19 @@ namespace APIs.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountController: ControllerBase
-	{
-		private readonly IAccountService accService;
+    public class AccountController : ControllerBase
+    {
+        private readonly IAccountService _accService;
+        private readonly ICloudinaryService _cloudinaryService;
 
-        public AccountController(IAccountService service)
+        public AccountController(IAccountService service, ICloudinaryService cloudinaryService)
         {
-            accService = service;
+            _cloudinaryService = cloudinaryService;
+            _accService = service;
         }
 
         [HttpPost("SignUp")]
-        public async Task<IActionResult> SignUp([FromBody] RegisterDTO model)
+        public IActionResult SignUp([FromBody] RegisterDTO model)
         {
             var status = new Status();
 
@@ -33,17 +36,17 @@ namespace APIs.Controllers
             {
                 status.StatusCode = 0;
                 status.Message = "Please pass all the required fields";
-                return Ok(status);
+                return BadRequest(status);
             }
             // check if users exists
-            var userExists = accService.FindUserByEmailAsync(model.Email);
-            if (userExists.Username != null)
+            var userExists = _accService.FindUserByEmailAsync(model.Email);
+            if (userExists != null && userExists?.Username != null)
             {
                 status.StatusCode = 0;
                 status.Message = userExists.Username;
                 return Ok(status);
             }
-            AppUser user = accService.Register(model);
+            AppUser user = _accService.Register(model);
             return Ok(user);
         }
 
@@ -51,7 +54,6 @@ namespace APIs.Controllers
         public async Task<IActionResult> SignIn([FromBody] LoginDTO model)
         {
             var status = new Status();
-            AppUser user = new AppUser();
 
             if (!ModelState.IsValid)
             {
@@ -59,30 +61,33 @@ namespace APIs.Controllers
                 status.Message = "Please pass all the required fields";
                 return Ok(status);
             }
-            user = accService.FindUserByEmailAsync(model.Email);
+            AppUser? user = _accService.FindUserByEmailAsync(model.Email);
             if (user == null)
             {
                 return BadRequest("User not found!");
             }
 
-            byte[] salt = Convert.FromHexString(user.Salt);
-            if (!accService.VerifyPassword(model.Password, user.Password, salt, out byte[] result))
+            if (!user.IsBanned)
             {
-                return BadRequest("Wrong password" + Convert.ToHexString(result));
+                byte[] salt = Convert.FromHexString(user.Salt);
+                if (!_accService.VerifyPassword(model.Password, user.Password, salt, out byte[] result))
+                {
+                    return BadRequest("Wrong password");
+                }
+                string token = _accService.CreateToken(user);
+                var refreshToken = _accService.GenerateRefreshToken();
+
+                var cookieOptions = new CookieOptions
+                {
+                    HttpOnly = true,
+                    Expires = refreshToken.ExpiredDate
+                };
+                Response.Cookies.Append("refreshToken", refreshToken.RefreshToken, cookieOptions);
+
+                //Add refreshtoken to database from Service -> dao
+                return Ok(token);
             }
-            string token = accService.CreateToken(user);
-            var refreshToken = accService.GenerateRefreshToken();
-
-            var cookieOptions = new CookieOptions
-            {
-                HttpOnly = true,
-                Expires = refreshToken.ExpiredDate
-            };
-            Response.Cookies.Append("refreshToken", refreshToken.RefreshToken, cookieOptions);
-
-            //Add refreshtoken to database from Service -> dao
-            return Ok(token);
-
+            return BadRequest("Account is banned!");
         }
 
         [HttpPost("AddRole")]
@@ -97,7 +102,7 @@ namespace APIs.Controllers
                     status.Message = "Please pass all the required fields";
                     return Ok(status);
                 }
-                if (accService.GetRoleDetails(data.RoleName) is not null)
+                if (_accService.GetRoleDetails(data.RoleName) is not null)
                 {
                     return BadRequest("Role already existed");
                 }
@@ -108,10 +113,10 @@ namespace APIs.Controllers
                     Description = data.Description
                 };
 
-                accService.AddNewRole(role);
+                _accService.AddNewRole(role);
                 return Ok("New role added");
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw new Exception(e.Message);
             }
@@ -123,59 +128,187 @@ namespace APIs.Controllers
         {
             try
             {
-                Address? address = accService.GetDefaultAddress(userId);
+                Address? address = _accService.GetDefaultAddress(userId);
                 if (address != null)
                 {
                     return Ok(address);
                 }
                 else return BadRequest("Default Address' not set!!!");
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw new Exception(e.Message);
             }
         }
 
+        //[HttpPost]
+        //[Route("upload-cic")]
+        //public async Task<IActionResult> OnPostUploadAsync(List<IFormFile> files, Guid userId)
+        //{
+        //    long size = files.Sum(f => f.Length);
 
-        [HttpPut]
-        [Route("update-profile")]
-        public IActionResult UpdateUserProfile(Guid userId, string username, string? address = null)
+        //    foreach (var formFile in files)
+        //    {
+        //        if (formFile.Length > 0)
+        //        {
+        //            var filePath = Path.GetTempFileName();
+
+        //            using (var stream = System.IO.File.Create(filePath))
+        //            {
+        //                await formFile.CopyToAsync(stream);
+        //            }
+        //        }
+        //    }
+
+        //    // Process uploaded files
+        //    // Don't rely on or trust the FileName property without validation.
+
+        //    return Ok(new { count = files.Count, size });
+        //}
+
+        [HttpGet, Authorize]
+        [Route("get-user-profile")]
+        public async Task<IActionResult> GetUserProfile()
         {
             try
             {
-                accService.UpdateUserProfile(userId, username, address);
-                return Ok("Profile updated successfully");
+                var userIdClaim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "userId");
+                var roleClaim = HttpContext.User.FindFirst(ClaimTypes.Role);
+                var usernameClaim = HttpContext.User.FindFirst(ClaimTypes.Name);
+                var emailClaim = HttpContext.User.FindFirst(ClaimTypes.Email);
+                if (userIdClaim != null)
+                {
+                    var userId = Guid.Parse(userIdClaim.Value);
+                    if (roleClaim != null)
+                    {
+                        if (usernameClaim != null)
+                        {
+                            if (emailClaim != null)
+                            {
+                                Address? address = _accService.GetDefaultAddress(userId);
+                                string rendez = string.Empty;
+
+                                if (address != null && address.Rendezvous != null)
+                                {
+                                    rendez = address.Rendezvous;
+                                }
+
+                                UserProfileDTO profile = new UserProfileDTO()
+                                {
+                                    UserId = userId,
+                                    Username = usernameClaim.Value,
+                                    Role = roleClaim.Value,
+                                    Address = rendez,
+                                    Email = emailClaim.Value,
+                                    IsValidated = _accService.IsUserValidated(userId),
+                                    IsSeller = _accService.IsSeller(userId),
+                                    IsBanned = await _accService.IsBanned(userId),
+                                    Agencies = _accService.GetOwnerAgencies(userId)
+                                };
+                                return Ok(profile);
+                            }
+                            else return NotFound("Email claim not found!");
+                        }
+                        else return NotFound("Username claim not found!!!");
+                    }
+                    else return NotFound("Role claim not found!!!");
+                }
+                else return NotFound("User ID claim not found!!!");
             }
             catch (Exception e)
             {
-                return StatusCode(500, e.Message);
+                throw new Exception(e.Message);
             }
         }
 
-
-        [HttpPost]
-        [Route("upload-cic")]
-        public async Task<IActionResult> OnPostUploadAsync(List<IFormFile> files, Guid userId)
+        [HttpPut("set-is-account-validated")]
+        public IActionResult SetIsAccountValid([FromBody] UserValidationDTO dto)
         {
-            long size = files.Sum(f => f.Length);
-
-            foreach (var formFile in files)
+            try
             {
-                if (formFile.Length > 0)
+                if (ModelState.IsValid)
                 {
-                    var filePath = Path.GetTempFileName();
-
-                    using (var stream = System.IO.File.Create(filePath))
-                    {
-                        await formFile.CopyToAsync(stream);
-                    }
+                    int result = _accService.SetUserIsValidated(dto.choice, dto.userId);
+                    IActionResult apiResult = (result > 0) ? Ok("Successful!") : BadRequest("No change!");
+                    return apiResult;
                 }
+                return BadRequest("Model invalid");
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        [HttpPost("register-agency")]
+        public IActionResult RegisterAgency([FromForm] AgencyRegistrationDTO dto)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var userIdClaim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "userId");
+
+                    string logoUrl = "";
+
+                    Guid userId = (userIdClaim != null) ? Guid.Parse(userIdClaim.Value) : Guid.Empty;
+
+                    if (dto.LogoImg != null)
+                    {
+                        CloudinaryResponseDTO cldRspDTO = _cloudinaryService.UploadImage(dto.LogoImg, "Agencies/" + dto.AgencyName + "/Logo");
+                        logoUrl = (cldRspDTO.StatusCode == 200 && cldRspDTO.Data != null)
+                      ? cldRspDTO.Data : "";
+                    }
+
+                    if (_accService.IsUserValidated(userId) == true)
+                    {
+                        string result = _accService.RegisterAgency(dto, logoUrl);
+                        if (result == "Successful!")
+                        {
+                            return Ok(result);
+                        }
+                        else return BadRequest(result);
+                    }
+                    else return BadRequest("Account's not validated!");
+                }
+                else return BadRequest("Model invalid!");
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        [HttpGet("get-agency-by-id")]
+        public IActionResult GetAgencyById(Guid agencyId)
+        {
+            try
+            {
+                Agency result = _accService.GetAgencyById(agencyId);
+                IActionResult response = (result.AgencyName != null) ? Ok(result) : NotFound("Agency doesn't exist!");
+                return response;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+        [HttpPut("update-agency")]
+        public IActionResult UpdateAgency([FromForm] AgencyUpdateDTO dto)
+        {
+            string? logoUrl = null;
+
+            if (dto.LogoImg != null)
+            {
+                CloudinaryResponseDTO cldRspDTO = _cloudinaryService.UploadImage(dto.LogoImg, "Agencies/" + dto.AgencyName + "/Logo");
+                logoUrl = (cldRspDTO.StatusCode == 200 && cldRspDTO.Data != null)
+              ? cldRspDTO.Data : null;
             }
 
-            // Process uploaded files
-            // Don't rely on or trust the FileName property without validation.
-
-            return Ok(new { count = files.Count, size });
+            int changes = _accService.UpdateAgency(dto, logoUrl);
+            IActionResult response = (changes > 0) ? Ok("Successful!") : Ok("No changes");
+            return response;
         }
         [HttpPut]
         [Route("UpdateAddress")]
@@ -184,7 +317,7 @@ namespace APIs.Controllers
             try
             {
                 // Call the service method to update or create the address
-                accService.UpdateAddress(userId, addressId, cityProvince, district, subDistrict, rendezvous, isDefault);
+                _accService.UpdateAddress(userId, addressId, cityProvince, district, subDistrict, rendezvous, isDefault);
 
                 return Ok("Address updated successfully");
             }
@@ -198,12 +331,12 @@ namespace APIs.Controllers
 
         [HttpPost]
         [Route("rate-and-comment")]
-        public IActionResult RateAndCommentProduct(Guid userId,  Guid ratingId, int ratingPoint, string comment)
+        public IActionResult RateAndCommentProduct(Guid userId, Guid ratingId, int ratingPoint, string comment)
         {
             try
             {
                 // Call the service method to rate and comment the product
-                accService.RateAndCommentProduct(userId, ratingId, ratingPoint, comment);
+                _accService.RateAndCommentProduct(userId, ratingId, ratingPoint, comment);
 
                 return Ok("Product rated and commented successfully");
             }

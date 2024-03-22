@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using BusinessObjects.Models.Ecom;
 using Newtonsoft.Json;
@@ -8,12 +7,10 @@ namespace BusinessObjects.Models
 {
 	public class Basket
 	{
-        //product_id UNIQUEIDENTIFIER foreign key references Books(ProductId) null,
-        [Key]
-        public Guid ProductId { get; set; }
-        //cart_id UNIQUEIDENTIFIER foreign key references Carts(CartId) null,
-        [Key]
-        public Guid? CartId { get; set; }
+		//product_id UNIQUEIDENTIFIER foreign key references Books(ProductId) null,
+		public Guid ProductId { get; set; }
+		//cart_id UNIQUEIDENTIFIER foreign key references Carts(CartId) null,
+		public Guid? CartId { get; set; }
 		//order_id UNIQUEIDENTIFIER foreign key references Orders(OrderId) null,
 		public Guid? OrderId { get; set; }
 		//quantity int,

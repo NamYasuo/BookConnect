@@ -41,6 +41,21 @@ namespace DataAccess.DAO
                 throw new Exception(e.Message);
             }
         }
+        public int AddNewAddress(Address address)
+        {
+            try
+            {
+                using (var context = new AppDbContext())
+                {
+                    context.Addresses.Add(address);
+                    return context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
         public void UpdateAddress(Guid userId, Guid? addressId, string cityProvince, string district, string subDistrict, string rendezvous, bool isDefault)
         {
             try

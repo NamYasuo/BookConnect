@@ -1,5 +1,5 @@
 ﻿using System;
-namespace BusinessObjects.DTO
+namespace BusinesObjects.DTO
 {
 	public class NewWorkDTO
 	{

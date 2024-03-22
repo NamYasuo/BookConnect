@@ -10,9 +10,122 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.DAO
 {
-	public class CartDAO
-	{
+    public class CartDAO
+    {
         //Add Product to Cart
+        //public int AddProductToCart(Guid productId, Guid cartId, int quantity)
+        //{
+        //	try
+        //	{
+        //		using(var context = new AppDbContext())
+        //		{
+        //			//insert into ListProducts(product_id, cart_id, order_id, quantity, added_date, stored_price)
+        //			int result = context.Database.ExecuteSqlRaw
+        //				($"exec AddProductToCart '{productId}', '{cartId}', null , {quantity} ,'{DateTime.Now}' , null");
+        //			return result;
+        //			//if (result == 1) return 1;
+        //			//else return 0;
+        //		}
+        //	}
+        //	catch(Exception e)
+        //	{
+        //		throw new Exception(e.Message);
+        //	}
+        //}
+
+        public void AddListProductToCart(List<Guid> productIds, Guid cartId, int quantity)
+        {
+            try
+            {
+                using (var context = new AppDbContext())
+                {
+                    foreach (Guid id in productIds)
+                    {
+                        int result = context.Database.ExecuteSqlRaw
+                        ($"exec AddProductToCart '{id}', '{cartId}', null , {quantity}, {DateTime.Now} , null");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public List<CartDetailsDTO> GetCartDetails(Guid userId)
+        {
+            try
+            {
+                using (var context = new AppDbContext())
+                {
+                    var queryResult = from c in context.Carts
+                                      join lp in context.Baskets on c.CartId equals lp.CartId
+                                      join b in context.Books on lp.ProductId equals b.ProductId
+                                      join i in context.Inventories on b.ProductId equals i.BookId
+                                      where c.CustomerId == userId
+                                      select new
+                                      {
+                                          b.ProductId,
+                                          b.Price,
+                                          Stock = i.Quantity,
+                                          b.Name,
+                                          Quantity = lp.Quantity,
+                                          c.CartId
+                                      };
+
+                    var resultList = queryResult.Select(r => new CartDetailsDTO
+                    {
+                        ProductId = r.ProductId,
+                        Price = r.Price,
+                        Stock = r.Stock,
+                        Name = r.Name,
+                        Quantity = r.Quantity,
+                        CartId = r.CartId
+                    }
+                    ).ToList();
+                    return resultList;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        public string GetUserCartId(Guid userId)
+        {
+            try
+            {
+                using (var context = new AppDbContext())
+                {
+                    Cart? userCart = context.Carts.Where(c => c.CustomerId == userId).FirstOrDefault();
+                    if (userCart == null)
+                    {
+                        Cart newCart = new Cart()
+                        {
+                            CartId = Guid.NewGuid(),
+                            CustomerId = userId,
+                            Status = null,
+                            CreateDate = DateTime.Now,
+                            LastUpdatedDate = DateTime.Now,
+                            Total_Quantity = null,
+                            Total_Price = null,
+                            ExpiredDate = DateTime.Now.AddDays(1)
+                        };
+                        context.Carts.Add(newCart);
+                        int result = context.SaveChanges();
+                        if (result > 0) return newCart.CartId.ToString();
+                        else return "Fail to create cart";
+                    }
+                    else return userCart.CartId.ToString();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
         public int AddProductToCart(Guid productId, Guid cartId, int quantity)
         {
             try
@@ -25,7 +138,7 @@ namespace DataAccess.DAO
                     {
                         result = context.Database.ExecuteSqlRaw(
                         "UPDATE Baskets " +
-                        "SET Quantity = Quantity + {0}, AddedDate = {1} " +
+                        "SET Quantity = {0}, AddedDate = {1} " +
                         "WHERE ProductId = {2} AND CartId = {3}",
                         quantity,
                         DateTime.Now,
@@ -51,98 +164,7 @@ namespace DataAccess.DAO
                 throw new Exception(e.Message);
             }
         }
-    
-    public void AddListProductToCart(List<Guid> productIds, Guid cartId , int quantity)
-        {
-            try
-            {
-                using (var context = new AppDbContext())
-                {
-                    foreach(Guid id in productIds)
-                    {
-                        int result = context.Database.ExecuteSqlRaw
-                        ($"exec AddProductToCart '{id}', '{cartId}', null , {quantity}, {DateTime.Now} , null");
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-        }
 
-		public List<CartDetailsDTO> GetCartDetails(Guid userId)
-		{
-            try
-            {
-                using (var context = new AppDbContext())
-                {
-                    var queryResult = from c in context.Carts
-                                 join lp in context.Baskets on c.CartId equals lp.CartId
-                                 join b in context.Books on lp.ProductId equals b.ProductId
-                                 where c.CustomerId == userId
-                                 select new
-                                 {
-                                     b.ProductId,
-                                     b.Price,
-                                     Stock = b.Quantity,
-                                     b.Name,
-                                     Quantity = lp.Quantity,
-                                     c.CartId
-                                 };
-
-                    var resultList = queryResult.Select(r => new CartDetailsDTO
-                    {
-                        ProductId = r.ProductId,
-                        Price = r.Price,
-                        Stock = r.Stock,
-                        Name = r.Name,
-                        Quantity = r.Quantity,
-                        CartId = r.CartId
-                    }
-                    ).ToList();
-                    return resultList;
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-        }
-
-        public string GetUserCartId(Guid userId)
-        {
-            try
-            {
-                using(var context = new AppDbContext())
-                {
-                    Cart? userCart = context.Carts.Where(c => c.CustomerId == userId).FirstOrDefault();
-                    if (userCart == null)
-                    {
-                        Cart newCart = new Cart()
-                        {
-                            CartId = Guid.NewGuid(),
-                            CustomerId = userId,
-                            Status = null,
-                            CreateDate = DateTime.Now,
-                            LastUpdatedDate = DateTime.Now,
-                            Total_Quantity = null,
-                            Total_Price = null,
-                            ExpiredDate = DateTime.Now.AddDays(1)
-                        };
-                        context.Carts.Add(newCart);
-                        int result = context.SaveChanges();
-                        if (result > 0) return newCart.CartId.ToString();
-                        else return "Fail to create cart";
-                    }
-                    else return userCart.CartId.ToString();
-                }
-            }
-            catch(Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-        }
         public int DeleteProductFromCart(Guid productId, Guid cartId, int quantity)
         {
             try
@@ -183,8 +205,21 @@ namespace DataAccess.DAO
             }
         }
 
+        public bool IsCartExists(Guid userId)
+        {
+            try
+            {
+                using (var context = new AppDbContext())
+                {
+                    return context.Carts.Any(c => c.CustomerId == userId);
+                }
 
-
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
     }
 }
 

@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Net;
-using APIs.Services.Intefaces;
+using APIs.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using APIs.DTO;
 using APIs.Config;
 using Microsoft.AspNetCore.Http;
-using BusinessObjects.Models;
+using BusinessObjects.Models.Ecom.Payment;
 using APIs.Utils.Extensions;
 using BusinessObjects.DTO;
+using Azure.Core;
+using Microsoft.AspNetCore.Authorization;
 
 namespace APIs.Controllers
 {
@@ -17,9 +19,12 @@ namespace APIs.Controllers
     public class PaymentController: ControllerBase
 	{
         private readonly IVnPayService _vnpService;
-        public PaymentController(IVnPayService vnpService)
+        private readonly ITransactionService _transacService;
+
+        public PaymentController(IVnPayService vnpService, ITransactionService transacService)
         {
             _vnpService = vnpService;
+            _transacService = transacService;
         }
 
         [HttpPost]
@@ -34,32 +39,43 @@ namespace APIs.Controllers
             return Ok(response);
         }
 
+
         [HttpGet]
-        [Route("VnPayIPN")]
-        public IActionResult VnpayReturn([FromQuery] VnPayResponseDTO response)
+        [Route("vnpay/VnPayIPN")]
+        public IActionResult VnpayIpnReturnAsync([FromQuery] VnPayResponseDTO response)
         {
-            string returnUrl = string.Empty;
+            //string returnUrl = string.Empty;
             var returnModel = new PaymentReturnDTO();
             var processResult = _vnpService.ProcessVnPayReturn(response);
-            
+
+            PaymentReturnDTO dto = processResult.Data.Item1;
+
+            TransactionRecord transaction = new TransactionRecord()
+            {
+                //PaymentId = dto.PaymentId,
+                //UserId = userId,
+                PaymentDate = dto.PaymentDate,
+                PaymentMessage = dto.PaymentMessage,
+                TransactionId = Guid.Parse(dto.PaymentRefId),
+                PaymentStatus = dto.PaymentStatus,
+                Amount = dto.Amount,
+                Signature = dto.Signature
+            };
+
+            _transacService.AddTransactionRecord(transaction);
             if (processResult.Success)
             {
                 returnModel = processResult.Data.Item1;
-                returnUrl = processResult.Data.Item2;
+                //returnUrl = processResult.Data.Item2;
+
+                string redirectUrl = "http://localhost:5000/checkout-result?refId=" + returnModel.PaymentRefId;  // Replace with your desired URL
+                return Redirect(redirectUrl);
             }
-                returnModel = processResult.Data.Item1;
-                returnUrl = processResult.Data.Item2;
-            //if (returnUrl.EndsWith("/"))
-            //    returnUrl = returnUrl.Remove(returnUrl.Length - 1, 1);
+     
             return BadRequest(returnModel);
-            //processResult.Errors.Where(e => e.Code == "Exeption").FirstOrDefault().Message)
-            //return Redirect($"{returnUrl}?{returnModel.ToQueryString()}");
         }
 
-        //public async Task<IActionResult> VnPayIpnReturn([FromQuery] VnPayResponseDTO response)
-        //{
 
-        //}
     }
 }
 

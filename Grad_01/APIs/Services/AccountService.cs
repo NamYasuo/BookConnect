@@ -7,6 +7,7 @@ using BusinessObjects;
 using BusinessObjects.DTO;
 using BusinessObjects.Models;
 using DataAccess.DAO;
+using DataAccess.DAO.Ecom;
 using DataAccess.DTO;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -45,20 +46,21 @@ namespace APIs.Services.Interfaces
                 Email = model.Email,
                 Password = Convert.ToHexString(pwdHash),
                 Salt = Convert.ToHexString(salt),
+                IsValidated = false,
                 RoleId = GetRoleDetails("BaseUser").RoleId,
             };
             accountDAO.CreateAccount(user);
             return user;
         }
 
-        public AppUser FindUserByEmailAsync(string email) => new AccountDAO().FindUserByEmailAsync(email);
+        public AppUser? FindUserByEmailAsync(string email) => new AccountDAO().FindUserByEmailAsync(email);
 
         public string CreateToken(AppUser user)
         {
             List<Claim> claims = new List<Claim>()
             {
                 new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.Role, "BaseUser"),
+                new Claim(ClaimTypes.Role, new RoleDAO().GetRoleById(user.RoleId).RoleName),
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim("userId", user.UserId.ToString()),
             };
@@ -118,17 +120,107 @@ namespace APIs.Services.Interfaces
             pwdHash = hash;
         }
 
-        
-
-        
         public void AddNewRole(Role role) => new AccountDAO().AddNewRole(role);
 
         public Role GetRoleDetails(string roleName) => new AccountDAO().GetRolesDetails(roleName);
+
+        public string? GetUsernameById(Guid userId) => new AccountDAO().GetNameById(userId);
 
         //Address services
         public List<Address> GetAllUserAdderess(Guid userId) => new AddressDAO().GetAllUserAddress(userId);
 
         public Address GetDefaultAddress(Guid userId) => new AddressDAO().GetUserDefaultAddress(userId);
+
+        //Account validation
+        public int SetUserIsValidated(bool choice, Guid userId) => new AccountDAO().SetIsAccountValid(choice, userId);
+
+        public bool IsUserValidated(Guid userId) => new AccountDAO().IsUserValidated(userId);
+
+        //Agency Registration
+        public List<Agency> GetOwnerAgencies(Guid ownerId) => new AgencyDAO().GetAgencyByOwnerId(ownerId);
+
+        public string RegisterAgency(AgencyRegistrationDTO dto, string logoUrl)
+        {
+            //register post address
+            AddressDAO addressDAO = new AddressDAO();
+            AccountDAO accDAO = new AccountDAO();
+            AgencyDAO agencyDAO = new AgencyDAO();
+
+            Guid addressId = Guid.NewGuid();
+            int newAddress = addressDAO.AddNewAddress(new Address
+            {
+                AddressId = addressId,
+                Rendezvous = dto.Rendezvous,
+                Default = true
+            });
+            //add new agency
+            if (newAddress > 0)
+            {
+                int newAgency = agencyDAO.AddNewAgency(new Agency
+                {
+                    AgencyId = Guid.NewGuid(),
+                    AgencyName = dto.AgencyName,
+                    PostAddressId = addressId,
+                    LogoUrl = logoUrl,
+                    BusinessType = dto.BusinessType,
+                    OwnerId = dto.OwnerId
+                });
+                if (newAgency > 0)
+                {
+                    int changes = accDAO.SetIsAgency(true, dto.OwnerId);
+                    if (changes > 0) return "Successful!";
+                    else return "Fail to set agency!";
+                }
+                else return "Fail to add new agency!";
+            }
+            else return "Fail to add address!";
+            //change IsSeller in AppUser
+        }
+
+        public bool IsSeller(Guid userId) => new AccountDAO().IsSeller(userId);
+
+        public Task<bool> IsBanned(Guid userId) => new AccountDAO().IsBanned(userId);
+
+        public Agency GetAgencyById(Guid agencyId) => new AgencyDAO().GetAgencyById(agencyId);
+
+
+        public int UpdateAgency(AgencyUpdateDTO updatedData, string? updatedLogoUrl)
+        {
+            AddressDAO addressDAO = new AddressDAO();
+            AgencyDAO agencyDAO = new AgencyDAO();
+            Guid addressId = Guid.Empty;
+
+            Address? oldAddress = agencyDAO.GetCurrentAddress(updatedData.AgencyId);
+            if (oldAddress != null) addressId = oldAddress.AddressId;
+
+            if (oldAddress != null && oldAddress.Rendezvous != null && updatedData.PostAddress != null)
+            {
+                if (!oldAddress.Rendezvous.Equals(updatedData.PostAddress))
+                {
+                    Address newAddress = new Address
+                    {
+                        AddressId = Guid.NewGuid(),
+                        City_Province = null,
+                        District = null,
+                        SubDistrict = null,
+                        Rendezvous = updatedData.PostAddress
+                    };
+                    if (addressDAO.AddNewAddress(newAddress) > 0) addressId = newAddress.AddressId;
+                }
+            }
+
+            string? logoUrl = (updatedLogoUrl != null) ? updatedLogoUrl : agencyDAO.GetCurrentLogoUrl(updatedData.AgencyId);
+
+            return agencyDAO.UpadateAgency(new Agency
+            {
+                AgencyId = updatedData.AgencyId,
+                AgencyName = updatedData.AgencyName,
+                PostAddressId = addressId,
+                BusinessType = updatedData.BusinessType,
+                LogoUrl = logoUrl,
+                OwnerId = updatedData.OwnerId,
+            });
+        }
 
         public void UpdateUserProfile(Guid userId, string username, string? address = null)
         => new AccountDAO().UpdateUserProfile(userId, username, address);
@@ -137,8 +229,8 @@ namespace APIs.Services.Interfaces
         public void UpdateAddress(Guid userId, Guid? addressId, string cityProvince, string district, string subDistrict, string rendezvous, bool isDefault)
         => new AddressDAO().UpdateAddress(userId, addressId, cityProvince, district, subDistrict, rendezvous, isDefault);
 
-        public void RateAndCommentProduct(Guid userId,  Guid ratingId, int ratingPoint, string comment)
-        => new AccountDAO().RateAndCommentProduct(userId,  ratingId, ratingPoint, comment);
+        public void RateAndCommentProduct(Guid userId, Guid ratingId, int ratingPoint, string comment)
+       => new AccountDAO().RateAndCommentProduct(userId, ratingId, ratingPoint, comment);
     }
 }
 

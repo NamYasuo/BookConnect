@@ -2,7 +2,7 @@
 using System.Security.Claims;
 using DataAccess.DTO;
 
-namespace APIs.Services.Intefaces
+namespace APIs.Services.Interfaces
 {
 	public interface ITokenService
 	{

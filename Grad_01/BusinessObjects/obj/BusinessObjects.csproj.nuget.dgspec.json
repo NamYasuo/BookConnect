@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\BookCo\\BookConnect\\Grad_01\\BusinessObjects\\BusinessObjects.csproj": {}
+    "D:\\BookCo\\BookConnect\\BookConnect\\Grad_01\\BusinessObjects\\BusinessObjects.csproj": {}
   },
   "projects": {
-    "D:\\BookCo\\BookConnect\\Grad_01\\BusinessObjects\\BusinessObjects.csproj": {
+    "D:\\BookCo\\BookConnect\\BookConnect\\Grad_01\\BusinessObjects\\BusinessObjects.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\BookCo\\BookConnect\\Grad_01\\BusinessObjects\\BusinessObjects.csproj",
+        "projectUniqueName": "D:\\BookCo\\BookConnect\\BookConnect\\Grad_01\\BusinessObjects\\BusinessObjects.csproj",
         "projectName": "BusinessObjects",
-        "projectPath": "D:\\BookCo\\BookConnect\\Grad_01\\BusinessObjects\\BusinessObjects.csproj",
+        "projectPath": "D:\\BookCo\\BookConnect\\BookConnect\\Grad_01\\BusinessObjects\\BusinessObjects.csproj",
         "packagesPath": "C:\\Users\\HI\\.nuget\\packages\\",
-        "outputPath": "D:\\BookCo\\BookConnect\\Grad_01\\BusinessObjects\\obj\\",
+        "outputPath": "D:\\BookCo\\BookConnect\\BookConnect\\Grad_01\\BusinessObjects\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
