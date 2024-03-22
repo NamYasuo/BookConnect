@@ -15,7 +15,7 @@ namespace APIs.Utils.Base
             {
                 string filename = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
 
-                string route = Path.Combine("/Users/phamhung/Documents/S8/Grad/Project/Group work/Trung/b-connect", filePath);
+                string route = Path.Combine("/Users/phamhung/Documents/S8/Grad/Project/Group work/Trung/repo/b-connect", filePath);
 
                 if (!Directory.Exists(route))
                 {
@@ -43,7 +43,7 @@ namespace APIs.Utils.Base
         {
             try
             {
-               string route = Path.Combine("/Users/phamhung/Documents/S8/Grad/Project/Group work/Trung/b-connect", path);
+               string route = Path.Combine("/Users/phamhung/Documents/S8/Grad/Project/Group work/Trung/repo/b-connect", path);
                 if (File.Exists(route))
                 {
                     File.Delete(route);

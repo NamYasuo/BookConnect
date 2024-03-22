@@ -7,6 +7,7 @@ namespace APIs.Services.Interfaces
 	{
         public int AddTransactionRecord(TransactionRecord transaction);
         public TransactionRecord? GetTransactionId(Guid refId);
+        int IdentifyTransactor(Guid transId, Guid userId);
     }
 }
 

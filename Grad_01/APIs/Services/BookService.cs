@@ -59,7 +59,18 @@ namespace APIs.Services
             }
         }
 
+        //-----------------------------------Book category------------------------------------------------//
+
+        public int AddBookToCategory(Guid bookId, List<Guid> cateIds) => new BookDAO().AddBookToCategory(bookId, cateIds);
 
 
+        public bool IsBookAlreadyInCate(Guid bookId, Guid cateId) => new BookDAO().IsBookAlreadyInCate(bookId, cateId);
+
+
+        public int RemoveBookFromCate(Guid bookId, Guid cateId) => new BookDAO().RemoveBookFromCate(bookId, cateId);
+
+
+        public List<Category> GetAllCategoryOfBook(Guid bookId) => new BookDAO().GetAllCategoryOfBook(bookId);
+     
     }
 }

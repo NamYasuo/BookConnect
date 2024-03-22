@@ -24,6 +24,7 @@ namespace BusinessObjects.DTO
         public string Type { get; set; } = null!; //Values: Public or Private
         public string Status { get; set; } = null!; //Values: Published or not
         public string? CoverDir { get; set; }
+        public string? Price { get; set; }
         public string? BackgroundDir { get; set; }
         public string? Description { get; set; }
     }
@@ -32,6 +33,24 @@ namespace BusinessObjects.DTO
     {
         public Guid WorkId { get; set; }
         public string? Title { get; set; }
+    }
+
+    public class CheckWorkOwnerDTO
+    {
+        public Guid WorkId { get; set; }
+        public Guid UserId { get; set; }
+    }
+
+    public class SetWorkTypeDTO
+    {
+        public Guid WorkId { get; set; }
+        public string Type { get; set; } = string.Empty;
+    }
+
+    public class SetWorkPriceDTO
+    {
+        public Guid WorkId { get; set; }
+        public decimal Price { get; set; }
     }
 
     //------------------------------CHAPTER ZONE-----------------------------------//

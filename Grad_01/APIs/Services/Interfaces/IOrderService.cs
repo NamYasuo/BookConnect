@@ -13,6 +13,8 @@ namespace APIs.Services.Interfaces
         public string TakeProductFromCartOptional (Guid userId, Guid orderId, List<ProductOptionDTO> products);
 
         public decimal GetTotalAmount(List<ProductOptionDTO> dto);
+
+        public int GetCurrentStock(Guid productId);
     }
 }
 

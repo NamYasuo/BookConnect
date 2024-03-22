@@ -61,12 +61,13 @@ namespace DataAccess.DAO
                     var queryResult = from c in context.Carts
                                       join lp in context.Baskets on c.CartId equals lp.CartId
                                       join b in context.Books on lp.ProductId equals b.ProductId
+                                      join i in context.Inventories on b.ProductId equals i.BookId
                                       where c.CustomerId == userId
                                       select new
                                       {
                                           b.ProductId,
                                           b.Price,
-                                          Stock = b.Quantity,
+                                          Stock = i.Quantity,
                                           b.Name,
                                           Quantity = lp.Quantity,
                                           c.CartId

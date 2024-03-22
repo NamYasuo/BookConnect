@@ -1,4 +1,5 @@
 ﻿using System;
+using Azure.Core;
 using BusinessObjects;
 using BusinessObjects.DTO;
 using BusinessObjects.Models;
@@ -80,9 +81,9 @@ namespace DataAccess.DAO
 
                                 int clear = temp.Quantity - dto.Quantity;
 
-                                hihi = temp.Quantity.ToString() + dto.Quantity.ToString();
+                                hihi = "IN CART:" + temp.Quantity.ToString() +" | CHECKOUT: " + dto.Quantity.ToString();
 
-                                if (clear == 0)
+                                if (clear <= 0)
                                 {
                                     context.Database.ExecuteSqlRaw("UPDATE Baskets SET CartId = NULL, OrderId = {0}, Stored_Price = {1} WHERE ProductId = {2} AND CartId is not null AND OrderId is null", orderId, temp.Stored_Price, temp.ProductId);
                                 }
@@ -122,14 +123,15 @@ namespace DataAccess.DAO
                     {
                         OrderId = data.OrderId,
                         CustomerId = data.CustomerId,
-                        Total_Price = total_Price,
+                        Total_Price = data.Price,
                         Status = data.Status,
                         Quantity = 0,
                         Notes = data.Notes,
                         CreatedDate = DateTime.Now,
-                        //PaymentId = data.PaymentId,
+                        PaymentMethod = data.PaymentMethod,
+                        TransactionId = data.TransactionId,
                         AddressId = data.AddressId
-                    };
+                };
                     context.Orders.Add(newOrder);
                     int result = context.SaveChanges();
                     if (result == 1)

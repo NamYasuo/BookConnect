@@ -25,10 +25,16 @@ namespace BusinessObjects.DTO
         public DateTime? CreatedDate { get; set; }
         public DateTime? PublishDate { get; set; }
         public string? Type { get; set; } = null!;
-        public int? Quantity { get; set; }
+        public int? Stock { get; set; }
         public double? Rating { get; set; }
-        public Guid SellerId { get; set; }
-        public string SellerName { get; set; } = null!;
+        public Guid AgencyId { get; set; }
+        public string AgencyName { get; set; } = null!;
+    }
+
+    public class AddBookToCateDTO
+    {
+        public Guid BookId { get; set; }
+        public List<Guid> CateIds { get; set; } = null!;
     }
 }
 

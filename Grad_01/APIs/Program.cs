@@ -4,6 +4,7 @@ using APIs.Repositories;
 using APIs.Repositories.Interfaces;
 using APIs.Services;
 using APIs.Services.Interfaces;
+using APIs.Services.Payment;
 using BusinessObjects;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -19,6 +20,14 @@ builder.Services.AddControllers()
     .AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 //builder.Services.AddAutoMapper(typeof(Program));
 
+//SignalR
+//builder.Services.AddSignalR();
+//builder.Services.AddCors(opt =>
+//{
+//    opt.AddPolicy("CORSPolicy", builder => builder.AllowAnyMethod().AllowAnyHeader().AllowCredentials().SetIsOriginAllowed((host) => true));
+//});
+
+
 //Services
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
@@ -27,6 +36,11 @@ builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<IWorkService, WorkService>();
 builder.Services.AddScoped<IBookService, BookService>();
+builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
+builder.Services.AddScoped<ITransactionService, TransactionService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ICloudinaryService, CloudinaryService>();
+builder.Services.AddScoped<IAdminService, AdminService>();
 
 //Repositories
 builder.Services.AddScoped<ICartRepository, CartRepository>();
@@ -99,8 +113,9 @@ app.UseCors(builder =>
 {
     builder.AllowAnyOrigin()
     .AllowAnyMethod()
-    .AllowAnyHeader();
+    .AllowAnyHeader().WithExposedHeaders("X-Pagination");
 });
+//app.UseCors("CORSPolicy");
 
 app.UseHttpsRedirection();
 app.UseSession();
@@ -108,7 +123,7 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
-
+//app.MapHub<ChatHub>("/Chat");
 app.MapControllers();
 
 app.Run();
