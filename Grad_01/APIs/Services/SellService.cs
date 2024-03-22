@@ -5,6 +5,7 @@ using BusinessObjects.Models;
 using APIs.Services.Interfaces;
 using APIs.Repositories.Interfaces;
 using System.ComponentModel.Design;
+using DataAccess.DAO;
 
 namespace APIs.Services
 {
@@ -12,7 +13,6 @@ namespace APIs.Services
     {
         private readonly IOrderService _orderService;
         private readonly ISellService _sellRepository;
-
 
         // Book Listing Services
         public void AddToBookListing(BookListingManageDTOs item) => _sellRepository.AddToBookListing(item);
@@ -40,8 +40,9 @@ namespace APIs.Services
 
         public List<Inventory> GetAdsById(Guid Id) => _sellRepository.GetAdsById(Id);
         //// Communication Services
-        //public void SendMessageToBuyer(Guid sellerId, Guid buyerId, string message) => _messageService.SendMessage(sellerId, buyerId, message);
+        public void SendMessage(MessageDTOs message) => _sellRepository.SendMessage(message);
 
+        public List<MessageDTOs> GetMessages(Guid senderId, Guid receiverId) => _sellRepository.GetMessages(senderId, receiverId);
         // Order Processing Services
         //public string ProcessOrder(Guid orderId) => _orderService.ProcessOrder(orderId);
 

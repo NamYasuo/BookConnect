@@ -28,7 +28,8 @@ namespace APIs.Services.Interfaces
         List<Inventory> GetAdsById(Guid Id);
         void UpdateAds(AdsManageDTOs item);
         //// Communication Services
-        //void SendMessageToBuyer(Guid sellerId, Guid buyerId, string message);
+        void SendMessage(MessageDTOs message);
+        List<MessageDTOs> GetMessages(Guid senderId, Guid receiverId);
 
         //// Order Processing Services
         //string ProcessOrder(Guid orderId);

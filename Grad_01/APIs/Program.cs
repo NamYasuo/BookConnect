@@ -43,7 +43,7 @@ builder.Services.AddScoped<IAdminService, AdminService>();
 
 //Repositories
 builder.Services.AddScoped<ICartRepository, CartRepository>();
-
+builder.Services.AddScoped<ISellRepository, SellRepository>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>

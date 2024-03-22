@@ -12,8 +12,9 @@ namespace DataAccess.DAO
 {
 	public class BookDAO
 	{
-		//Get all book
-		public List<Book> GetAllBook()
+
+        //Get all book
+        public List<Book> GetAllBook()
 		{
 
 			List<Book> bookList = new List<Book>();
@@ -228,6 +229,7 @@ namespace DataAccess.DAO
         {
             throw new NotImplementedException();
         }
+
         //-----------------------------------Book category------------------------------------------------//
 
         public int AddBookToCategory(Guid bookId, List<Guid> cateIds)

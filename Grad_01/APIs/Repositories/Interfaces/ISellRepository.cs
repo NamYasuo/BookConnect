@@ -26,6 +26,11 @@ namespace APIs.Repositories.Interfaces
         void UpdateAds(AdsManageDTOs item);
         void RemoveFromAds(Guid itemId);
         List<Ads> GetAdsById(Guid Id);
+
+        //Method for communicate
+
+        public void SendMessage(MessageDTOs message);
+        public List<MessageDTOs> GetMessages(Guid senderId, Guid receiverId);
     }
 }
 

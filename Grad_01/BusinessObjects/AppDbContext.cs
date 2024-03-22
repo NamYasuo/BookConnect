@@ -25,6 +25,7 @@ namespace BusinessObjects
         public virtual DbSet<Inventory> Inventories { get; set; } = null!;
         public virtual DbSet<Ads> Ad { get; set; } = null!;
         public virtual DbSet<BookListing> BookListings { get; set; } = null!;
+        public virtual DbSet<Message> Messages { get; set; }
         public virtual DbSet<Order> Orders { get; set; } 
         public virtual DbSet<Book> Books { get; set; }
         public virtual DbSet<BanRecord> BanRecords { get; set; }

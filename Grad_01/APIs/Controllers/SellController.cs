@@ -212,6 +212,34 @@ namespace APIs.Controllers
                 return BadRequest(e.Message);
             }
         }
+        // Communicate Endpoints
+        [HttpPost("SendMessage")]
+        public IActionResult SendMessage([FromBody] MessageDTOs message)
+        {
+            try
+            {
+                _sellRepository.SendMessage(message);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpGet("GetMessages/{senderId}/{receiverId}")]
+        public IActionResult GetMessages(Guid senderId, Guid receiverId)
+        {
+            try
+            {
+                var messages = _sellRepository.GetMessages(senderId, receiverId);
+                return Ok(messages);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
 
     }
 

@@ -31,7 +31,9 @@ namespace APIs.Repositories
         public void RemoveFromAds(Guid itemId) => new SellDAO().DeleteAds(itemId);
 
         public List<Ads> GetAdsById(Guid Id) => new SellDAO().GetAdsById(Id);
-
+        public void SendMessage(MessageDTOs message) => new MessageDAO().SendMessage(message);
+ 
+        public List<MessageDTOs> GetMessages(Guid senderId, Guid receiverId) => new MessageDAO().GetMessages(senderId, receiverId);
     }
 }
 

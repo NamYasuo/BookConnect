@@ -38,6 +38,12 @@ namespace BusinessObjects.DTO
         public Guid BookId { get; set; }
         public List<Guid> CateIds { get; set; } = null!;
     }
+
+    public class BookRatingDTO
+    {
+        public required string BookName { get; set; }
+        public double Rating { get; set; }
+    }
 }
 
 
