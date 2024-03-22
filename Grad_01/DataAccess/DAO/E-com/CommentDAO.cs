@@ -66,5 +66,26 @@ namespace DataAccess.DAO.E_com
                 throw new Exception(e.Message);
             }
         }
+
+        //Delete Comment by id
+        public int DeleteCommentById(Guid  commentId)
+        {
+            try
+            {
+                using (var context = new AppDbContext())
+                {
+                    Comment? comment = context.Comments.FirstOrDefault(c => c.CommentId == commentId);
+                    if (comment != null)
+                    {
+                        context.Comments.Remove(comment);
+                    }
+                    return context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
     }
 }

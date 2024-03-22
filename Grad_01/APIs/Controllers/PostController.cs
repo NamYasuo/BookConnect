@@ -21,7 +21,8 @@ namespace APIs.Controllers
         private readonly IPostService _postService;
         private readonly IAccountService _accountService;
         private FileSaver _fileSaver;
-        public PostController(IPostService postService, IWebHostEnvironment env, IAccountService accountService) {
+        public PostController(IPostService postService, IWebHostEnvironment env, IAccountService accountService)
+        {
             _postService = postService;
             _fileSaver = new FileSaver();
             _accountService = accountService;
@@ -49,8 +50,8 @@ namespace APIs.Controllers
                         Content = dto.Content,
                         CreatedAt = DateTime.Now,
                     });
-                    if(result > 0)
-                    { 
+                    if (result > 0)
+                    {
                         return Ok();
                     }
                     return BadRequest("Add false");
@@ -103,11 +104,11 @@ namespace APIs.Controllers
         }
 
         [HttpDelete("delete-post")]
-        public IActionResult DeletePostById(Guid PostId)
+        public IActionResult DeletePostById(Guid postId)
         {
             try
             {
-                _postService.DeletePostById(PostId);
+                _postService.DeletePostById(postId);
                 var response = new
                 {
                     StatusCode = 204,
@@ -182,6 +183,31 @@ namespace APIs.Controllers
             catch (Exception e)
             {
                 throw new Exception(e.Message);
+            }
+        }
+
+        [HttpDelete("delete-comment")]
+        public IActionResult DeleteCommentById(Guid commentId)
+        {
+            try
+            {
+                _postService.DeleteCommentById(commentId);
+                var response = new
+                {
+                    StatusCode = 204,
+                    Message = "Delete comment query was successful",
+                };
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new
+                {
+                    StatusCode = 500,
+                    Message = "Delete comment query Internal Server Error",
+                    Error = ex,
+                };
+                return StatusCode(500, response);
             }
         }
     }

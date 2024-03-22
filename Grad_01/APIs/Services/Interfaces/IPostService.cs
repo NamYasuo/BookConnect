@@ -13,14 +13,15 @@ namespace APIs.Services.Interfaces
 
         public int UpdatePost(Post Post);
 
-        public void DeletePostById(Guid postId);
+        public int DeletePostById(Guid postId);
 
         public Post GetPostById(Guid postId);
-        AddPostDTOs AddNewPost(Guid postId);
+ /*       AddPostDTOs AddNewPost(Guid postId);*/
 
         //---------------------------------------------COMMENT-------------------------------------------------------//
         public int AddComment(Comment comment);
         public PagedList<Comment> GetCommentByPostId(Guid postId, PagingParams @params);
         public int UpdateComment(Comment comment);
+        public int DeleteCommentById(Guid commentId);
     }
 }

@@ -15,12 +15,7 @@ namespace APIs.Services
         //---------------------------------------------POST-------------------------------------------------------//
         public int AddNewPost(Post post) => new PostDAO().AddNewPost(post);
 
-        public AddPostDTOs AddNewPost(Guid postId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DeletePostById(Guid postId) => new PostDAO().DeletePostById(postId);
+        public int DeletePostById(Guid postId) => new PostDAO().DeletePostById(postId);
 
         public Post GetPostById(Guid postId) => new PostDAO().GetPostById(postId);
 
@@ -28,12 +23,13 @@ namespace APIs.Services
 
         //---------------------------------------------COMMENT-------------------------------------------------------//
         
-        PagedList<Comment> IPostService.GetCommentByPostId(Guid postId, PagingParams @params)
+        public PagedList<Comment> GetCommentByPostId(Guid postId, PagingParams @params)
         {
             return PagedList<Comment>.ToPagedList(new CommentDAO().GetCommentByPostID(postId)?.OrderBy(ch => ch.Description).AsQueryable(), @params.PageNumber, @params.PageSize);
         }
 
         public int AddComment(Comment comment) => new CommentDAO().AddComment(comment);
         public int UpdateComment(Comment comment) => new CommentDAO().UpdateComment(comment);
+        public int DeleteCommentById(Guid commentId) => new CommentDAO().DeleteCommentById(commentId);
     }
 }

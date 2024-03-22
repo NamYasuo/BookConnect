@@ -85,7 +85,7 @@ namespace DataAccess.DAO.E_com
             }
         }
         //Delete post by id
-        public void DeletePostById(Guid postId)
+        public int DeletePostById(Guid postId)
         {
             try
             {
@@ -95,8 +95,9 @@ namespace DataAccess.DAO.E_com
                     if (post != null)
                     {
                         context.Posts.Remove(post);
-                        context.SaveChanges();
                     }
+                    return context.SaveChanges();
+
                 }
             }
             catch (Exception e)

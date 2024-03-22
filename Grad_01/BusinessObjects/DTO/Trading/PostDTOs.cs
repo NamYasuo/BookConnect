@@ -50,6 +50,13 @@ namespace BusinessObjects.DTO.Trading
         public Guid PostId { get; set; }
         public string Description { get; set; }
     }
+
+    public class DeleteCommentDTO
+    {
+        public Guid UserId { get; set; }
+        public Guid PostId { get; set; }
+        public string Description { get; set; }
+    }
 }
 /*  public class Comment
     {
