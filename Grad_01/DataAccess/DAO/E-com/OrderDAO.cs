@@ -146,7 +146,22 @@ namespace DataAccess.DAO
                 throw new Exception(e.Message);
             }
         }
-
+        public List<Order> GetUserOrders(Guid userId)
+        {
+            try
+            {
+                using (var context = new AppDbContext())
+                {
+                    return context.Orders
+                        .Where(o => o.CustomerId == userId)
+                        .ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
         public decimal GetTotalAmount(List<ProductOptionDTO> dto)
         {
             try

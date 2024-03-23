@@ -1,5 +1,6 @@
 ﻿using System;
 using BusinessObjects.DTO;
+using BusinessObjects.Models.Ecom;
 using DataAccess.DAO;
 
 namespace APIs.Services.Interfaces
@@ -15,6 +16,7 @@ namespace APIs.Services.Interfaces
         public decimal GetTotalAmount(List<ProductOptionDTO> dto);
 
         public int GetCurrentStock(Guid productId);
+        public List<Order> GetUserOrders(Guid userId);
     }
 }
 

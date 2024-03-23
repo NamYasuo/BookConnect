@@ -2,7 +2,9 @@
 using APIs.Repositories.Interfaces;
 using APIs.Services.Interfaces;
 using BusinessObjects.DTO;
+using BusinessObjects.Models.Ecom;
 using BusinessObjects.Models.Ecom.Payment;
+using DataAccess.DAO;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -123,8 +125,7 @@ namespace APIs.Controllers
                     return BadRequest("API request failed with status code: " + response.StatusCode);
                 }
             }
-
-
+            
             //Guid orderId = Guid.NewGuid();
             //NewOrderDTO dto = new NewOrderDTO()
             //{
@@ -162,6 +163,19 @@ namespace APIs.Controllers
             catch(Exception e)
             {
                 throw new Exception(e.Message);
+            }
+        }
+        [HttpGet("user/{userId}/orders")]
+        public IActionResult GetUserOrders(Guid userId)
+        {
+            try
+            {
+                List<Order> orders = _orderService.GetUserOrders(userId);
+                return Ok(orders);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e.Message);
             }
         }
     }
