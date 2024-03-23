@@ -96,14 +96,13 @@ namespace APIs.Controllers
 
         [HttpGet("get-all-transaction")]
         [EnableQuery]
-        public IActionResult GetAllTransaction([FromQuery] ODataQueryOptions<TransactionRecord> oData)
+        public IActionResult GetAllTransaction([FromQuery] ODataQueryOptions<TransactionRecord> oData, PagingParams @params)
         {
             try
             {
-
                 var filteredQueryable = oData.ApplyTo(_transacService.GetAllTransaction()) as IQueryable<TransactionRecord>;
 
-                //var pagedRecords = PagedList<TransactionRecord>.ToPagedList(filteredQueryable, @params.PageNumber, @params.PageSize);
+                var pagedRecords = PagedList<TransactionRecord>.ToPagedList(filteredQueryable, @params.PageNumber, @params.PageSize);
 
                 return Ok(filteredQueryable);
             }
