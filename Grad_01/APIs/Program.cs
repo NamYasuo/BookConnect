@@ -6,7 +6,11 @@ using APIs.Services;
 using APIs.Services.Interfaces;
 using APIs.Services.Payment;
 using BusinessObjects;
+using BusinessObjects.Models.Ecom.Payment;
+using Microsoft.AspNet.OData.Builder;
+using Microsoft.AspNet.OData.Extensions;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OData.Edm;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 
@@ -16,6 +20,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddCors(); //enable Cross-Origin Resource Sharing (CORS)
 builder.Services.AddSession();
+builder.Services.AddOData();
 builder.Services.AddControllers()
     .AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 //builder.Services.AddAutoMapper(typeof(Program));
@@ -109,6 +114,17 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
+
+static IEdmModel GetEdmModel()
+{
+    var builder = new ODataConventionModelBuilder();
+
+    builder.EntitySet<TransactionRecord>("TransactionRecords");
+
+    return builder.GetEdmModel();
+}
+
 app.UseCors(builder =>
 {
     builder.AllowAnyOrigin()
@@ -120,6 +136,11 @@ app.UseCors(builder =>
 app.UseHttpsRedirection();
 app.UseSession();
 app.UseRouting();
+app.EnableDependencyInjection();
+app.Select().Expand().Filter().OrderBy().Count();
+app.MapODataRoute("odata", "odata", GetEdmModel());
+
+
 
 app.UseAuthentication();
 app.UseAuthorization();

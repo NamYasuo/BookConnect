@@ -128,6 +128,30 @@ namespace DataAccess.DAO
 				throw new Exception(e.Message);
 			}
 		}
+
+		public List<Address> SearchOldAddress(string inputString, Guid userId)
+		{
+			try
+			{
+				using (var context = new AppDbContext())
+				{
+					
+					List<Address> result = new List<Address>();
+					var matchedCates = context.Addresses
+					.Where(c => c.Rendezvous.Contains(inputString))
+					.ToList();
+					if (matchedCates.Count > 0)
+					{
+						result = matchedCates;
+					}
+					return result;
+				}
+			}
+			catch (Exception e)
+			{
+				throw new Exception(e.Message);
+			}
+		}
 	}
 }
 

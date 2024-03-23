@@ -4,6 +4,7 @@ using APIs.Services.Interfaces;
 using APIs.Utils.Paging;
 using BusinessObjects.DTO;
 using BusinessObjects.Models;
+using Microsoft.AspNet.OData;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -57,6 +58,7 @@ namespace APIs.Controllers
 			}
 		}
 
+		[EnableQuery()]
 		[HttpGet("get-all-category")]
 		public IActionResult GetAllCategory([FromQuery] PagingParams @params)
         {

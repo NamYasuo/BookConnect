@@ -94,8 +94,6 @@ namespace BusinessObjects
             .WithMany()
             .HasForeignKey(a => a.PostAddressId)
             .OnDelete(DeleteBehavior.Restrict);
-
-            
         }
     }
 }

@@ -57,6 +57,20 @@ namespace DataAccess.DAO
 				throw new Exception(e.Message);
 			}
 		}
-	}
+
+		public IQueryable<TransactionRecord> GetAllTransaction()
+        {
+            try
+            {
+					var context = new AppDbContext();
+                    var transactions = context.Transactions.AsQueryable();
+                    return transactions;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+    }
 }
 
