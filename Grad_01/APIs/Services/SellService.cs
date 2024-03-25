@@ -1,51 +1,50 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using APIs.DTO;
-//using BusinessObjects.Models;
-//using APIs.Services.Interfaces;
-//using APIs.Repositories.Interfaces;
-//using System.ComponentModel.Design;
+using System;
+using System.Collections.Generic;
+using BusinessObjects.DTO;
+using BusinessObjects.Models;
+using APIs.Services.Interfaces;
+using APIs.Repositories.Interfaces;
+using System.ComponentModel.Design;
+using DataAccess.DAO;
 
-//namespace APIs.Services
-//{
-//    public class SellService : ISellService
-//    {
-//        private readonly IBookRepository _bookRepository;
-//        private readonly IInventoryRepository _inventoryRepository;
-//        private readonly IMessageService _messageService;
-//        private readonly IOrderService _orderService;
+namespace APIs.Services
+{
+    public class SellService
+    {
+        private readonly IOrderService _orderService;
+        private readonly ISellService _sellRepository;
 
-//        public SellService(IBookRepository bookRepository, IInventoryRepository inventoryRepository, IMessageService messageService, IOrderService orderService)
-//        {
-//            _bookRepository = bookRepository;
-//            _inventoryRepository = inventoryRepository;
-//            _messageService = messageService;
-//            _orderService = orderService;
-//        }
+        // Book Listing Services
+        public void AddToBookListing(BookListingManageDTOs item) => _sellRepository.AddToBookListing(item);
 
-//        // Book Listing Services
-//        public void CreateBookListing(Book book) => _bookRepository.AddNewBook(book);
+        public void UpdateBookListing(BookListingManageDTOs item) => _sellRepository.UpdateBookListing(item);
 
-//        public void UpdateBookListing(Book book) => _bookRepository.UpdateBook(book);
+        public void RemoveFromBookListing(Guid itemId) => _sellRepository.RemoveFromBookListing(itemId);
 
-//        public void DeleteBookListing(Guid bookId) => _bookRepository.DeleteBookById(bookId);
+        public List<BookListing> GetBookListingById(Guid Id) => _sellRepository.GetBookListingById(Id);
+        public List<BookListing> GetBookListingByName(string listName) => _sellRepository.GetBookListingByName(listName);
+        // Inventory Services
+        public void AddToInventory(InventoryManageDTOs item) => _sellRepository.AddToInventory(item);
 
-//        public List<Book> GetAllBookListings() => _bookRepository.GetAllBook();
-
-//        // Inventory Services
-//        public void AddToInventory(InventoryItem item) => _inventoryRepository.AddToInventory(item);
-
-//        public void UpdateInventoryItem(InventoryItem item) => _inventoryRepository.UpdateInventoryItem(item);
+        public void UpdateInventoryItem(InventoryManageDTOs item) => _sellRepository.UpdateInventoryItem(item);
 
 //        public void RemoveFromInventory(Guid itemId) => _inventoryRepository.RemoveFromInventory(itemId);
 
-//        public List<InventoryItem> GetInventoryItemsBySellerId(Guid sellerId) => _inventoryRepository.GetInventoryItemsBySellerId(sellerId);
+        public List<Inventory> GetInventoryItemsById(Guid Id) => _sellRepository.GetInventoryItemsById(Id);
+        // Ads Services
+        public void AddToAds(AdsManageDTOs item) => _sellRepository.AddToAds(item);
 
-//        // Communication Services
-//        public void SendMessageToBuyer(Guid sellerId, Guid buyerId, string message) => _messageService.SendMessage(sellerId, buyerId, message);
+        public void UpdateAds(AdsManageDTOs item) => _sellRepository.UpdateAds(item);
 
-//        // Order Processing Services
-//        public string ProcessOrder(Guid orderId) => _orderService.ProcessOrder(orderId);
+        public void RemoveFromAds(Guid itemId) => _sellRepository.RemoveFromAds(itemId);
+
+        public List<Inventory> GetAdsById(Guid Id) => _sellRepository.GetAdsById(Id);
+        //// Communication Services
+        public void SendMessage(MessageDTOs message) => _sellRepository.SendMessage(message);
+
+        public List<MessageDTOs> GetMessages(Guid senderId, Guid receiverId) => _sellRepository.GetMessages(senderId, receiverId);
+        // Order Processing Services
+        //public string ProcessOrder(Guid orderId) => _orderService.ProcessOrder(orderId);
 
 //        public string UpdateOrderStatus(Guid orderId, string newStatus) => _orderService.UpdateOrderStatus(orderId, newStatus);
 

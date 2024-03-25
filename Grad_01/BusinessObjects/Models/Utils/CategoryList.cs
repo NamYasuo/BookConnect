@@ -3,6 +3,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using BusinessObjects.Models.Creative;
+using BusinessObjects.Models.Creative;
 using Newtonsoft.Json;
 
 namespace BusinessObjects.Models.Utils

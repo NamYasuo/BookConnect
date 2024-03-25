@@ -4,6 +4,7 @@ using BusinessObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BusinessObjects.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+<<<<<<< HEAD:Grad_01/BusinessObjects/Migrations/20240322141017_InitialCreate.Designer.cs
+    [Migration("20240322141017_InitialCreate")]
+=======
+    [Migration("20240322185604_InitialCreate")]
+>>>>>>> origin/Đạt:Grad_01/BusinessObjects/Migrations/20240322185604_InitialCreate.Designer.cs
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,7 +49,6 @@ namespace BusinessObjects.Migrations
                     b.Property<string>("SubDistrict")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("UserId")
                     b.Property<Guid?>("UserId")
                         .HasColumnType("uniqueidentifier");
 
@@ -95,17 +101,7 @@ namespace BusinessObjects.Migrations
                     b.Property<string>("LogoUrl")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("BusinessType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LogoUrl")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<Guid>("OwnerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("PostAddressId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("PostAddressId")
@@ -114,8 +110,6 @@ namespace BusinessObjects.Migrations
                     b.HasKey("AgencyId");
 
                     b.HasIndex("OwnerId");
-
-                    b.HasIndex("PostAddressId");
 
                     b.HasIndex("PostAddressId");
 
@@ -130,15 +124,6 @@ namespace BusinessObjects.Migrations
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsBanned")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsSeller")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsValidated")
-                        .HasColumnType("bit");
 
                     b.Property<bool>("IsBanned")
                         .HasColumnType("bit");
@@ -225,8 +210,6 @@ namespace BusinessObjects.Migrations
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime?>("PublishDate")
                         .HasColumnType("datetime2");
@@ -294,10 +277,6 @@ namespace BusinessObjects.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImageDir")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("CateId");
 
                     b.ToTable("Categories");
@@ -314,12 +293,6 @@ namespace BusinessObjects.Migrations
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ChapterNumber")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Directory")
                         .HasColumnType("nvarchar(max)");
 
@@ -327,6 +300,12 @@ namespace BusinessObjects.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+<<<<<<< HEAD:Grad_01/BusinessObjects/Migrations/20240322141017_InitialCreate.Designer.cs
+=======
+                    b.Property<Guid>("StatId")
+                        .HasColumnType("uniqueidentifier");
+
+>>>>>>> origin/Đạt:Grad_01/BusinessObjects/Migrations/20240322185604_InitialCreate.Designer.cs
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -345,90 +324,6 @@ namespace BusinessObjects.Migrations
                     b.HasIndex("WorkId");
 
                     b.ToTable("Chapters");
-                });
-
-            modelBuilder.Entity("BusinessObjects.Models.Creative.SubRecord", b =>
-                {
-                    b.Property<Guid>("SubRecordId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("BillingId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("EventType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("SubscriptionId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("SubRecordId");
-
-                    b.HasIndex("BillingId");
-
-                    b.HasIndex("SubscriptionId");
-
-                    b.ToTable("SubRecords");
-                });
-
-            modelBuilder.Entity("BusinessObjects.Models.Creative.Subscription", b =>
-                {
-                    b.Property<Guid>("SubId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("SubscriberId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("TierId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("SubId");
-
-                    b.HasIndex("SubscriberId");
-
-                    b.ToTable("Subscriptions");
-                });
-
-            modelBuilder.Entity("BusinessObjects.Models.Creative.Tier", b =>
-                {
-                    b.Property<Guid>("TierId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CreatorId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Duration")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TierType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("TierId");
-
-                    b.HasIndex("CreatorId");
-
-                    b.ToTable("Tiers");
                 });
 
             modelBuilder.Entity("BusinessObjects.Models.Creative.SubRecord", b =>
@@ -538,26 +433,10 @@ namespace BusinessObjects.Migrations
                     b.Property<Guid>("StatId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("BackgroundDir")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CoverDir")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal?>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<Guid>("StatId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Title")
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -572,64 +451,7 @@ namespace BusinessObjects.Migrations
 
                     b.HasIndex("StatId");
 
-                    b.HasIndex("StatId");
-
                     b.ToTable("Works");
-                });
-
-            modelBuilder.Entity("BusinessObjects.Models.E_com.Trading.Post", b =>
-                {
-                    b.Property<Guid>("PostId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("AuthorName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Content")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("PostId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Posts");
-                });
-
-            modelBuilder.Entity("BusinessObjects.Models.Ecom.Base.BanRecord", b =>
-                {
-                    b.Property<Guid>("BanRecordId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("BanReason")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("BannedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("TargetUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("UnBanReason")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("UnbannedDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("BanRecordId");
-
-                    b.HasIndex("TargetUserId");
-
-                    b.ToTable("BanRecords");
                 });
 
             modelBuilder.Entity("BusinessObjects.Models.E_com.Trading.Post", b =>
@@ -741,10 +563,6 @@ namespace BusinessObjects.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PaymentMethod")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
@@ -757,14 +575,9 @@ namespace BusinessObjects.Migrations
                     b.Property<Guid?>("TransactionId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("TransactionId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("OrderId");
 
                     b.HasIndex("AddressId");
-
-                    b.HasIndex("TransactionId");
 
                     b.HasIndex("TransactionId");
 
@@ -772,16 +585,14 @@ namespace BusinessObjects.Migrations
                 });
 
             modelBuilder.Entity("BusinessObjects.Models.Ecom.Payment.TransactionRecord", b =>
-            modelBuilder.Entity("BusinessObjects.Models.Ecom.Payment.TransactionRecord", b =>
                 {
-                    b.Property<Guid?>("TransactionId")
-                        .ValueGeneratedOnAdd()
                     b.Property<Guid?>("TransactionId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal?>("Amount")
                         .HasColumnType("decimal(18,2)");
+<<<<<<< HEAD:Grad_01/BusinessObjects/Migrations/20240322141017_InitialCreate.Designer.cs
 
                     b.Property<string>("PaymentDate")
                         .HasColumnType("nvarchar(max)");
@@ -801,8 +612,23 @@ namespace BusinessObjects.Migrations
                     b.HasKey("TransactionId");
 
                     b.HasIndex("UserId");
+=======
 
-                    b.ToTable("Transactions");
+                    b.Property<string>("PaymentDate")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PaymentMessage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PaymentStatus")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Signature")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("TransactionId");
+>>>>>>> origin/Đạt:Grad_01/BusinessObjects/Migrations/20240322185604_InitialCreate.Designer.cs
+
                     b.ToTable("Transactions");
                 });
 
@@ -813,12 +639,9 @@ namespace BusinessObjects.Migrations
 
                     b.Property<double>("OverallRating")
                         .HasColumnType("float");
-                    b.Property<double>("OverallRating")
-                        .HasColumnType("float");
 
                     b.HasKey("RatingId");
 
-                    b.ToTable("Ratings");
                     b.ToTable("Ratings");
                 });
 
@@ -924,14 +747,6 @@ namespace BusinessObjects.Migrations
                             Description = "Role for base user?",
                             RoleName = "BaseUser"
                         });
-
-                    b.HasData(
-                        new
-                        {
-                            RoleId = new Guid("2da9143d-559c-40b5-907d-0d9c8d714c6c"),
-                            Description = "Role for base user?",
-                            RoleName = "BaseUser"
-                        });
                 });
 
             modelBuilder.Entity("BusinessObjects.Models.TokenInfo", b =>
@@ -984,7 +799,6 @@ namespace BusinessObjects.Migrations
             modelBuilder.Entity("BusinessObjects.Models.Utils.CategoryList", b =>
                 {
                     b.Property<Guid?>("BookId")
-                    b.Property<Guid?>("BookId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("CategoryId")
@@ -993,14 +807,9 @@ namespace BusinessObjects.Migrations
                     b.Property<Guid?>("WorkId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("WorkId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasIndex("BookId");
 
                     b.HasIndex("CategoryId");
-
-                    b.HasIndex("WorkId");
 
                     b.HasIndex("WorkId");
 
@@ -1030,37 +839,29 @@ namespace BusinessObjects.Migrations
                     b.ToTable("Statistics");
                 });
 
-            modelBuilder.Entity("BusinessObjects.Models.Utils.Statistic", b =>
-                {
-                    b.Property<Guid>("StatId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Interested")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Purchase")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Search")
-                        .HasColumnType("int");
-
-                    b.Property<int>("View")
-                        .HasColumnType("int");
-
-                    b.HasKey("StatId");
-
-                    b.ToTable("Statistics");
-                });
-
             modelBuilder.Entity("BusinessObjects.Models.Address", b =>
                 {
                     b.HasOne("BusinessObjects.Models.AppUser", "User")
-                    b.HasOne("BusinessObjects.Models.AppUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
+<<<<<<< HEAD:Grad_01/BusinessObjects/Migrations/20240322141017_InitialCreate.Designer.cs
 
                     b.Navigation("User");
+=======
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("BusinessObjects.Models.Ads", b =>
+                {
+                    b.HasOne("BusinessObjects.Models.Agency", "Agency")
+                        .WithMany()
+                        .HasForeignKey("AgencyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Agency");
+>>>>>>> origin/Đạt:Grad_01/BusinessObjects/Migrations/20240322185604_InitialCreate.Designer.cs
                 });
 
             modelBuilder.Entity("BusinessObjects.Models.Agency", b =>
@@ -1077,15 +878,7 @@ namespace BusinessObjects.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("BusinessObjects.Models.Address", "PostAddress")
-                        .WithMany()
-                        .HasForeignKey("PostAddressId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.Navigation("Owner");
-
-                    b.Navigation("PostAddress");
 
                     b.Navigation("PostAddress");
                 });
@@ -1212,47 +1005,6 @@ namespace BusinessObjects.Migrations
                     b.Navigation("AppUser");
                 });
 
-            modelBuilder.Entity("BusinessObjects.Models.Creative.SubRecord", b =>
-                {
-                    b.HasOne("BusinessObjects.Models.Ecom.Payment.TransactionRecord", "Transaction")
-                        .WithMany()
-                        .HasForeignKey("BillingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BusinessObjects.Models.Creative.Subscription", "Subscription")
-                        .WithMany()
-                        .HasForeignKey("SubscriptionId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Subscription");
-
-                    b.Navigation("Transaction");
-                });
-
-            modelBuilder.Entity("BusinessObjects.Models.Creative.Subscription", b =>
-                {
-                    b.HasOne("BusinessObjects.Models.AppUser", "Subcriber")
-                        .WithMany()
-                        .HasForeignKey("SubscriberId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Subcriber");
-                });
-
-            modelBuilder.Entity("BusinessObjects.Models.Creative.Tier", b =>
-                {
-                    b.HasOne("BusinessObjects.Models.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("CreatorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AppUser");
-                });
-
             modelBuilder.Entity("BusinessObjects.Models.Creative.Work", b =>
                 {
                     b.HasOne("BusinessObjects.Models.AppUser", "Author")
@@ -1267,15 +1019,10 @@ namespace BusinessObjects.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BusinessObjects.Models.Utils.Statistic", "Stats")
-                        .WithMany()
-                        .HasForeignKey("StatId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Author");
 
                     b.Navigation("Stats");
+<<<<<<< HEAD:Grad_01/BusinessObjects/Migrations/20240322141017_InitialCreate.Designer.cs
                 });
 
             modelBuilder.Entity("BusinessObjects.Models.E_com.Trading.Post", b =>
@@ -1298,6 +1045,8 @@ namespace BusinessObjects.Migrations
                         .IsRequired();
 
                     b.Navigation("TargetedUser");
+=======
+>>>>>>> origin/Đạt:Grad_01/BusinessObjects/Migrations/20240322185604_InitialCreate.Designer.cs
                 });
 
             modelBuilder.Entity("BusinessObjects.Models.E_com.Trading.Post", b =>
@@ -1319,6 +1068,7 @@ namespace BusinessObjects.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+<<<<<<< HEAD:Grad_01/BusinessObjects/Migrations/20240322141017_InitialCreate.Designer.cs
                     b.HasOne("BusinessObjects.Models.Ecom.Payment.TransactionRecord", "Transaction")
                         .WithMany()
                         .HasForeignKey("TransactionId");
@@ -1335,6 +1085,35 @@ namespace BusinessObjects.Migrations
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
+=======
+                    b.Navigation("TargetedUser");
+                });
+
+            modelBuilder.Entity("BusinessObjects.Models.Ecom.Cart", b =>
+                {
+                    b.HasOne("BusinessObjects.Models.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+                });
+
+            modelBuilder.Entity("BusinessObjects.Models.Ecom.Order", b =>
+                {
+                    b.HasOne("BusinessObjects.Models.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId");
+
+                    b.HasOne("BusinessObjects.Models.Ecom.Payment.TransactionRecord", "Transaction")
+                        .WithMany()
+                        .HasForeignKey("TransactionId");
+
+                    b.Navigation("Address");
+
+                    b.Navigation("Transaction");
+>>>>>>> origin/Đạt:Grad_01/BusinessObjects/Migrations/20240322185604_InitialCreate.Designer.cs
                 });
 
             modelBuilder.Entity("BusinessObjects.Models.Ecom.Rating.RatingRecord", b =>
@@ -1421,7 +1200,6 @@ namespace BusinessObjects.Migrations
                     b.HasOne("BusinessObjects.Models.Book", "Book")
                         .WithMany()
                         .HasForeignKey("BookId");
-                        .HasForeignKey("BookId");
 
                     b.HasOne("BusinessObjects.Models.Category", "Category")
                         .WithMany()
@@ -1433,15 +1211,9 @@ namespace BusinessObjects.Migrations
                         .WithMany()
                         .HasForeignKey("WorkId");
 
-                    b.HasOne("BusinessObjects.Models.Creative.Work", "Work")
-                        .WithMany()
-                        .HasForeignKey("WorkId");
-
                     b.Navigation("Book");
 
                     b.Navigation("Category");
-
-                    b.Navigation("Work");
 
                     b.Navigation("Work");
                 });

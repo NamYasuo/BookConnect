@@ -1,5 +1,6 @@
 ﻿using System;
 using Azure.Core;
+using Azure.Core;
 using BusinessObjects;
 using BusinessObjects.DTO;
 using BusinessObjects.Models;
@@ -31,6 +32,7 @@ namespace DataAccess.DAO
 
                             if (book != null)
                             {
+                                item.Stored_Price = book.Price;
                                 item.Stored_Price = book.Price;
                             }
                             else return "Error! Product doesn't exist, productId: " + item.ProductId;
@@ -124,18 +126,24 @@ namespace DataAccess.DAO
                         OrderId = data.OrderId,
                         CustomerId = data.CustomerId,
                         Total_Price = data.Price,
+                        Total_Price = data.Price,
                         Status = data.Status,
                         Quantity = 0,
                         Notes = data.Notes,
                         CreatedDate = DateTime.Now,
                         PaymentMethod = data.PaymentMethod,
                         TransactionId = data.TransactionId,
+                        PaymentMethod = data.PaymentMethod,
+                        TransactionId = data.TransactionId,
                         AddressId = data.AddressId
-                    };
+                };
                     context.Orders.Add(newOrder);
+                    int result = context.SaveChanges();
                     int result = context.SaveChanges();
                     if (result == 1)
                     {
+                        return "Successfully!";
+                    }
                         return "Successfully!";
                     }
                     else return "Fail to create new order!!!";
@@ -185,6 +193,8 @@ namespace DataAccess.DAO
                 throw new Exception(e.Message);
             }
         }
+
+    }
 
     }
 }

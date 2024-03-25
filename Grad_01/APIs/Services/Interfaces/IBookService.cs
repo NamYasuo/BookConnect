@@ -12,11 +12,12 @@ namespace APIs.Services.Interfaces
         public BookDetailsDTO GetBookDetailsById(Guid bookId);
         public Book GetBookById(Guid bookId);
         public Book GetBookByName(string name);
-        public void AddNewBook(Book book);
-        public void UpdateBook(Book book);
+        public void AddNewBook(Book item);
+        public void UpdateBook(Book item);
         public void DeleteBook(Guid bookId);
         public List<Book> GetBookListById(List<Guid> bookIds);
-
+        void UpdateBook(BookDetailsDTO item);
+        void AddNewBook(BookDetailsDTO item);
 
         List<SEODTO> ListSEO(string searchTerm);
 

@@ -15,6 +15,7 @@ namespace DataAccess.DAO
 				using (var context = new AppDbContext())
 				{
 					result = context.Addresses.Where(u => u.UserId == userId).ToList();
+					result = context.Addresses.Where(u => u.UserId == userId).ToList();
                     return result;
                 }
 

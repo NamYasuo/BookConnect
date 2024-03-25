@@ -13,9 +13,14 @@ namespace BusinessObjects.DTO
         public string PaymentMethod { get; set; } = null!;
 
         public decimal? Price { get; set; }
+
+        public string PaymentMethod { get; set; } = null!;
+
+        public decimal? Price { get; set; }
         //Notes
         public string? Notes { get; set; }
         //PaymentId
+        public Guid? TransactionId { get; set; }
         public Guid? TransactionId { get; set; }
         //AddressId
         public Guid AddressId { get; set; }

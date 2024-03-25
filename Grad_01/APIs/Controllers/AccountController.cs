@@ -4,6 +4,7 @@ using System.Security.Claims;
 using System.Text;
 using APIs.DTO;
 using APIs.Services.Interfaces;
+using APIs.Services.Interfaces;
 using BusinessObjects.DTO;
 using BusinessObjects.Models;
 using DataAccess.DTO;
@@ -19,15 +20,20 @@ namespace APIs.Controllers
 	{
 		private readonly IAccountService _accService;
         private readonly ICloudinaryService _cloudinaryService;
+		private readonly IAccountService _accService;
+        private readonly ICloudinaryService _cloudinaryService;
 
         public AccountController(IAccountService service, ICloudinaryService cloudinaryService)
+        public AccountController(IAccountService service, ICloudinaryService cloudinaryService)
         {
+            _cloudinaryService = cloudinaryService;
+            _accService = service;
             _cloudinaryService = cloudinaryService;
             _accService = service;
         }
 
         [HttpPost("SignUp")]
-        public async Task<IActionResult> SignUp([FromBody] RegisterDTO model)
+        public IActionResult SignUp([FromBody] RegisterDTO model)
         {
             var status = new Status();
 
@@ -35,6 +41,7 @@ namespace APIs.Controllers
             {
                 status.StatusCode = 0;
                 status.Message = "Please pass all the required fields";
+                return BadRequest(status);
                 return BadRequest(status);
             }
             // check if users exists
@@ -152,6 +159,7 @@ namespace APIs.Controllers
                     return Ok(status);
                 }
                 if (_accService.GetRoleDetails(data.RoleName) is not null)
+                if (_accService.GetRoleDetails(data.RoleName) is not null)
                 {
                     return BadRequest("Role already existed");
                 }
@@ -177,6 +185,7 @@ namespace APIs.Controllers
         {
             try
             {
+                Address? address = _accService.GetDefaultAddress(userId);
                 Address? address = _accService.GetDefaultAddress(userId);
                 if (address != null)
                 {

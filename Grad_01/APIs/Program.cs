@@ -5,6 +5,8 @@ using APIs.Repositories.Interfaces;
 using APIs.Services;
 using APIs.Services.Interfaces;
 using APIs.Services.Payment;
+using APIs.Services.Interfaces;
+using APIs.Services.Payment;
 using BusinessObjects;
 using BusinessObjects.Models.Ecom.Payment;
 using Microsoft.AspNet.OData.Builder;
@@ -13,6 +15,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OData.Edm;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
+
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,6 +27,14 @@ builder.Services.AddOData();
 builder.Services.AddControllers()
     .AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 //builder.Services.AddAutoMapper(typeof(Program));
+
+//SignalR
+//builder.Services.AddSignalR();
+//builder.Services.AddCors(opt =>
+//{
+//    opt.AddPolicy("CORSPolicy", builder => builder.AllowAnyMethod().AllowAnyHeader().AllowCredentials().SetIsOriginAllowed((host) => true));
+//});
+
 
 //SignalR
 //builder.Services.AddSignalR();
@@ -51,12 +62,13 @@ builder.Services.AddScoped<ITestService, TestService>();
 
 //Repositories
 builder.Services.AddScoped<ICartRepository, CartRepository>();
-
+builder.Services.AddScoped<ISellRepository, SellRepository>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo { Title = "BookConnectAPI", Version = "v1" });
+
 
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
@@ -67,6 +79,7 @@ builder.Services.AddSwaggerGen(options =>
         BearerFormat = "JWT",
         Scheme = "bearer"
     });
+
 
     options.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
@@ -133,7 +146,9 @@ app.UseCors(builder =>
     builder.AllowAnyOrigin()
     .AllowAnyMethod()
     .AllowAnyHeader().WithExposedHeaders("X-Pagination");
+    .AllowAnyHeader().WithExposedHeaders("X-Pagination");
 });
+//app.UseCors("CORSPolicy");
 //app.UseCors("CORSPolicy");
 
 app.UseHttpsRedirection();
@@ -147,6 +162,7 @@ app.Select().Expand().Filter().OrderBy().Count();
 
 app.UseAuthentication();
 app.UseAuthorization();
+//app.MapHub<ChatHub>("/Chat");
 //app.MapHub<ChatHub>("/Chat");
 app.MapControllers();
 

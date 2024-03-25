@@ -44,6 +44,9 @@
     <None Remove="Utils\Paging\" />
     <None Remove="FileSystem\" />
     <None Remove="Services\Interfaces\" />
+    <None Remove="Utils\Paging\" />
+    <None Remove="FileSystem\" />
+    <None Remove="Services\Interfaces\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Mapper\" />

@@ -3,14 +3,17 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using APIs.Services.Interfaces;
+using APIs.Services.Interfaces;
 using BusinessObjects.DTO;
 using BusinessObjects.Models;
 using DataAccess.DAO;
+using DataAccess.DAO.Ecom;
 using DataAccess.DAO.Ecom;
 using DataAccess.DTO;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 
+namespace APIs.Repositories.Interfaces
 namespace APIs.Repositories.Interfaces
 {
     public class AccountService : IAccountService

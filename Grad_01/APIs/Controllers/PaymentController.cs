@@ -1,5 +1,6 @@
 using System.Net;
 using APIs.Services.Interfaces;
+using APIs.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using BusinessObjects.Models.Ecom.Payment;
 using BusinessObjects.DTO;
@@ -19,8 +20,12 @@ namespace APIs.Controllers
         private readonly ITransactionService _transacService;
 
         public PaymentController(IVnPayService vnpService, ITransactionService transacService)
+        private readonly ITransactionService _transacService;
+
+        public PaymentController(IVnPayService vnpService, ITransactionService transacService)
         {
             _vnpService = vnpService;
+            _transacService = transacService;
             _transacService = transacService;
         }
 
@@ -36,10 +41,12 @@ namespace APIs.Controllers
             return Ok(response);
         }
 
+
         [HttpGet]
         [Route("vnpay/VnPayIPN")]
         public async Task<IActionResult> VnpayIpnReturnAsync([FromQuery] VnPayResponseDTO response)
         {
+            //string returnUrl = string.Empty;
             //string returnUrl = string.Empty;
             var returnModel = new PaymentReturnDTO();
             var processResult = _vnpService.ProcessVnPayReturn(response);

@@ -1,15 +1,28 @@
 ﻿using System;
 using APIs.Repositories.Interfaces;
 using APIs.Services.Interfaces;
+using APIs.Services.Interfaces;
 using BusinessObjects.DTO;
 using BusinessObjects.Models.Ecom;
 using BusinessObjects.Models.Ecom.Payment;
 using DataAccess.DAO;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Newtonsoft.Json;
 
 namespace APIs.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
+    public class OrderController : ControllerBase
+    {
+        private readonly IOrderService _orderService;
+        private readonly ITransactionService _transactionService;
+        public OrderController(IOrderService orderService, ITransactionService transactionService)
+        {
+            _transactionService = transactionService;
+            _orderService = orderService;
+        }
     [Route("api/[controller]")]
     [ApiController]
     public class OrderController : ControllerBase

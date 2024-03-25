@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using APIs.Services.Interfaces;
+using System.Collections.Generic;
+using APIs.Services.Interfaces;
 using BusinessObjects.DTO;
 using BusinessObjects.Models.Ecom;
 using DataAccess.DAO;
+using DataAccess.DAO.Ecom;
 using DataAccess.DAO.Ecom;
 
 namespace APIs.Services
