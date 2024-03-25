@@ -6,6 +6,7 @@ using BusinessObjects.Models.Ecom;
 using BusinessObjects.Models.Ecom.Base;
 using BusinessObjects.Models.Ecom.Payment;
 using BusinessObjects.Models.Ecom.Rating;
+using BusinessObjects.Models.Trading;
 using BusinessObjects.Models.Utils;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -33,7 +34,6 @@ namespace BusinessObjects
         public virtual DbSet<Subscription> Subscriptions { get; set; } 
         public virtual DbSet<SubRecord> SubRecords { get; set; } 
 
-
         //Rating services DbSets
         public virtual DbSet<Rating> Ratings { get; set; }
         public virtual DbSet<RatingRecord> RatingRecords { get; set; } 
@@ -44,7 +44,8 @@ namespace BusinessObjects
         //public virtual Db
 
         //Trading services DbSets
-        public virtual DbSet<Post> Posts { get; set; } 
+        public virtual DbSet<Post> Posts { get; set; }
+        public virtual DbSet<Comment> Comments { get; set; }
 
         //Utility DbSets
         public virtual DbSet<Role> Roles { get; set; }
@@ -58,7 +59,6 @@ namespace BusinessObjects
         //Creative services DbSet
         public virtual DbSet<Chapter> Chapters { get; set; } 
         public virtual DbSet<Work> Works { get; set; } 
-
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

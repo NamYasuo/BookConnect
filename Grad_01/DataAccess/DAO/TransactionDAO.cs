@@ -11,13 +11,13 @@ namespace DataAccess.DAO
 		{
 			try
 			{
-				using (var context = new AppDbContext())
+				using(var context = new AppDbContext())
 				{
 					context.Transactions.Add(transaction);
 					return context.SaveChanges();
 				}
 			}
-			catch (Exception e)
+			catch(Exception e)
 			{
 				throw new Exception(e.Message);
 			}
@@ -27,7 +27,7 @@ namespace DataAccess.DAO
 			try
 			{
 				TransactionRecord? result = null;
-				using (var context = new AppDbContext())
+				using(var context = new AppDbContext())
 				{
 					result = context.Transactions.Where(t => t.TransactionId == refId).FirstOrDefault();
 				}

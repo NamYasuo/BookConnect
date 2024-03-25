@@ -1,6 +1,7 @@
 {
   "format": 1,
   "restore": {
+<<<<<<< HEAD
     "D:\\BookCo\\BookConnect\\BookConnect\\Grad_01\\DataAccess\\DataAccess.csproj": {}
   },
   "projects": {
@@ -19,6 +20,22 @@
         "configFilePaths": [
           "C:\\Users\\HI\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+=======
+    "D:\\FA23\\Đồ án\\BookConnect\\Grad_01\\DataAccess\\DataAccess.csproj": {}
+  },
+  "projects": {
+    "D:\\FA23\\Đồ án\\BookConnect\\Grad_01\\BusinessObjects\\BusinessObjects.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\FA23\\Đồ án\\BookConnect\\Grad_01\\BusinessObjects\\BusinessObjects.csproj",
+        "projectName": "BusinessObjects",
+        "projectPath": "D:\\FA23\\Đồ án\\BookConnect\\Grad_01\\BusinessObjects\\BusinessObjects.csproj",
+        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+        "outputPath": "D:\\FA23\\Đồ án\\BookConnect\\Grad_01\\BusinessObjects\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+>>>>>>> origin/Nam
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -96,6 +113,7 @@
         }
       }
     },
+<<<<<<< HEAD
     "D:\\BookCo\\BookConnect\\BookConnect\\Grad_01\\DataAccess\\DataAccess.csproj": {
       "version": "1.0.0",
       "restore": {
@@ -111,6 +129,19 @@
         "configFilePaths": [
           "C:\\Users\\HI\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+=======
+    "D:\\FA23\\Đồ án\\BookConnect\\Grad_01\\DataAccess\\DataAccess.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\FA23\\Đồ án\\BookConnect\\Grad_01\\DataAccess\\DataAccess.csproj",
+        "projectName": "DataAccess",
+        "projectPath": "D:\\FA23\\Đồ án\\BookConnect\\Grad_01\\DataAccess\\DataAccess.csproj",
+        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+        "outputPath": "D:\\FA23\\Đồ án\\BookConnect\\Grad_01\\DataAccess\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+>>>>>>> origin/Nam
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -124,8 +155,13 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
+<<<<<<< HEAD
               "D:\\BookCo\\BookConnect\\BookConnect\\Grad_01\\BusinessObjects\\BusinessObjects.csproj": {
                 "projectPath": "D:\\BookCo\\BookConnect\\BookConnect\\Grad_01\\BusinessObjects\\BusinessObjects.csproj"
+=======
+              "D:\\FA23\\Đồ án\\BookConnect\\Grad_01\\BusinessObjects\\BusinessObjects.csproj": {
+                "projectPath": "D:\\FA23\\Đồ án\\BookConnect\\Grad_01\\BusinessObjects\\BusinessObjects.csproj"
+>>>>>>> origin/Nam
               }
             }
           }

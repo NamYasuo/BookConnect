@@ -62,7 +62,6 @@ namespace APIs.Services
 		public int SetWorkPrice(Guid workId, decimal price) => new WorkDAO().SetWorkPrice(workId, price);
        
 		public bool IsWorkOwner(Guid workId, Guid userId) => new WorkDAO().IsWorkCreator(userId, workId);
-
     }
 }
 

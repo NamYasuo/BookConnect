@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 D:\GitHub\BookConnect\Grad_01\BusinessObjects\bin\Debug\net7.0\BusinessObjects.deps.json
 D:\GitHub\BookConnect\Grad_01\BusinessObjects\bin\Debug\net7.0\BusinessObjects.runtimeconfig.json
 D:\GitHub\BookConnect\Grad_01\BusinessObjects\bin\Debug\net7.0\BusinessObjects.dll
@@ -43,3 +44,34 @@ D:\BookCo\BookConnect\BookConnect\Grad_01\BusinessObjects\obj\Debug\net7.0\refin
 D:\BookCo\BookConnect\BookConnect\Grad_01\BusinessObjects\obj\Debug\net7.0\BusinessObjects.pdb
 D:\BookCo\BookConnect\BookConnect\Grad_01\BusinessObjects\obj\Debug\net7.0\BusinessObjects.genruntimeconfig.cache
 D:\BookCo\BookConnect\BookConnect\Grad_01\BusinessObjects\obj\Debug\net7.0\ref\BusinessObjects.dll
+=======
+D:\Đồ án\BookConnect-H-ng\Grad_01\BusinessObjects\bin\Debug\net7.0\BusinessObjects.deps.json
+D:\Đồ án\BookConnect-H-ng\Grad_01\BusinessObjects\bin\Debug\net7.0\BusinessObjects.runtimeconfig.json
+D:\Đồ án\BookConnect-H-ng\Grad_01\BusinessObjects\bin\Debug\net7.0\BusinessObjects.dll
+D:\Đồ án\BookConnect-H-ng\Grad_01\BusinessObjects\bin\Debug\net7.0\BusinessObjects.pdb
+D:\Đồ án\BookConnect-H-ng\Grad_01\BusinessObjects\obj\Debug\net7.0\BusinessObjects.csproj.AssemblyReference.cache
+D:\Đồ án\BookConnect-H-ng\Grad_01\BusinessObjects\obj\Debug\net7.0\BusinessObjects.GeneratedMSBuildEditorConfig.editorconfig
+D:\Đồ án\BookConnect-H-ng\Grad_01\BusinessObjects\obj\Debug\net7.0\BusinessObjects.AssemblyInfoInputs.cache
+D:\Đồ án\BookConnect-H-ng\Grad_01\BusinessObjects\obj\Debug\net7.0\BusinessObjects.AssemblyInfo.cs
+D:\Đồ án\BookConnect-H-ng\Grad_01\BusinessObjects\obj\Debug\net7.0\BusinessObjects.csproj.CoreCompileInputs.cache
+D:\Đồ án\BookConnect-H-ng\Grad_01\BusinessObjects\obj\Debug\net7.0\BusinessObjects.dll
+D:\Đồ án\BookConnect-H-ng\Grad_01\BusinessObjects\obj\Debug\net7.0\refint\BusinessObjects.dll
+D:\Đồ án\BookConnect-H-ng\Grad_01\BusinessObjects\obj\Debug\net7.0\BusinessObjects.pdb
+D:\Đồ án\BookConnect-H-ng\Grad_01\BusinessObjects\obj\Debug\net7.0\BusinessObjects.genruntimeconfig.cache
+D:\Đồ án\BookConnect-H-ng\Grad_01\BusinessObjects\obj\Debug\net7.0\ref\BusinessObjects.dll
+D:\FA23\Đồ án\BookConnect\Grad_01\BusinessObjects\bin\Debug\net7.0\BusinessObjects.deps.json
+D:\FA23\Đồ án\BookConnect\Grad_01\BusinessObjects\bin\Debug\net7.0\BusinessObjects.runtimeconfig.json
+D:\FA23\Đồ án\BookConnect\Grad_01\BusinessObjects\bin\Debug\net7.0\BusinessObjects.dll
+D:\FA23\Đồ án\BookConnect\Grad_01\BusinessObjects\bin\Debug\net7.0\BusinessObjects.pdb
+D:\FA23\Đồ án\BookConnect\Grad_01\BusinessObjects\obj\Debug\net7.0\BusinessObjects.csproj.AssemblyReference.cache
+D:\FA23\Đồ án\BookConnect\Grad_01\BusinessObjects\obj\Debug\net7.0\BusinessObjects.GeneratedMSBuildEditorConfig.editorconfig
+D:\FA23\Đồ án\BookConnect\Grad_01\BusinessObjects\obj\Debug\net7.0\BusinessObjects.AssemblyInfoInputs.cache
+D:\FA23\Đồ án\BookConnect\Grad_01\BusinessObjects\obj\Debug\net7.0\BusinessObjects.AssemblyInfo.cs
+D:\FA23\Đồ án\BookConnect\Grad_01\BusinessObjects\obj\Debug\net7.0\BusinessObjects.csproj.CoreCompileInputs.cache
+D:\FA23\Đồ án\BookConnect\Grad_01\BusinessObjects\obj\Debug\net7.0\BusinessObjects.sourcelink.json
+D:\FA23\Đồ án\BookConnect\Grad_01\BusinessObjects\obj\Debug\net7.0\BusinessObjects.dll
+D:\FA23\Đồ án\BookConnect\Grad_01\BusinessObjects\obj\Debug\net7.0\refint\BusinessObjects.dll
+D:\FA23\Đồ án\BookConnect\Grad_01\BusinessObjects\obj\Debug\net7.0\BusinessObjects.pdb
+D:\FA23\Đồ án\BookConnect\Grad_01\BusinessObjects\obj\Debug\net7.0\BusinessObjects.genruntimeconfig.cache
+D:\FA23\Đồ án\BookConnect\Grad_01\BusinessObjects\obj\Debug\net7.0\ref\BusinessObjects.dll
+>>>>>>> origin/Nam

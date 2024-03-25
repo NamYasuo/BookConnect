@@ -13,7 +13,6 @@ namespace APIs.Services.Payment
         public IQueryable<TransactionRecord> GetAllTransaction() => new TransactionDAO().GetAllTransaction();
       
         public TransactionRecord? GetTransactionId(Guid refId) => new TransactionDAO().GetTransactionId(refId);
-
         public int IdentifyTransactor(Guid transId, Guid userId) => new TransactionDAO().IdentifyTransactor(transId, userId);
     }
 }

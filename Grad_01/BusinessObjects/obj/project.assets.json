@@ -3245,12 +3245,17 @@
     ]
   },
   "packageFolders": {
+<<<<<<< HEAD
     "C:\\Users\\HI\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+=======
+    "C:\\Users\\Admin\\.nuget\\packages\\": {}
+>>>>>>> origin/Nam
   },
   "project": {
     "version": "1.0.0",
     "restore": {
+<<<<<<< HEAD
       "projectUniqueName": "D:\\BookCo\\BookConnect\\BookConnect\\Grad_01\\BusinessObjects\\BusinessObjects.csproj",
       "projectName": "BusinessObjects",
       "projectPath": "D:\\BookCo\\BookConnect\\BookConnect\\Grad_01\\BusinessObjects\\BusinessObjects.csproj",
@@ -3263,6 +3268,16 @@
       "configFilePaths": [
         "C:\\Users\\HI\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+=======
+      "projectUniqueName": "D:\\FA23\\Đồ án\\BookConnect\\Grad_01\\BusinessObjects\\BusinessObjects.csproj",
+      "projectName": "BusinessObjects",
+      "projectPath": "D:\\FA23\\Đồ án\\BookConnect\\Grad_01\\BusinessObjects\\BusinessObjects.csproj",
+      "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+      "outputPath": "D:\\FA23\\Đồ án\\BookConnect\\Grad_01\\BusinessObjects\\obj\\",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+>>>>>>> origin/Nam
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
