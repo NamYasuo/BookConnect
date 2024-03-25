@@ -679,9 +679,32 @@ namespace BusinessObjects.Migrations
 
                     b.HasKey("CommentId");
 
+                    b.HasIndex("CommenterId");
+
                     b.HasIndex("PostId");
 
                     b.ToTable("Comments");
+                });
+
+            modelBuilder.Entity("BusinessObjects.Models.Trading.PostInterest", b =>
+                {
+                    b.Property<Guid>("PostInterestId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("InteresterId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("PostId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("PostInterestId");
+
+                    b.HasIndex("InteresterId");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("PostInterests");
                 });
 
             modelBuilder.Entity("BusinessObjects.Models.Utils.CICMedia", b =>
@@ -998,11 +1021,38 @@ namespace BusinessObjects.Migrations
 
             modelBuilder.Entity("BusinessObjects.Models.Trading.Comment", b =>
                 {
+                    b.HasOne("BusinessObjects.Models.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("CommenterId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("BusinessObjects.Models.E_com.Trading.Post", "Post")
                         .WithMany()
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Post");
+                });
+
+            modelBuilder.Entity("BusinessObjects.Models.Trading.PostInterest", b =>
+                {
+                    b.HasOne("BusinessObjects.Models.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("InteresterId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("BusinessObjects.Models.E_com.Trading.Post", "Post")
+                        .WithMany()
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
 
                     b.Navigation("Post");
                 });

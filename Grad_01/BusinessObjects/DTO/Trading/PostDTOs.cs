@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BusinessObjects.DTO.Trading
 {
-    //Post
+//-------------------------------------------------POST-----------------------------------------------------//
     public class AddPostDTOs
     {
         public Guid UserId { get; set; }
@@ -29,7 +29,7 @@ namespace BusinessObjects.DTO.Trading
         //public List<AddPostDTOs> CateId { get; set; } = null!;
     }
 
-    //Comment
+    //-------------------------------------------------COMMENT-----------------------------------------------------//
     public class GetCommentByPostIdDTO
     {
         public Guid CommentId { get; set; }
@@ -41,6 +41,7 @@ namespace BusinessObjects.DTO.Trading
     public class AddCommentDTO
     {
         public Guid PostId { get; set; }
+        public Guid CommenterId { get; set; }
         public string Description { get; set; }
     }
 
@@ -48,6 +49,7 @@ namespace BusinessObjects.DTO.Trading
     {
         public Guid CommentId { get; set; }
         public Guid PostId { get; set; }
+        public Guid CommenterId { get; set; }
         public string Description { get; set; }
     }
 
@@ -55,17 +57,27 @@ namespace BusinessObjects.DTO.Trading
     {
         public Guid CommentId { get; set; }
         public Guid PostId { get; set; }
-        public string Description { get; set; }
-    }
-}
-/*  public class Comment
-    {
-        [Key]
-        public Guid CommentId { get; set; }
-        public Guid PostId { get; set; }
         public Guid CommenterId { get; set; }
         public string Description { get; set; }
-        [ForeignKey("PostId"), JsonIgnore]
-        public virtual Post Post { get; set; } = null!;
     }
-*/
+    //-------------------------------------------------POSTINTEREST-----------------------------------------------------//
+    public class AddPostInterestDTO
+    {
+        public Guid PostId { get; set; }
+        public Guid InteresterId { get; set; }
+    }
+
+    public class UpdatePostInterestDTO
+    {
+        public Guid PostId { get; set; }
+        public Guid PostInterestId { get; set; }
+        public Guid InteresterId { get; set; }
+    }
+
+    public class DeletePostInterestDTO
+    {
+        public Guid InteresterId { get; set; }
+        public Guid PostId { get; set;}
+    }
+
+}

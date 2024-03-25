@@ -1,14 +1,8 @@
-﻿using APIs.Repositories.Interfaces;
-using APIs.Services;
-using APIs.Services.Interfaces;
-using APIs.Utils.Base;
+﻿using APIs.Services.Interfaces;
 using APIs.Utils.Paging;
-using BusinessObjects.DTO;
 using BusinessObjects.DTO.Trading;
-using BusinessObjects.Models.Creative;
 using BusinessObjects.Models.E_com.Trading;
 using BusinessObjects.Models.Trading;
-using DataAccess.DAO.E_com;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -28,6 +22,7 @@ namespace APIs.Controllers
             _accountService = accountService;
         }
         //---------------------------------------------POST-------------------------------------------------------//
+        
         [HttpPost("add-new-post")]
         public IActionResult AddNewPost([FromForm] AddPostDTOs dto)
         {
@@ -84,7 +79,7 @@ namespace APIs.Controllers
 
                         if (oldImgPath != null)
                         {
-                            _cloudinaryService.DeleteImage(oldImgPath, "Post/" + userPost + "/" + dto.Title + "/Image");
+                            _cloudinaryService.DeleteImage(oldImgPath);
                         }
                         var cloudResponse = _cloudinaryService.UploadImage(dto.ProductImgs, "Post/" + dto.Title + "/Image");
                         if (cloudResponse.StatusCode != 200)
@@ -122,27 +117,26 @@ namespace APIs.Controllers
         {
             try
             {
-                _postService.DeletePostById(postId);
-                var response = new
+                //string? userPost = _accountService.GetUsernameById(UserId);
+                string imgUrl = string.Empty;
+                string oldImg = _postService.GetOldImgPath(postId);
+
+                if (oldImg != "")
                 {
-                    StatusCode = 204,
-                    Message = "Delete post query was successful",
-                };
-                return Ok(response);
+                    _cloudinaryService.DeleteImage(oldImg);
+                }
+                int changes = _postService.DeletePostById(postId);
+                IActionResult result = (changes > 0) ? Ok("Successful!") : BadRequest("Delete fail!");
+                return result;
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                var response = new
-                {
-                    StatusCode = 500,
-                    Message = "Delete post query Internal Server Error",
-                    Error = ex,
-                };
-                return StatusCode(500, response);
+                throw new Exception(e.Message);
             }
         }
 
         //---------------------------------------------COMMENT-------------------------------------------------------//
+        
         [HttpGet("get-comment-by-post-id")]
         public IActionResult GetCommentByPostId(Guid postId, [FromQuery] PagingParams @params)
         {
@@ -184,6 +178,7 @@ namespace APIs.Controllers
                     {
                         CommentId = Guid.NewGuid(),
                         PostId = comment.PostId,
+                        CommenterId = comment.CommenterId,
                         Description = comment.Description,
                         Created = DateTime.Now
                     });
@@ -212,6 +207,7 @@ namespace APIs.Controllers
                     {
                         CommentId = comment.CommentId,
                         PostId = comment.PostId,
+                        CommenterId = comment.CommenterId,
                         Description = comment.Description,
                         Created = DateTime.Now
                     };
@@ -248,6 +244,116 @@ namespace APIs.Controllers
                 {
                     StatusCode = 500,
                     Message = "Delete comment query Internal Server Error",
+                    Error = ex,
+                };
+                return StatusCode(500, response);
+            }
+        }
+
+        //---------------------------------------------POSTINTEREST-------------------------------------------------------//
+
+        [HttpGet("get-post-interest-by-post-id")]
+        public IActionResult GetPostInterestByPostId(Guid postId, [FromQuery] PagingParams @params)
+        {
+            try
+            {
+                var postInterest = _postService.GetPostInterestByPostId(postId, @params);
+
+
+                if (postInterest != null)
+                {
+                    var metadata = new
+                    {
+                        postInterest.TotalCount,
+                        postInterest.PageSize,
+                        postInterest.CurrentPage,
+                        postInterest.TotalPages,
+                        postInterest.HasNext,
+                        postInterest.HasPrevious
+                    };
+                    Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+                    return Ok(postInterest);
+                }
+                else return BadRequest("No chapter!!!");
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        [HttpPost("add-post-interest")]
+        public IActionResult AddNewPostInterest([FromForm] AddPostInterestDTO postInterest)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    int result = _postService.AddNewPostInterest(new PostInterest()
+                    {
+                        PostInterestId = Guid.NewGuid(),
+                        PostId = postInterest.PostId,
+                        InteresterId = postInterest.InteresterId,
+                    });
+                    if (result > 0)
+                    {
+                        return Ok();
+                    }
+                    return BadRequest("Add false");
+                }
+                return BadRequest("Comment Invalid");
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        [HttpPut("update-post-interest")]
+        public IActionResult UpdatePostInterest([FromForm] UpdatePostInterestDTO postInterest)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    PostInterest updateData = new PostInterest
+                    {
+                        PostInterestId = postInterest.PostInterestId,
+                        PostId = postInterest.PostId,
+                    };
+                    if (_postService.UpdatePostInterest(updateData) > 0)
+                    {
+                        return Ok("Successful");
+                    }
+                    return BadRequest("Update fail");
+                }
+                return BadRequest("Model state invalid");
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        [HttpDelete("delete-post-interest")]
+        public IActionResult DeletePostInterestById(Guid postInterestId)
+        {
+            try
+            {
+                _postService.DeletePostInterestById(postInterestId);
+                var response = new
+                {
+                    StatusCode = 204,
+                    Message = "Delete postInterest query was successful",
+                };
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var response = new
+                {
+                    StatusCode = 500,
+                    Message = "Delete postInterest query Internal Server Error",
                     Error = ex,
                 };
                 return StatusCode(500, response);
