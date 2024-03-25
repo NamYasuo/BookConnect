@@ -46,6 +46,7 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICloudinaryService, CloudinaryService>();
 builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<IAddressService, AddressService>();
+builder.Services.AddScoped<ITestService, TestService>();
 
 //Repositories
 builder.Services.AddScoped<ICartRepository, CartRepository>();
@@ -91,7 +92,8 @@ builder.Services.AddAuthentication().AddJwtBearer(options =>
         ValidateIssuerSigningKey = true,
         ValidateAudience = false,
         ValidateIssuer = false,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("JWT:Pepper").Value))
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("JWT:Pepper").Value)),
+         ClockSkew = TimeSpan.Zero
     };
     //options.Authority = "https://localhost:7138";
     //options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -116,14 +118,14 @@ if (app.Environment.IsDevelopment())
 
 
 
-static IEdmModel GetEdmModel()
-{
-    var builder = new ODataConventionModelBuilder();
+//static IEdmModel GetEdmModel()
+//{
+//    var builder = new ODataConventionModelBuilder();
 
-    builder.EntitySet<TransactionRecord>("TransactionRecords");
+//    builder.EntitySet<TransactionRecord>("TransactionRecords");
 
-    return builder.GetEdmModel();
-}
+//    return builder.GetEdmModel();
+//}
 
 app.UseCors(builder =>
 {
@@ -138,7 +140,7 @@ app.UseSession();
 app.UseRouting();
 app.EnableDependencyInjection();
 app.Select().Expand().Filter().OrderBy().Count();
-app.MapODataRoute("odata", "odata", GetEdmModel());
+//app.MapODataRoute("odata", "odata", GetEdmModel());
 
 
 

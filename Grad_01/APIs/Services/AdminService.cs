@@ -13,6 +13,12 @@ namespace APIs.Services
 {
     public class AdminService : IAdminService
     {
+        private readonly AccountDAO _accountDAO;
+        public AdminService()
+        {
+            _accountDAO = new AccountDAO();
+        }
+
         public int AddBanRecord(BanRecord data) => new BanRecordDAO().AddBanRecord(data);
 
         public int ForceUnban(Guid userId, string reason) => new BanRecordDAO().ForceUnban(userId, reason);
@@ -22,9 +28,9 @@ namespace APIs.Services
             return PagedList<Agency>.ToPagedList(new AgencyDAO().GetAllAgency()?.OrderBy(a => a.AgencyName).AsQueryable(), param.PageNumber, param.PageSize);
         }
 
-        public PagedList<UserProfileDTO> GetAllUser(PagingParams param)
+        public async Task<PagedList<UserProfileDTO>> GetAllUser(PagingParams param)
         {
-            List<AppUser> dbResults = new AccountDAO().GetAllUsers();
+            List<AppUser> dbResults = await _accountDAO.GetAllUsers();
             List<UserProfileDTO> result = new List<UserProfileDTO>();
             AddressDAO adrDAO = new AddressDAO();
             AccountDAO accDAO = new AccountDAO();
@@ -38,15 +44,15 @@ namespace APIs.Services
                     //Address = adrDAO.GetUserDefaultAddress(db.UserId).Rendezvous,
                     Email = db.Email,
                     IsBanned = db.IsBanned,
-                    IsSeller = db.IsSeller,
+                    //IsSeller = db.IsSeller,
                     IsValidated = db.IsValidated,
-                    Role = accDAO.GetRoleById(db.RoleId).RoleName
+                    //Role = accDAO.GetRoleById(db.RoleId).RoleName
                 });
             }
             return PagedList<UserProfileDTO>.ToPagedList(result.OrderBy(a => a.Username).AsQueryable(), param.PageNumber, param.PageSize);
         }
 
-        public int SetIsBanned(bool choice, Guid userId) => new AccountDAO().SetIsBanned(choice, userId);
+        public async Task<int> SetIsBanned(bool choice, Guid userId) => await _accountDAO.SetIsBanned(choice, userId);
 
         public int DeleteRole(Guid roleId) => new RoleDAO().DeleteRole(roleId);
 
@@ -55,7 +61,7 @@ namespace APIs.Services
             return PagedList<Role>.ToPagedList(new RoleDAO().GetAllRole()?.OrderBy(r => r.RoleName).AsQueryable(), param.PageNumber, param.PageSize);
         }
 
-        public int ChangeAccountRole(Guid userId, Guid roleId) => new AccountDAO().ChangeAccountRole(userId, roleId);
+        //public async Task<int> ChangeAccountRole(Guid userId, Guid roleId) => await _accountDAO.ChangeAccountRole(userId, roleId);
       
     }
 }

@@ -9,204 +9,62 @@ namespace DataAccess.DAO
 {
 	public class AccountDAO
 	{
+        private readonly AppDbContext _context;
+        public AccountDAO()
+        {
+            _context = new AppDbContext();
+        }
         /*---------------------------------------APPUSER-------------------------------------------*/
         /*------------------BEGIN GET-------------------*/
 
-        public List<AppUser> GetAllUsers()
+        public async Task<List<AppUser>> GetAllUsers() => await _context.AppUsers.ToListAsync();
+       
+        public async Task<string?> GetAccountSalt(Guid userId)
         {
-            List<AppUser> listUser = new List<AppUser>();
-            try
-            {
-                using (var context = new AppDbContext())
-                {
-                    listUser = context.AppUsers.ToList();
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-            return listUser;
-        }
-
-        public string GetAccountSalt(Guid userId)
-        {
-            string salt;
-            try
-            {
-                using (var context = new AppDbContext())
-                {
-                    salt = context.Database.SqlQuery<string>($"select Salt from AppUser where UserId = {userId}").ToString();
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
+            AppUser? user = await _context.AppUsers.SingleOrDefaultAsync(u => u.UserId == userId);
+            string? salt = (user != null) ? user.Salt : null;
             return salt;
         }
 
-        public Role GetRolesDetails(string roleName)
-        {
-            Role? role = new Role();
-            try
-            {
-                using (var context = new AppDbContext())
-                {
-                    role = context.Roles.Where(r => r.RoleName == roleName).FirstOrDefault();
-                }
+        public async Task<Role?> GetRolesDetails(string roleName)
+        => await _context.Roles.SingleOrDefaultAsync(r => r.RoleName.Equals(roleName));
 
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-            return role;
-        }
-
-        public AppUser? FindUserByEmailAsync(string email)
+        public async Task<AppUser?> FindUserByEmailAsync(string email)
         {
-            AppUser? user = null;
-            try
-            {
-                using (var context = new AppDbContext())
-                {
-                    if (CheckEmail(email))
-                    {
-                        user = context.AppUsers.Where(u => u.Email.Equals(email)).FirstOrDefault();
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
+            AppUser? user =  (await CheckEmail(email)) ? await _context.AppUsers.SingleOrDefaultAsync(u => u.Email == email) : null;
             return user;
         }
 
-        public string? GetNameById(Guid userId)
+        public async Task<string?> GetNameById(Guid userId)
         {
-            try
-            {
-                string? result = "";
-                using (var context = new AppDbContext())
-                {
-                    result = context.AppUsers.Where(u => u.UserId == userId).FirstOrDefault()?.Username;
-                }
-                return result;
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
+            AppUser? user = await _context.AppUsers.SingleOrDefaultAsync(u => u.UserId == userId);
+            string? name = (user != null) ? user.Username : null;
+            return name;
         }
 
-        public Role GetRoleById(Guid roleId)
-        {
-            try
-            {
-                Role result;
-                using (var context = new AppDbContext())
-                {
-                    Role? dbResult = context.Roles.Where(r => r.RoleId == roleId).SingleOrDefault();
-                    result = (dbResult != null) ? dbResult : new Role();
-                }
-                return result;
-            }
-            catch(Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-        }
+        public async Task<Role?> GetRoleById(Guid roleId) => await _context.Roles.SingleOrDefaultAsync(r => r.RoleId == roleId);
 
-        //public List<AppUser> GetUserByRole()
+        public async Task<AppUser?> FindUserByIdAsync(Guid userId) => await _context.AppUsers.SingleOrDefaultAsync(u => u.UserId == userId);
         /*------------------END GET-------------------*/
 
         /*------------------BEGIN CHECK-------------------*/
 
         //Check if username existed, if existed return true else return false
-        public bool CheckUsername(string username)
-        {
-            bool result = false;
-            try
-            {
-                using (var context = new AppDbContext())
-                {
-                    context.AppUsers.Any(a => a.Username == username);
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-            return result;
-        }
+        public async Task<bool> CheckUsername(string username) => await _context.AppUsers.AnyAsync(a => a.Username == username);
 
         //Check if email existed, if existed return true else return false
-        public bool CheckEmail(string email)
+        public async Task<bool> CheckEmail(string email) => await _context.AppUsers.AnyAsync(a => a.Email == email);
+
+        public async Task<bool> IsUserValidated(Guid userId)
         {
-            bool result = false;
-            try
-            {
-                using (var context = new AppDbContext())
-                {
-                    result = context.AppUsers.Any(a => a.Email == email);
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
+            AppUser? user = await _context.AppUsers.SingleOrDefaultAsync(u => u.UserId == userId);
+            bool result = (user != null) ? user.IsValidated : false;
             return result;
-        }
-
-        public bool IsUserValidated(Guid userId)
-        {
-            try
-            {
-                using (var context = new AppDbContext())
-                {
-                    AppUser? user = context.AppUsers.Where(u => u.UserId == userId).SingleOrDefault();
-                    if (user != null)
-                    {
-                        return user.IsValidated;
-                    }
-                    return false;
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-        }
-
-        public bool IsSeller(Guid userId)
-        {
-            try
-            {
-                using (var context = new AppDbContext())
-                {
-                    AppUser? user = context.AppUsers.Where(u => u.UserId == userId).SingleOrDefault();
-                    if (user != null)
-                    {
-                        return user.IsSeller;
-                    }
-                    return false;
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
         }
 
         public async Task<bool> IsBanned(Guid userId)
         {
-            try
-            {
-                using (var context = new AppDbContext())
-                {
-                    DateTime? latestUnbannedDate = context.BanRecords
+                    DateTime? latestUnbannedDate = _context.BanRecords
                     .Where(r => r.TargetUserId == userId)
                     .OrderByDescending(r => r.UnbannedDate)
                     .Select(r => r.UnbannedDate)
@@ -214,21 +72,15 @@ namespace DataAccess.DAO
 
                     if(latestUnbannedDate < DateTime.Now)
                     {
-                        AppUser? user = context.AppUsers.Where(u => u.UserId == userId).SingleOrDefault();
+                        AppUser? user = _context.AppUsers.Where(u => u.UserId == userId).SingleOrDefault();
                         if (user != null)
                         {
                             user.IsBanned = false;
-                            await context.SaveChangesAsync();
+                            await _context.SaveChangesAsync();
                         }
                         return false;
                     }
                     return true;
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
         }
 
         /*-------------------END CHECK-------------------*/
@@ -236,129 +88,48 @@ namespace DataAccess.DAO
 
         /*----------------BEGIN POST----------------------*/
 
-        public void CreateAccount(AppUser user)
+        public async Task<int> CreateAccount(AppUser user)
         {
-            try
+            if (!_context.AppUsers.Any())
             {
-                using (var context = new AppDbContext())
-                {
-                    if (context.AppUsers.ToList().Count() == 0)
-                    {
-                        context.AppUsers.Add(user);
-                        context.SaveChanges();
-                    }
-                    if (user.Email != null && !CheckEmail(user.Email) && !CheckUsername(user.Username))
-                    {
-                        context.AppUsers.Add(user);
-                        context.SaveChanges();
-                    }
-                }
+                await _context.AppUsers.AddAsync(user);
             }
-            catch (Exception e)
+            else if (user.Email != null && !(await CheckEmail(user.Email)) && !(await CheckUsername(user.Username)))
             {
-                throw new Exception(e.Message);
+                await _context.AppUsers.AddAsync(user);
             }
+            return await _context.SaveChangesAsync();
         }
 
-        public void AddNewRole(Role role)
+        public async Task<int> AddNewRole(Role role)
         {
-            try
-            {
-                using (var context = new AppDbContext())
-                {
-                    context.Roles.Add(role);
-                    context.SaveChanges();
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
+           await _context.Roles.AddAsync(role);
+           return await _context.SaveChangesAsync();
         }
 
         /*-----------------END POST-------------------*/
 
 
         /*---------------BEGIN PUT-------------------*/
-        public int ChangeAccountRole(Guid userId, Guid roleId)
+        public async Task<int> SetIsAccountValid(bool choice, Guid userId)
         {
-            try
-            {
-                using(var context = new AppDbContext())
-                {
-                    AppUser? record = context.AppUsers.Where(u => u.UserId == userId).SingleOrDefault();
-                    if(record != null)
-                    {
-                        record.RoleId = roleId;
-                    } return context.SaveChanges();
-                }
-            }
-            catch(Exception e)
-            {
-                throw new Exception(e.Message);
-            }
+              AppUser? user = await _context.AppUsers.SingleOrDefaultAsync(u => u.UserId == userId);
+               if (user != null)
+               {
+                 user.IsValidated = choice;
+               }
+               return await _context.SaveChangesAsync();
         }
 
-        public int SetIsAccountValid(bool choice, Guid userId)
+        public async Task<int> SetIsBanned(bool choice, Guid userId)
         {
-            try
+            AppUser? user = await _context.AppUsers.SingleOrDefaultAsync(u => u.UserId == userId);
+            if (user != null)
             {
-                using (var context = new AppDbContext())
-                {
-                    AppUser? user = context.AppUsers.Where(u => u.UserId == userId).SingleOrDefault();
-                    if (user != null)
-                    {
-                        user.IsValidated = choice;
-                    }
-                    return context.SaveChanges();
-                }
+                user.IsBanned = choice;
             }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
+            return await _context.SaveChangesAsync();
         }
-
-        public int SetIsAgency(bool choice, Guid userId)
-        {
-            try
-            {
-                using (var context = new AppDbContext())
-                {
-                    AppUser? user = context.AppUsers.Where(u => u.UserId == userId).SingleOrDefault();
-                    if (user != null)
-                    {
-                        user.IsSeller = choice;
-                    }
-                    return context.SaveChanges();
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-        }
-
-        public int SetIsBanned(bool choice, Guid userId)
-        {
-            try
-            {
-                using (var context = new AppDbContext())
-                {
-                    AppUser? user = context.AppUsers.Where(u => u.UserId == userId).SingleOrDefault();
-                    if (user != null)
-                    {
-                        user.IsBanned = choice;
-                    }
-                    return context.SaveChanges();
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-        }
-
         /*-----------------END -------------------*/
 
 

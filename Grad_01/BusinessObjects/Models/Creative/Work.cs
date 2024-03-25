@@ -12,18 +12,20 @@ namespace BusinessObjects.Models.Creative
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Guid WorkId { get; set; }
 		public string Title { get; set; } = null!;
-		public Guid AuthorId { get; set; }
         public string Type { get; set; } = null!; //Values: Public or Private
         public string Status { get; set; } = null!; //Values: Published or not
         public decimal? Price { get; set; } 
         public string? CoverDir { get; set; }
         public string? BackgroundDir { get; set; }
         public string? Description { get; set; }
-        public Guid StatId { get; set; }
 
+        public ICollection<Chapter>? Chapters { get; set; }
+
+        public Guid StatId { get; set; }
         [ForeignKey("StatId"), JsonIgnore]
         public virtual Statistic Stats { get; set; } = null!;
 
+        public Guid AuthorId { get; set; }
         [ForeignKey("AuthorId"), JsonIgnore]
         public virtual AppUser Author { get; set; } = null!;
 	}

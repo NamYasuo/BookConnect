@@ -5,8 +5,8 @@ namespace APIs.Services.Interfaces
 {
 	public interface ICloudinaryService
 	{
-        CloudinaryResponseDTO UploadImage(IFormFile imgFile, string dir);
-        CloudinaryResponseDTO DeleteImage(string imgUrl, string dir);
+        CloudinaryResponseDTO UploadImage(IFormFile uFile, string dir);
+        CloudinaryResponseDTO DeleteImage(string imgUrl);
     }
 }
 

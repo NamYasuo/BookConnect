@@ -59,7 +59,7 @@ namespace APIs.Services
             };
         }
 
-        public bool IsImageExisted(string imgUrl, string dir)
+        public bool IsImageExisted(string imgUrl)
         {
             var client = new Cloudinary(account);
             string publicId = Regex.Match(imgUrl, $@"{account.Cloud}/image/upload/v\d+/(.*)\.\w+").Groups[1].Value;
@@ -68,7 +68,7 @@ namespace APIs.Services
             return (resourceResult != null && resourceResult.StatusCode == HttpStatusCode.OK);
         }
 
-        public CloudinaryResponseDTO DeleteImage(string imgUrl, string dir)
+        public CloudinaryResponseDTO DeleteImage(string imgUrl)
         {
             var client = new Cloudinary(account);
             string publicId = Regex.Match(imgUrl, $@"{account.Cloud}/image/upload/v\d+/(.*)\.\w+").Groups[1].Value;

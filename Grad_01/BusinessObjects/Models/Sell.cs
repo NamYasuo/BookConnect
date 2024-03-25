@@ -10,7 +10,7 @@ namespace BusinessObjects.Models
         public decimal Price { get; set; }
         public DateTime SellDate { get; set; }
 
-        public virtual Product Product { get; set; }
-        public virtual AppUser Seller { get; set; }
+        public virtual Product? Product { get; set; }
+        public virtual AppUser? Seller { get; set; }
     }
 }

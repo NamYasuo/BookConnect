@@ -26,6 +26,7 @@ namespace BusinessObjects
         public virtual DbSet<Order> Orders { get; set; } 
         public virtual DbSet<Book> Books { get; set; }
         public virtual DbSet<BanRecord> BanRecords { get; set; }
+        public virtual DbSet<Testing> Testings { get; set; }
 
         //Subscribtion services DbSets
         public virtual DbSet<Tier> Tiers { get; set; } 
@@ -47,11 +48,10 @@ namespace BusinessObjects
 
         //Utility DbSets
         public virtual DbSet<Role> Roles { get; set; }
-        public virtual DbSet<TokenInfo> TokenInfos { get; set; } 
+        public virtual DbSet<RefreshToken> RefreshTokens { get; set; } 
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<CategoryList> CategoryLists { get; set; } 
         public virtual DbSet<Address> Addresses { get; set; } 
-        public virtual DbSet<CICMedia> CICMedias { get; set; }
         public virtual DbSet<Statistic> Statistics { get; set; }
 
 
@@ -78,11 +78,7 @@ namespace BusinessObjects
                     Description = "Role for base user?"
                 }
                 );
-            base.OnModelCreating(builder); ;
-   
-            builder.Entity<CategoryList>().HasNoKey();
-            builder.Entity<CICMedia>().HasNoKey();
-
+            base.OnModelCreating(builder); 
             builder.Entity<SubRecord>()
            .HasOne(sr => sr.Subscription)
            .WithMany()
@@ -94,6 +90,23 @@ namespace BusinessObjects
             .WithMany()
             .HasForeignKey(a => a.PostAddressId)
             .OnDelete(DeleteBehavior.Restrict);
+
+            //resolve circular dependency in Work, Chapter, Statistic
+            builder.Entity<Work>()
+            .HasMany(w => w.Chapters)
+            .WithOne(c => c.Work).HasForeignKey(w => w.WorkId);
+
+            builder.Entity<Chapter>()
+            .HasOne(c => c.Stats)
+            .WithOne()
+            .HasForeignKey<Chapter>(c => c.StatId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<Work>()
+            .HasOne(w => w.Stats)
+            .WithOne()
+            .HasForeignKey<Work>(w => w.StatId);
+
         }
     }
 }

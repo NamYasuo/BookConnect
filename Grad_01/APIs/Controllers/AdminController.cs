@@ -21,7 +21,7 @@ namespace APIs.Controllers
 		}
 
 		[HttpPost("set-is-account-banned")]
-		public IActionResult SetAccountIsBanned(BanUserDTO dto)
+		public async Task<IActionResult> SetAccountIsBanned(BanUserDTO dto)
 		{
 			try
 			{
@@ -36,7 +36,7 @@ namespace APIs.Controllers
 					UnBanReason = "",
 					TargetUserId = dto.UserId
 				});
-				int accChanges = _adminService.SetIsBanned(true, dto.UserId);
+				int accChanges = await _adminService.SetIsBanned(true, dto.UserId);
 				IActionResult result = (accChanges > 0 && recordChanges > 0) ? Ok("Successful!") : BadRequest("Fail!");
 				return result;
 			}
@@ -91,11 +91,11 @@ namespace APIs.Controllers
 		}
 
         [HttpGet("get-all-user")]
-        public IActionResult GetAllUser([FromQuery] PagingParams param)
+        public async Task<IActionResult> GetAllUser([FromQuery] PagingParams param)
         {
             try
             {
-                var results = _adminService.GetAllUser(param);
+                var results = await _adminService.GetAllUser(param);
 
                 if (results != null)
                 {
@@ -163,20 +163,20 @@ namespace APIs.Controllers
             }
         }
 
-        [HttpPut("change-user-role")]
-        public IActionResult ChangeAccountRole([FromBody] ChangeRoleDTO dto)
-        {
-            try
-            {
-                int changes = _adminService.ChangeAccountRole(dto.UserId, dto.RoleId);
-                IActionResult result = (changes > 0) ? Ok("Successful!") : Ok("Fail!");
-                return result;
-            }
-            catch(Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-        }
+        //[HttpPut("change-user-role")]
+        //public IActionResult ChangeAccountRole([FromBody] ChangeRoleDTO dto)
+        //{
+        //    try
+        //    {
+        //        int changes = _adminService.ChangeAccountRole(dto.UserId, dto.RoleId);
+        //        IActionResult result = (changes > 0) ? Ok("Successful!") : Ok("Fail!");
+        //        return result;
+        //    }
+        //    catch(Exception e)
+        //    {
+        //        throw new Exception(e.Message);
+        //    }
+        //}
     }
 }
 

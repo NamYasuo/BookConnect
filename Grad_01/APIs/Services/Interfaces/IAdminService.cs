@@ -9,13 +9,13 @@ namespace APIs.Services.Interfaces
 {
 	public interface IAdminService
 	{
-		int SetIsBanned(bool choice, Guid userId);
+        Task<int> SetIsBanned(bool choice, Guid userId);
 		int AddBanRecord(BanRecord data);
 		int ForceUnban(Guid userId, string reason);
         PagedList<Agency> GetAllAgency(PagingParams param);
-		PagedList<UserProfileDTO> GetAllUser(PagingParams param);
+        Task<PagedList<UserProfileDTO>> GetAllUser(PagingParams param);
 		PagedList<Role> GetAllRole(PagingParams param);
-		int ChangeAccountRole(Guid userId,Guid roleId);
+		//int ChangeAccountRole(Guid userId,Guid roleId);
 		int DeleteRole(Guid roleId);
     }
 

@@ -107,7 +107,7 @@ namespace APIs.Controllers
 
                         if (oldImg != "")
 						{
-							_clouinaryService.DeleteImage(oldImg, "Categories/Book");
+							_clouinaryService.DeleteImage(oldImg);
 						}
                         CloudinaryResponseDTO cloudRsp
                         = _clouinaryService.UploadImage(dto.CateImg, "Categories/Book");
@@ -159,7 +159,7 @@ namespace APIs.Controllers
 
                     if (oldImg != "")
                     {
-                        _clouinaryService.DeleteImage(oldImg, "Categories/Book");
+                        _clouinaryService.DeleteImage(oldImg);
                     }
                     int changes = _cateServices.DeleteCategory(cateId);
                 IActionResult result = (changes > 0) ? Ok("Successful!") : BadRequest("Delete fail!");

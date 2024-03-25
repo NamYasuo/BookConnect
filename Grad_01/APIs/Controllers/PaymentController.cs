@@ -27,7 +27,7 @@ namespace APIs.Controllers
         [HttpPost]
         [Route("vnpay/create-vnpay-link")]
         //[ProducesResponseType(typeof(BaseResultWithData<PaymentLinkDtos>), 200)]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        //[ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public IActionResult Create([FromBody] NewTransactionDTO request)
         {
             var response = new PaymentLinkDTO();
@@ -35,7 +35,6 @@ namespace APIs.Controllers
             response.PaymentUrl = _vnpService.NewTransaction(request);
             return Ok(response);
         }
-
 
         [HttpGet]
         [Route("vnpay/VnPayIPN")]
@@ -93,24 +92,23 @@ namespace APIs.Controllers
         }
         //IQueryable<TransactionRecord> queryable = _transacService.GetAllTransaction();
 
+        //[HttpGet("get-all-transaction")]
+        //[EnableQuery]
+        //public IActionResult GetAllTransaction([FromQuery] ODataQueryOptions<TransactionRecord> oData, PagingParams @params)
+        //{
+        //    try
+        //    {
+        //        var filteredQueryable = oData.ApplyTo(_transacService.GetAllTransaction()) as IQueryable<TransactionRecord>;
 
-        [HttpGet("get-all-transaction")]
-        [EnableQuery]
-        public IActionResult GetAllTransaction([FromQuery] ODataQueryOptions<TransactionRecord> oData, PagingParams @params)
-        {
-            try
-            {
-                var filteredQueryable = oData.ApplyTo(_transacService.GetAllTransaction()) as IQueryable<TransactionRecord>;
+        //        var pagedRecords = PagedList<TransactionRecord>.ToPagedList(filteredQueryable, @params.PageNumber, @params.PageSize);
 
-                var pagedRecords = PagedList<TransactionRecord>.ToPagedList(filteredQueryable, @params.PageNumber, @params.PageSize);
-
-                return Ok(filteredQueryable);
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-        }
+        //        return Ok(filteredQueryable);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        throw new Exception(e.Message);
+        //    }
+        //}
     }
 }
 

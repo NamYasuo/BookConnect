@@ -8,7 +8,6 @@ namespace BusinessObjects.Models
 	public class Address
 	{
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
 		public Guid AddressId { get; set; }
 		public string? City_Province { get; set; } 
 		public string? District { get; set; } 

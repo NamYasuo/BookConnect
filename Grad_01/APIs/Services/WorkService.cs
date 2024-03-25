@@ -10,25 +10,30 @@ namespace APIs.Services
 {
 	public class WorkService : IWorkService
 	{
+		private readonly AccountDAO _accountDAO;
+		public WorkService()
+		{
+			_accountDAO = new AccountDAO();
+		}
         //------------------------------WORK ZONE-----------------------------------//
         public string AddNewWork(Work work) => new WorkDAO().AddNewWork(work);
 
 		public List<WorkIdTitleDTO>? GetWorkIdTitleByAuthorId(Guid authorId)
 		=> new WorkDAO().GetTitleAndIdByAuthorId(authorId);
 
-        public PagedList<Chapter> GetWorkChapters(Guid workId, PagingParams parameters)
-		{
-			return PagedList<Chapter>.ToPagedList(new ChapterDAO().GetWorkChapters(workId)?.OrderBy(ch => ch.Name).AsQueryable(), parameters.PageNumber, parameters.PageSize);
-		}
+  //      public PagedList<Chapter> GetWorkChapters(Guid workId, PagingParams parameters)
+		//{
+		//	return PagedList<Chapter>.ToPagedList(new ChapterDAO().GetWorkChapters(workId)?.OrderBy(ch => ch.Name).AsQueryable(), parameters.PageNumber, parameters.PageSize);
+		//}
 
-		public WorkDetailsDTO GetWorkDetails(Guid workId)
+		public async Task<WorkDetailsDTO> GetWorkDetails(Guid workId)
 		{
 			Work work = new WorkDAO().GetWorkById(workId);
 			WorkDetailsDTO result = new WorkDetailsDTO()
 			{
 				WorkId = workId,
 				Title = work.Title,
-				Author = new AccountDAO().GetNameById(work.AuthorId),
+				Author = await _accountDAO.GetNameById(work.AuthorId),
 				Type = work.Type,
 				Status = work.Status,
 				Price = work.Price.ToString(),
@@ -44,13 +49,13 @@ namespace APIs.Services
 
         //------------------------------CHAPTER ZONE-----------------------------------//
 
-		public Chapter? GetChapterById(Guid chapterId) => new ChapterDAO().GetChapterById(chapterId);
+		public async Task<Chapter?> GetChapterById(Guid chapterId) => await new ChapterDAO().GetChapterById(chapterId);
 
-        public int AddChapter(Chapter chapter) => new ChapterDAO().AddChapter(chapter);
+  //      public int AddChapter(Chapter chapter) => new ChapterDAO().AddChapter(chapter);
 
-        public int UpdateChapter(Chapter chapter) => new ChapterDAO().UpdateChapter(chapter);
+  //      public int UpdateChapter(Chapter chapter) => new ChapterDAO().UpdateChapter(chapter);
 
-		public int DeleteChapterById(Guid chapterId) => new ChapterDAO().DeleteChapterById(chapterId);
+		//public int DeleteChapterById(Guid chapterId) => new ChapterDAO().DeleteChapterById(chapterId);
 
 		public int SetWorkType(Guid workId, string type) => new WorkDAO().SetWorkType(workId, type);
 

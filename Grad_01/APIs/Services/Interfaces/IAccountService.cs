@@ -11,28 +11,30 @@ namespace APIs.Services.Interfaces
     {
         //User services
         Task<IdentityResult> ChangePassword(PasswordChangeDTO model);
-        AppUser? FindUserByEmailAsync(string email);
-        AppUser Register(RegisterDTO model);
-        bool VerifyPassword(string pwd, string hash, byte[] salt, out byte[] result);
+        Task<AppUser?> FindUserByEmailAsync(string email);
+        Task<AppUser> Register(RegisterDTO model);
+        bool VerifyPassword(string pwd, string hash, byte[] salt);
         string CreateToken(AppUser user);
-        TokenInfo GenerateRefreshToken();
-        void AddNewRole(Role role);
-        Role GetRoleDetails(string roleName);
-        string? GetUsernameById(Guid userId);
+        Task<RefreshToken?> GenerateRefreshTokenAsync(Guid userId);
+        Task<int> AddNewRole(Role role);
+        Task<Role?> GetRoleDetails(string roleName);
+        Task<string?> GetUsernameById(Guid userId);
         Task<bool> IsBanned(Guid userId);
+        Task<RefreshToken?> ValidateRefreshTokenAsync(string token);
+        Task<AppUser?> FindUserByIdAsync(Guid userId);
 
         //Address services
         List<Address> GetAllUserAdderess(Guid userId);
         Address GetDefaultAddress(Guid userId);
 
         //Validate services
-        int SetUserIsValidated(bool choice, Guid userId);
-        bool IsUserValidated(Guid userId);
+        Task<int> SetUserIsValidated(bool choice, Guid userId);
+        Task<bool> IsUserValidated(Guid userId);
 
         //Agency registration
         List<Agency> GetOwnerAgencies(Guid ownerId);
         string RegisterAgency(AgencyRegistrationDTO dto, string logoUrl);
-        bool IsSeller(Guid userId);
+        //bool IsSeller(Guid userId);
         Agency GetAgencyById(Guid agencyId);
         int UpdateAgency(AgencyUpdateDTO updatedData, string? logoUrl);
     }
