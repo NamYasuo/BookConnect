@@ -14,7 +14,8 @@ namespace BusinessObjects.Models.Ecom.Base
 		public DateTime BannedDate { get; set; }
 		public DateTime UnbannedDate { get; set; }
 		public string? BanReason { get; set; } 
-        public string? UnBanReason { get; set; } 
+        public string? UnBanReason { get; set; }
+
         [ForeignKey("TargetUserId"), JsonIgnore]
 		public AppUser TargetedUser { get; set; } = null!;
 

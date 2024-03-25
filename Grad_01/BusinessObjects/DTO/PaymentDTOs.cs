@@ -13,6 +13,12 @@ namespace BusinessObjects.DTO
         //public string? Signature { get; set; } = string.Empty;
     }
 
+    public class IdentifyTransactionDTO
+    {
+        public Guid UserId { get; set; }
+        public Guid TransactionId { get; set; }
+    }
+
     public class PaymentLinkDTO
     {
         public string PaymentId { get; set; } = string.Empty;

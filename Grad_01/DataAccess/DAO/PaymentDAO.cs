@@ -7,7 +7,7 @@ namespace DataAccess.DAO
 {
 	public class PaymentDAO
 	{
-		////Add new payment details
+		//Add new payment details
 		//public Guid AddNewPaymentDetails(PaymentDetailsDTO data)
 		//{
   //          try
@@ -20,7 +20,6 @@ namespace DataAccess.DAO
   //                  RequiredAmount = data.RequiredAmount,
   //                  PaidDate = data.PaidDate,
   //                  Language = data.Language,
-  //                  MerchantId = data.MerchantId,
   //                  PaymentGate = data.PaymentGate,
   //                  Status = data.Status,
   //                  LastMessage = data.LastMessage

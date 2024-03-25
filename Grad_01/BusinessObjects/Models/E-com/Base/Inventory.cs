@@ -7,12 +7,15 @@ namespace BusinessObjects.Models
 {
 	public class Inventory
 	{
-		public Guid AgencyId { get; set; }
-		public Guid BookId { get; set; }
+		[Key]
+		public Guid InventoryId { get; set; }
 		public int Quantity { get; set; }
 
-		[ForeignKey("AgencyId"), JsonIgnore]
+        public Guid AgencyId { get; set; }
+        [ForeignKey("AgencyId"), JsonIgnore]
 		public virtual Agency Agency { get; set; } = null!;
+
+        public Guid BookId { get; set; }
         [ForeignKey("BookId"), JsonIgnore]
         public virtual Book Book { get; set; } = null!;
 

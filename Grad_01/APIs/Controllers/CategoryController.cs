@@ -4,6 +4,7 @@ using APIs.Services.Interfaces;
 using APIs.Utils.Paging;
 using BusinessObjects.DTO;
 using BusinessObjects.Models;
+using Microsoft.AspNet.OData;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -57,6 +58,7 @@ namespace APIs.Controllers
 			}
 		}
 
+		[EnableQuery()]
 		[HttpGet("get-all-category")]
 		public IActionResult GetAllCategory([FromQuery] PagingParams @params)
         {
@@ -105,7 +107,7 @@ namespace APIs.Controllers
 
                         if (oldImg != "")
 						{
-							_clouinaryService.DeleteImage(oldImg, "Categories/Book");
+							_clouinaryService.DeleteImage(oldImg);
 						}
                         CloudinaryResponseDTO cloudRsp
                         = _clouinaryService.UploadImage(dto.CateImg, "Categories/Book");
@@ -157,7 +159,7 @@ namespace APIs.Controllers
 
                     if (oldImg != "")
                     {
-                        _clouinaryService.DeleteImage(oldImg, "Categories/Book");
+                        _clouinaryService.DeleteImage(oldImg);
                     }
                     int changes = _cateServices.DeleteCategory(cateId);
                 IActionResult result = (changes > 0) ? Ok("Successful!") : BadRequest("Delete fail!");

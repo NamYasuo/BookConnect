@@ -2,31 +2,29 @@
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using APIs.Services.Intefaces;
-using BusinessObjects;
+using APIs.Services.Interfaces;
 using BusinessObjects.DTO;
 using BusinessObjects.Models;
 using DataAccess.DAO;
 using DataAccess.DAO.Ecom;
 using DataAccess.DTO;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.IdentityModel.Tokens;
 
-namespace APIs.Services.Interfaces
+namespace APIs.Repositories.Interfaces
 {
     public class AccountService : IAccountService
     {
-        //private readonly ITokenService tokenService;
-        private readonly IConfiguration config;
+        private readonly IConfiguration _config;
 
-        private AccountDAO? accountDAO;
+        private readonly AccountDAO _accountDAO;
+        private readonly RefreshTokenDAO _refreshTokenDAO;
 
-        public AccountService(ITokenService tokenService, IConfiguration config)
+        public AccountService(IConfiguration config)
         {
-            //this.tokenService = tokenService;
-            this.config = config;
+            _config = config;
+            _accountDAO = new AccountDAO();
+            _refreshTokenDAO = new RefreshTokenDAO();
         }
 
         //User services
@@ -35,9 +33,8 @@ namespace APIs.Services.Interfaces
             throw new NotImplementedException();
         }
 
-        public AppUser Register(RegisterDTO model)
+        public async Task<AppUser> Register(RegisterDTO model)
         {
-            accountDAO = new AccountDAO();
             HashPassword(model.Password, out byte[] salt, out byte[] pwdHash);
             AppUser user = new AppUser()
             {
@@ -47,24 +44,30 @@ namespace APIs.Services.Interfaces
                 Password = Convert.ToHexString(pwdHash),
                 Salt = Convert.ToHexString(salt),
                 IsValidated = false,
-                RoleId = GetRoleDetails("BaseUser").RoleId,
             };
-            accountDAO.CreateAccount(user);
+            await _accountDAO.CreateAccount(user);
             return user;
         }
 
-        public AppUser? FindUserByEmailAsync(string email) => new AccountDAO().FindUserByEmailAsync(email);
+        public async Task<AppUser?> FindUserByEmailAsync(string email) => await _accountDAO.FindUserByEmailAsync(email);
+
+        public async Task<AppUser?> FindUserByIdAsync(Guid userId) => await _accountDAO.FindUserByIdAsync(userId);
 
         public string CreateToken(AppUser user)
         {
             List<Claim> claims = new List<Claim>()
             {
                 new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.Role, new RoleDAO().GetRoleById(user.RoleId).RoleName),
+                //new Claim(ClaimTypes.Role, new RoleDAO().GetRoleById(user.RoleId).RoleName),
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim("userId", user.UserId.ToString()),
             };
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config.GetSection("JWT:Pepper").Value));
+            string? pepper = _config.GetSection("JWT:Pepper").Value;
+            if (pepper == null)
+            {
+                return "Pepper not found!";
+            }
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(pepper));
 
             var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
@@ -72,23 +75,31 @@ namespace APIs.Services.Interfaces
                 issuer: "Book connect",
                 audience: "Pikachu",
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(30),
+                expires: DateTime.Now.AddMinutes(1),
                 signingCredentials: cred
                 );
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
             return jwt;
         }
 
-        public TokenInfo GenerateRefreshToken()
+        public async Task<RefreshToken?> ValidateRefreshTokenAsync(string token) => await _refreshTokenDAO.ValidateRefreshTokenAsync(token);
+
+        public async Task<RefreshToken?> GenerateRefreshTokenAsync(Guid userId)
         {
-            var token = new TokenInfo
+            var token = new RefreshToken
             {
-                RefreshToken = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
-                ExpiredDate = DateTime.Now.AddDays(6)
-            }; return token;
+                Id = Guid.NewGuid(),
+                UserId = userId,
+                Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
+                CreatedDate = DateTime.Now,
+                ExpiredDate = DateTime.Now.AddMinutes(30)
+            };
+            int changes = await _refreshTokenDAO.AddRefreshTokenAsync(token);
+            RefreshToken? result = (changes > 0) ? token : null;
+            return result;
         }
 
-        public bool VerifyPassword(string pwd, string hash, byte[] salt, out byte[] result)
+        public bool VerifyPassword(string pwd, string hash, byte[] salt)
         {
             const int keySize = 64;
             const int iterations = 360000;
@@ -100,7 +111,6 @@ namespace APIs.Services.Interfaces
                 iterations,
                 hashAlgorithm,
                 keySize);
-            result = hashToCompare;
             return CryptographicOperations.FixedTimeEquals(hashToCompare, Convert.FromHexString(hash));
         }
 
@@ -120,11 +130,11 @@ namespace APIs.Services.Interfaces
             pwdHash = hash;
         }
 
-        public void AddNewRole(Role role) => new AccountDAO().AddNewRole(role);
+        public async Task<int> AddNewRole(Role role) => await _accountDAO.AddNewRole(role);
 
-        public Role GetRoleDetails(string roleName) => new AccountDAO().GetRolesDetails(roleName);
+        public async Task<Role?> GetRoleDetails(string roleName) => await _accountDAO.GetRolesDetails(roleName);
 
-        public string? GetUsernameById(Guid userId) => new AccountDAO().GetNameById(userId);
+        public async Task<string?> GetUsernameById(Guid userId) => await _accountDAO.GetNameById(userId);
 
         //Address services
         public List<Address> GetAllUserAdderess(Guid userId) => new AddressDAO().GetAllUserAddress(userId);
@@ -132,9 +142,9 @@ namespace APIs.Services.Interfaces
         public Address GetDefaultAddress(Guid userId) => new AddressDAO().GetUserDefaultAddress(userId);
 
         //Account validation
-        public int SetUserIsValidated(bool choice, Guid userId) => new AccountDAO().SetIsAccountValid(choice, userId);
+        public async Task<int> SetUserIsValidated(bool choice, Guid userId) => await _accountDAO.SetIsAccountValid(choice, userId);
 
-        public bool IsUserValidated(Guid userId) => new AccountDAO().IsUserValidated(userId);
+        public async Task<bool> IsUserValidated(Guid userId) => await _accountDAO.IsUserValidated(userId);
 
         //Agency Registration
         public List<Agency> GetOwnerAgencies(Guid ownerId) => new AgencyDAO().GetAgencyByOwnerId(ownerId);
@@ -167,9 +177,10 @@ namespace APIs.Services.Interfaces
                 });
                 if (newAgency > 0)
                 {
-                    int changes = accDAO.SetIsAgency(true, dto.OwnerId);
-                    if (changes > 0) return "Successful!";
-                    else return "Fail to set agency!";
+                    return "Successful!";
+                    //int changes =  accDAO.SetIsAgency(true, dto.OwnerId);
+                    //if (changes > 0) return "Successful!";
+                    //else return "Fail to set agency!";
                 }
                 else return "Fail to add new agency!";
             }
@@ -177,12 +188,11 @@ namespace APIs.Services.Interfaces
             //change IsSeller in AppUser
         }
 
-        public bool IsSeller(Guid userId) => new AccountDAO().IsSeller(userId);
+        //public async Task<bool> IsSeller(Guid userId) => await _accountDAO.IsSeller(userId);
 
         public Task<bool> IsBanned(Guid userId) => new AccountDAO().IsBanned(userId);
 
         public Agency GetAgencyById(Guid agencyId) => new AgencyDAO().GetAgencyById(agencyId);
-
 
         public int UpdateAgency(AgencyUpdateDTO updatedData, string? updatedLogoUrl)
         {
@@ -191,11 +201,11 @@ namespace APIs.Services.Interfaces
             Guid addressId = Guid.Empty;
 
             Address? oldAddress = agencyDAO.GetCurrentAddress(updatedData.AgencyId);
-            if (oldAddress != null) addressId = oldAddress.AddressId;
+            if(oldAddress != null) addressId = oldAddress.AddressId;
 
             if (oldAddress != null && oldAddress.Rendezvous != null && updatedData.PostAddress != null)
             {
-                if (!oldAddress.Rendezvous.Equals(updatedData.PostAddress))
+                if(!oldAddress.Rendezvous.Equals(updatedData.PostAddress))
                 {
                     Address newAddress = new Address
                     {
@@ -231,6 +241,8 @@ namespace APIs.Services.Interfaces
 
         public void RateAndCommentProduct(Guid userId, Guid ratingId, int ratingPoint, string comment)
        => new AccountDAO().RateAndCommentProduct(userId, ratingId, ratingPoint, comment);
+
+        
     }
 }
 

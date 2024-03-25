@@ -29,5 +29,16 @@ namespace BusinessObjects.DTO
         public string Reason{ get; set; } = null!;
         public TimeSpan? Duration { get; set; }
     }
+
+    public class NewAddressDTO
+    {
+        public Guid AddressId { get; set; }
+        public string? City_Province { get; set; }
+        public string? District { get; set; } 
+        public string? SubDistrict { get; set; }
+        public string Rendezvous { get; set; } = null!;
+        public bool Default { get; set; } = false; 
+        public Guid? UserId { get; set; }
+    }
 }
 

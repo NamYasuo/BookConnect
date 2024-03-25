@@ -12,52 +12,52 @@ using Microsoft.Extensions.Configuration;
 
 namespace BusinessObjects
 {
-    public class AppDbContext : DbContext
-    {
+	public class AppDbContext: DbContext
+	{
         public AppDbContext() { }
         public AppDbContext(DbContextOptions<AppDbContext> o) : base(o) { }
 
         //Base services DbSets
         public virtual DbSet<AppUser> AppUsers { get; set; }
-        public virtual DbSet<Agency> Agencies { get; set; }
-        public virtual DbSet<Basket> Baskets { get; set; }
-        public virtual DbSet<Cart> Carts { get; set; }
-        public virtual DbSet<Inventory> Inventories { get; set; }
-        public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<Agency> Agencies { get; set; } 
+        public virtual DbSet<Basket> Baskets { get; set; } 
+        public virtual DbSet<Cart> Carts { get; set; } 
+        public virtual DbSet<Inventory> Inventories { get; set; } 
+        public virtual DbSet<Order> Orders { get; set; } 
         public virtual DbSet<Book> Books { get; set; }
         public virtual DbSet<BanRecord> BanRecords { get; set; }
+        public virtual DbSet<Testing> Testings { get; set; }
 
         //Subscribtion services DbSets
-        public virtual DbSet<Tier> Tiers { get; set; }
-        public virtual DbSet<Subscription> Subscriptions { get; set; }
-        public virtual DbSet<SubRecord> SubRecords { get; set; }
+        public virtual DbSet<Tier> Tiers { get; set; } 
+        public virtual DbSet<Subscription> Subscriptions { get; set; } 
+        public virtual DbSet<SubRecord> SubRecords { get; set; } 
 
 
         //Rating services DbSets
         public virtual DbSet<Rating> Ratings { get; set; }
-        public virtual DbSet<RatingRecord> RatingRecords { get; set; }
+        public virtual DbSet<RatingRecord> RatingRecords { get; set; } 
 
         //Payment service DbSets 
         //public virtual DbSet<PaymentDetails> PaymentDetails { get; set; } = null!;
-        public virtual DbSet<TransactionRecord> Transactions { get; set; }
+        public virtual DbSet<TransactionRecord> Transactions { get; set; } 
         //public virtual Db
 
         //Trading services DbSets
-        public virtual DbSet<Post> Posts { get; set; }
+        public virtual DbSet<Post> Posts { get; set; } 
 
         //Utility DbSets
         public virtual DbSet<Role> Roles { get; set; }
-        public virtual DbSet<TokenInfo> TokenInfos { get; set; }
+        public virtual DbSet<RefreshToken> RefreshTokens { get; set; } 
         public virtual DbSet<Category> Categories { get; set; }
-        public virtual DbSet<CategoryList> CategoryLists { get; set; }
-        public virtual DbSet<Address> Addresses { get; set; }
-        public virtual DbSet<CICMedia> CICMedias { get; set; }
+        public virtual DbSet<CategoryList> CategoryLists { get; set; } 
+        public virtual DbSet<Address> Addresses { get; set; } 
         public virtual DbSet<Statistic> Statistics { get; set; }
 
 
         //Creative services DbSet
-        public virtual DbSet<Chapter> Chapters { get; set; }
-        public virtual DbSet<Work> Works { get; set; }
+        public virtual DbSet<Chapter> Chapters { get; set; } 
+        public virtual DbSet<Work> Works { get; set; } 
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -72,20 +72,13 @@ namespace BusinessObjects
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Role>().HasData(
-                new Role
-                {
+                new Role {
                     RoleId = Guid.Parse("2da9143d-559c-40b5-907d-0d9c8d714c6c"),
                     RoleName = "BaseUser",
                     Description = "Role for base user?"
                 }
                 );
-            base.OnModelCreating(builder); ;
-            builder.Entity<Inventory>().HasNoKey();
-            builder.Entity<Basket>().HasNoKey();
-            builder.Entity<RatingRecord>().HasKey(r => new { r.RatingId, r.UserId });
-            builder.Entity<CategoryList>().HasNoKey();
-            builder.Entity<CICMedia>().HasNoKey();
-
+            base.OnModelCreating(builder); 
             builder.Entity<SubRecord>()
            .HasOne(sr => sr.Subscription)
            .WithMany()
@@ -98,6 +91,21 @@ namespace BusinessObjects
             .HasForeignKey(a => a.PostAddressId)
             .OnDelete(DeleteBehavior.Restrict);
 
+            //resolve circular dependency in Work, Chapter, Statistic
+            builder.Entity<Work>()
+            .HasMany(w => w.Chapters)
+            .WithOne(c => c.Work).HasForeignKey(w => w.WorkId);
+
+            builder.Entity<Chapter>()
+            .HasOne(c => c.Stats)
+            .WithOne()
+            .HasForeignKey<Chapter>(c => c.StatId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+            builder.Entity<Work>()
+            .HasOne(w => w.Stats)
+            .WithOne()
+            .HasForeignKey<Work>(w => w.StatId);
 
         }
     }

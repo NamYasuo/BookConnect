@@ -1,13 +1,16 @@
-﻿using System.Text;
+using System.Text;
 using APIs.Config;
 using APIs.Repositories;
 using APIs.Repositories.Interfaces;
 using APIs.Services;
-using APIs.Services.Intefaces;
 using APIs.Services.Interfaces;
 using APIs.Services.Payment;
 using BusinessObjects;
+using BusinessObjects.Models.Ecom.Payment;
+using Microsoft.AspNet.OData.Builder;
+using Microsoft.AspNet.OData.Extensions;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OData.Edm;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 
@@ -17,6 +20,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddCors(); //enable Cross-Origin Resource Sharing (CORS)
 builder.Services.AddSession();
+builder.Services.AddOData();
 builder.Services.AddControllers()
     .AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 //builder.Services.AddAutoMapper(typeof(Program));
@@ -41,6 +45,8 @@ builder.Services.AddScoped<ITransactionService, TransactionService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICloudinaryService, CloudinaryService>();
 builder.Services.AddScoped<IAdminService, AdminService>();
+builder.Services.AddScoped<IAddressService, AddressService>();
+builder.Services.AddScoped<ITestService, TestService>();
 
 //Repositories
 builder.Services.AddScoped<ICartRepository, CartRepository>();
@@ -86,7 +92,8 @@ builder.Services.AddAuthentication().AddJwtBearer(options =>
         ValidateIssuerSigningKey = true,
         ValidateAudience = false,
         ValidateIssuer = false,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("JWT:Pepper").Value))
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("JWT:Pepper").Value)),
+         ClockSkew = TimeSpan.Zero
     };
     //options.Authority = "https://localhost:7138";
     //options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -109,6 +116,17 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
+
+//static IEdmModel GetEdmModel()
+//{
+//    var builder = new ODataConventionModelBuilder();
+
+//    builder.EntitySet<TransactionRecord>("TransactionRecords");
+
+//    return builder.GetEdmModel();
+//}
+
 app.UseCors(builder =>
 {
     builder.AllowAnyOrigin()
@@ -120,6 +138,11 @@ app.UseCors(builder =>
 app.UseHttpsRedirection();
 app.UseSession();
 app.UseRouting();
+app.EnableDependencyInjection();
+app.Select().Expand().Filter().OrderBy().Count();
+//app.MapODataRoute("odata", "odata", GetEdmModel());
+
+
 
 app.UseAuthentication();
 app.UseAuthorization();

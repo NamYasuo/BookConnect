@@ -1,101 +1,61 @@
 ﻿using System;
 using BusinessObjects;
 using BusinessObjects.Models.Creative;
+using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.DAO.Creative
 {
 	public class ChapterDAO
 	{
-        public Chapter? GetChapterById(Guid chapterId)
+        public async Task<Chapter?> GetChapterById(Guid chapterId)
         {
-            Chapter? result;
-            try
+            using (var context = new AppDbContext())
             {
-                using(var context = new AppDbContext())
-                {
-                    result = context.Chapters.Where(c => c.ChapterId == chapterId).FirstOrDefault();
-                }
-                return result;
-            }
-            catch(Exception e)
-            {
-                throw new Exception(e.Message);
+                return await context.Chapters.SingleOrDefaultAsync(c => c.ChapterId == chapterId);
             }
         }
 
-        public int AddChapter(Chapter chapter)
+        public async Task<int> AddChapterAsync(Chapter chapter)
         {
-            try
+            using (var context = new AppDbContext())
             {
-                int result = 0;
-                using (var context = new AppDbContext())
-                {
-                    context.Chapters.Add(chapter);
-                    result = context.SaveChanges();
-                }
-                return result;
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
+                context.Chapters.Add(chapter);
+                return await context.SaveChangesAsync();
             }
         }
 
-        public IEnumerable<Chapter>? GetWorkChapters(Guid workId)
+        public async Task<IEnumerable<Chapter>> GetWorkChaptersAsync(Guid workId)
         {
-            List<Chapter>? chapters = new List<Chapter>();
-            try
+            using (var context = new AppDbContext())
             {
-                using(var context = new AppDbContext())
-                {
-                    chapters = context.Chapters.Where(c => c.WorkId == workId).ToList();
-                }
-                return chapters;
-            }
-            catch(Exception e)
-            {
-                throw new Exception(e.Message);
+                return await context.Chapters.Where(c => c.WorkId == workId).ToListAsync();
             }
         }
 
-        public int UpdateChapter(Chapter chapter)
+        public async Task<int> UpdateChapterAsync(Chapter chapter)
         {
-            int result = 0;
-            try
+            using (var context = new AppDbContext())
             {
-                using(var context = new AppDbContext())
-                {
-                    context.Update(chapter);
-                    result = context.SaveChanges();
-                }
-                return result;
-            }
-            catch(Exception e)
-            {
-                throw new Exception(e.Message);
+                context.Update(chapter);
+                return await context.SaveChangesAsync();
             }
         }
-        
-        public int DeleteChapterById(Guid chapterId) {
-            int result = 0;
-            try
+
+        public async Task<int> DeleteChapterByIdAsync(Guid chapterId)
+        {
+            using (var context = new AppDbContext())
             {
-                using(var context = new AppDbContext())
+                Chapter? chapter = await context.Chapters.FirstOrDefaultAsync(c => c.ChapterId == chapterId);
+                if (chapter != null)
                 {
-                    Chapter? index = context.Chapters.Where(c => c.ChapterId == chapterId).FirstOrDefault();
-                    if (index != null)
-                    {
-                        context.Chapters.Remove(index);
-                        result = context.SaveChanges();
-                    }
-                    return result;
+                    context.Chapters.Remove(chapter);
+                    return await context.SaveChangesAsync();
                 }
-            }
-            catch(Exception e)
-            {
-                throw new Exception(e.Message);
+                return 0;
             }
         }
+
+
 
     }
 }

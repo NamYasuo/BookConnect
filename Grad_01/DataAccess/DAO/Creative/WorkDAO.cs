@@ -6,25 +6,25 @@ using BusinessObjects.Models.Creative;
 
 namespace DataAccess.DAO
 {
-    public class WorkDAO
-    {
-        //------------------------------GET-------------------------------------//
-        public List<Work> GetAllWork()
-        {
-            List<Work> works = new List<Work>();
-            try
-            {
-                using (var context = new AppDbContext())
-                {
-                    works = context.Works.ToList();
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-            return works;
-        }
+	public class WorkDAO
+	{
+		//------------------------------GET-------------------------------------//
+		public List<Work> GetAllWork()
+		{
+			List<Work> works = new List<Work>();
+			try
+			{
+				using (var context = new AppDbContext())
+				{
+					works = context.Works.ToList();
+				}
+			}
+			catch(Exception e)
+			{
+				throw new Exception(e.Message);
+			}
+			return works;
+		}
         //Get work by id
         public Work GetWorkById(Guid workId)
         {
@@ -136,19 +136,18 @@ namespace DataAccess.DAO
 
         public int SetWorkPrice(Guid workId, decimal price)
         {
-            try
-            {
-                using (var context = new AppDbContext())
+            try{
+               using(var context = new AppDbContext())
                 {
                     Work? work = context.Works.Where(w => w.WorkId == workId).SingleOrDefault();
-                    if (work != null)
+                    if(work != null)
                     {
                         work.Price = price;
                     }
                     return context.SaveChanges();
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 throw new Exception(e.Message);
             }
@@ -156,19 +155,18 @@ namespace DataAccess.DAO
 
         public int SetWorkType(Guid workId, string type)
         {
-            try
-            {
-                using (var context = new AppDbContext())
+            try{
+                using(var context = new AppDbContext())
                 {
                     Work? work = context.Works.Where(w => w.WorkId == workId).SingleOrDefault();
-                    if (work != null)
+                    if(work != null)
                     {
                         work.Type = type;
                     }
                     return context.SaveChanges();
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 throw new Exception(e.Message);
             }
@@ -203,17 +201,17 @@ namespace DataAccess.DAO
         {
             try
             {
-                using (var context = new AppDbContext())
+                using(var context = new AppDbContext())
                 {
                     Work? work = context.Works.Where(w => w.WorkId == workId).SingleOrDefault();
-                    if (work != null)
+                    if(work != null)
                     {
                         return work.AuthorId == userId;
                     }
                     return false;
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 throw new Exception(e.Message);
             }

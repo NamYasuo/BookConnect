@@ -4,109 +4,154 @@ using BusinessObjects.Models;
 
 namespace DataAccess.DAO
 {
-    public class AddressDAO
-    {
-        //Get all address of a user
-        public List<Address> GetAllUserAddress(Guid userId)
-        {
-            List<Address> result = new List<Address>();
-            try
-            {
-                using (var context = new AppDbContext())
-                {
-                    result = context.Addresses.Where(u => u.AddressId == userId).ToList();
+	public class AddressDAO
+	{
+		//Get all address of a user
+		public List<Address> GetAllUserAddress(Guid userId)
+		{
+			List<Address> result = new List<Address>();
+			try
+			{
+				using (var context = new AppDbContext())
+				{
+					result = context.Addresses.Where(u => u.UserId == userId).ToList();
                     return result;
                 }
 
             }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-        }
+            catch(Exception e)
+			{
+				throw new Exception(e.Message);
+			}
+		}
 
+		public Address GetUserDefaultAddress(Guid userId)
+		{
+			try
+			{
+				using(var context = new AppDbContext())
+				{
+					//Handle this null warning
+					return context.Addresses.Where(a => a.UserId == userId && a.Default == true).FirstOrDefault();
+				}
+			}
+			catch(Exception e)
+			{
+				throw new Exception(e.Message);
+			}
+		}
 
-        public Address GetUserDefaultAddress(Guid userId)
-        {
-            try
-            {
-                using (var context = new AppDbContext())
-                {
-                    //Handle this null warning
-                    return context.Addresses.Where(a => a.UserId == userId && a.Default == true).FirstOrDefault();
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-        }
-        public int AddNewAddress(Address address)
-        {
-            try
-            {
-                using (var context = new AppDbContext())
-                {
-                    context.Addresses.Add(address);
-                    return context.SaveChanges();
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-        }
-        public void UpdateAddress(Guid userId, Guid? addressId, string cityProvince, string district, string subDistrict, string rendezvous, bool isDefault)
-        {
-            try
-            {
-                using (var context = new AppDbContext())
-                {
-                    if (addressId.HasValue)
-                    {
-                        // Update existing address
-                        var existingAddress = context.Addresses.FirstOrDefault(a => a.UserId == userId && a.AddressId == addressId);
+		public int AddNewAddress(Address address)
+		{
+			try
+			{
+				using(var context = new AppDbContext())
+				{
+					context.Addresses.Add(address);
+					if (address.Default)
+					{
+						SetAddressDefault(address.AddressId);
+					}
+					return context.SaveChanges();
+				}
+			}
+			catch(Exception e)
+			{
+				throw new Exception(e.Message);
+			}
+		}
 
-                        if (existingAddress == null)
+		public int SetAddressDefault(Guid addressId)
+		{
+			try
+			{
+				using(var context = new AppDbContext())
+				{
+					Address? address = context.Addresses.Where(a => a.AddressId == addressId).SingleOrDefault();
+					if(address != null)
+					{
+                        List<Address> records = context.Addresses.Where(a => a.UserId == address.UserId && a.Default && a.AddressId != addressId).ToList();
+                        foreach (Address a in records)
                         {
-                            throw new Exception("Address not found.");
+                            a.Default = false;
                         }
-
-                        existingAddress.City_Province = cityProvince;
-                        existingAddress.District = district;
-                        existingAddress.SubDistrict = subDistrict;
-                        existingAddress.Rendezvous = rendezvous;
-                        existingAddress.Default = isDefault;
+                        address.Default = true;
                     }
-                    else
-                    {
-                        // Create new address
-                        var newAddress = new Address
-                        {
-                            AddressId = Guid.NewGuid(),
-                            UserId = userId,
-                            City_Province = cityProvince,
-                            District = district,
-                            SubDistrict = subDistrict,
-                            Rendezvous = rendezvous,
-                            Default = isDefault
-                        };
+                    return context.SaveChanges();
+				}
+			}
+			catch(Exception e)
+			{
+				throw new Exception(e.Message);
+			}
+		}
 
-                        context.Addresses.Add(newAddress);
+		public int UpdateAddressDefault(Address address)
+		{
+			try
+			{
+				using(var context = new AppDbContext())
+				{
+					int result = 0;
+					if(address.UserId != null)
+					{
+						if (IsOldAddress(address.AddressId, (Guid)address.UserId))
+						{
+							result += SetAddressDefault(address.AddressId);
+						}
+						else context.Addresses.Add(address);
+						result += context.SaveChanges();
+						SetAddressDefault(address.AddressId);
+						result += context.SaveChanges();
                     }
-
-                    context.SaveChanges();
+                    result += context.SaveChanges();
+                    return result;
                 }
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Error updating address: " + e.Message);
-            }
-        }
+			}
+			catch(Exception e)
+			{
+				throw new Exception(e.Message);
+			}
+		}
 
+		public bool IsOldAddress(Guid addressId, Guid userId)
+		{
+			try
+			{
+				using(var context = new AppDbContext())
+				{
+					return context.Addresses.Any(a => a.AddressId == addressId && a.UserId == userId);
+				}
+			}
+			catch(Exception e)
+			{
+				throw new Exception(e.Message);
+			}
+		}
 
-
-    }
+		public List<Address> SearchOldAddress(string inputString, Guid userId)
+		{
+			try
+			{
+				using (var context = new AppDbContext())
+				{
+					
+					List<Address> result = new List<Address>();
+					var matchedCates = context.Addresses
+					.Where(c => c.Rendezvous.Contains(inputString))
+					.ToList();
+					if (matchedCates.Count > 0)
+					{
+						result = matchedCates;
+					}
+					return result;
+				}
+			}
+			catch (Exception e)
+			{
+				throw new Exception(e.Message);
+			}
+		}
+	}
 }
-
 
