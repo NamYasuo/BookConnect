@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -35,10 +35,17 @@
     <None Remove="Models\Authorization\" />
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
+=======
+    <Folder Include="Models\E-com\" />
+>>>>>>> origin/Nam
     <Folder Include="Models\E-com\Payment\" />
     <Folder Include="Models\E-com\Rating\" />
+<<<<<<< HEAD
     <Folder Include="Models\Trading\" />
     <Folder Include="DTO\Subscription\" />
     <Folder Include="Models\Authorization\" />
+=======
+>>>>>>> origin/Nam
   </ItemGroup>
 </Project>
