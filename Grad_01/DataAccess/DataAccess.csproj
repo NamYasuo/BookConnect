@@ -1,15 +1,12 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\BusinessObjects\BusinessObjects.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="7.0.15" />
   </ItemGroup>
@@ -17,12 +14,10 @@
     <None Remove="DAO\E-com\" />
     <None Remove="DAO\Creative\" />
     <None Remove="DAO\Subcription\" />
-    <None Remove="DAO\Subcription\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DAO\E-com\" />
     <Folder Include="DAO\Creative\" />
-    <Folder Include="DAO\Subcription\" />
     <Folder Include="DAO\Subcription\" />
   </ItemGroup>
 </Project>

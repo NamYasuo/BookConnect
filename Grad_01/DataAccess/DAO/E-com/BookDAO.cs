@@ -32,54 +32,6 @@ namespace DataAccess.DAO
 			return bookList;
 		}
 
-        //Get book details by id
-
-        public BookDetailsDTO GetBookDetailsById(Guid bookId)
-		{
-			Book? book = new Book();
-			BookDetailsDTO result = new BookDetailsDTO();
-
-
-            try
-			{
-				using(var context = new AppDbContext())
-				{
-					book = context.Books.Where(b => b.ProductId == bookId).FirstOrDefault();
-				}
-				if (book != null)
-				{
-					NameAndIdDTO agency = new AgencyDAO().GetNameAndId(bookId);
-					result = new BookDetailsDTO()
-					{
-						ProductId = bookId,
-						//public string? Name { get; set; } = null!;
-						Name = book.Name,
-						//public string? Description { get; set; }
-						Description = book.Description,
-						//public double? Price { get; set; }
-						Price = book.Price,
-						//public DateTime? CreatedDate { get; set; }
-						CreatedDate = book.CreatedDate,
-						//public DateTime? PublishDate { get; set; }
-						PublishDate = book.PublishDate,
-						//public string? Type { get; set; } = null!;
-						Type = book.Type,
-						//public int? Quantity { get; set; }
-						//public double Rating { get; set; }
-						Rating = 5,
-						//public Guid SellerId { get; set; }
-						AgencyId = agency.AgencyId,
-						//public string SellerName { get; set; } = null!;
-						AgencyName = agency.AgencyName
-					};
-				} return result;
-              
-			}
-			catch(Exception e)
-			{
-				throw new Exception(e.Message);
-			}
-		}
 
         //Get book by id
 

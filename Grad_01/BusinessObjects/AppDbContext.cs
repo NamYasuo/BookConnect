@@ -4,7 +4,6 @@ using BusinessObjects.Models.Creative;
 using BusinessObjects.Models.E_com.Trading;
 using BusinessObjects.Models.Ecom;
 using BusinessObjects.Models.Ecom.Base;
-using BusinessObjects.Models.Ecom.Base;
 using BusinessObjects.Models.Ecom.Payment;
 using BusinessObjects.Models.Ecom.Rating;
 using BusinessObjects.Models.Trading;
@@ -14,8 +13,6 @@ using Microsoft.Extensions.Configuration;
 
 namespace BusinessObjects
 {
-	public class AppDbContext: DbContext
-	{
 	public class AppDbContext: DbContext
 	{
         public AppDbContext() { }
@@ -43,12 +40,9 @@ namespace BusinessObjects
         //Rating services DbSets
         public virtual DbSet<Rating> Ratings { get; set; }
         public virtual DbSet<RatingRecord> RatingRecords { get; set; } 
-        public virtual DbSet<Rating> Ratings { get; set; }
-        public virtual DbSet<RatingRecord> RatingRecords { get; set; } 
 
         //Payment service DbSets 
         //public virtual DbSet<PaymentDetails> PaymentDetails { get; set; } = null!;
-        public virtual DbSet<TransactionRecord> Transactions { get; set; } 
         public virtual DbSet<TransactionRecord> Transactions { get; set; } 
         //public virtual Db
 
@@ -82,7 +76,6 @@ namespace BusinessObjects
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Role>().HasData(
-                new Role {
                 new Role {
                     RoleId = Guid.Parse("2da9143d-559c-40b5-907d-0d9c8d714c6c"),
                     RoleName = "BaseUser",

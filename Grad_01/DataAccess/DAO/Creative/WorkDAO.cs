@@ -1,15 +1,12 @@
 ﻿using System;
 using BusinessObjects;
 using BusinessObjects.DTO;
-using BusinessObjects.DTO;
-using BusinessObjects.Models;
 using BusinessObjects.Models.Creative;
 
 namespace DataAccess.DAO
 {
 	public class WorkDAO
 	{
-		//------------------------------GET-------------------------------------//
 		//------------------------------GET-------------------------------------//
 		public List<Work> GetAllWork()
 		{
@@ -29,9 +26,7 @@ namespace DataAccess.DAO
 		}
         //Get work by id
         public Work GetWorkById(Guid workId)
-        public Work GetWorkById(Guid workId)
         {
-            Work? work = new Work();
             Work? work = new Work();
             try
             {
@@ -70,31 +65,6 @@ namespace DataAccess.DAO
             else throw new NullReferenceException();
         }
 
-        public List<WorkIdTitleDTO>? GetTitleAndIdByAuthorId(Guid authorId)
-        {
-            try
-            {
-                List<WorkIdTitleDTO>? results = new List<WorkIdTitleDTO>();
-                using (var context = new AppDbContext())
-                {
-                    List<Work> works = context.Works.Where(w => w.AuthorId == authorId).ToList();
-                    foreach (Work w in works)
-                    {
-                        results.Add(new WorkIdTitleDTO
-                        {
-                            Title = w.Title,
-                            WorkId = w.WorkId
-                        });
-                    }
-                }
-                return results;
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-
-        }
 
         //------------------------------ADD-------------------------------------//
         public List<WorkIdTitleDTO>? GetTitleAndIdByAuthorId(Guid authorId)
@@ -130,7 +100,6 @@ namespace DataAccess.DAO
             try
             {
                 int result = 0;
-                int result = 0;
                 using (var context = new AppDbContext())
                 {
                     //Check dupllicate work
@@ -154,7 +123,6 @@ namespace DataAccess.DAO
             }
         }
 
-        //-----------------------------UPDATE-----------------------------------//
 
         //-----------------------------UPDATE-----------------------------------//
 
@@ -212,52 +180,13 @@ namespace DataAccess.DAO
                 throw new Exception(e.Message);
             }
         }
-        //-----------------------------DELETE-----------------------------------//
-        public int SetWorkPrice(Guid workId, decimal price)
-        {
-            try{
-               using(var context = new AppDbContext())
-                {
-                    Work? work = context.Works.Where(w => w.WorkId == workId).SingleOrDefault();
-                    if(work != null)
-                    {
-                        work.Price = price;
-                    }
-                    return context.SaveChanges();
-                }
-            }
-            catch(Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-        }
 
-        public int SetWorkType(Guid workId, string type)
-        {
-            try{
-                using(var context = new AppDbContext())
-                {
-                    Work? work = context.Works.Where(w => w.WorkId == workId).SingleOrDefault();
-                    if(work != null)
-                    {
-                        work.Type = type;
-                    }
-                    return context.SaveChanges();
-                }
-            }
-            catch(Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-        }
         //-----------------------------DELETE-----------------------------------//
         //Delete Work by id
-        public int DeleteWorkById(Guid workId)
         public int DeleteWorkById(Guid workId)
         {
             try
             {
-                int result = 0;
                 int result = 0;
                 using (var context = new AppDbContext())
                 {
@@ -269,7 +198,6 @@ namespace DataAccess.DAO
                         result = context.SaveChanges();
                     }
                 }
-                return result;
                 return result;
             }
             catch (Exception e)

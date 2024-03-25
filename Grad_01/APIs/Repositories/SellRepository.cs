@@ -1,39 +1,55 @@
 using System;
 using System.Collections.Generic;
-using APIs.Repositories.Interfaces;
-using BusinessObjects.Models;
 using BusinessObjects.DTO;
+using BusinessObjects.Models;
+using APIs.Services.Interfaces;
+using APIs.Repositories.Interfaces;
+using System.ComponentModel.Design;
 using DataAccess.DAO;
 
-namespace APIs.Repositories
+namespace APIs.Services
 {
-    public class SellRepository : ISellRepository
+    public class SellService
     {
-        public void AddToBookListing(BookListingManageDTOs item) => new SellDAO().AddBookListing(item);
+        private readonly IOrderService _orderService;
+        private readonly ISellService _sellRepository;
 
-        public void UpdateBookListing(BookListingManageDTOs item) => new SellDAO().UpdateBookListing(item);
+        //// Book Listing Services
+        //public void AddToBookListing(BookListingManageDTOs item) => _sellRepository.AddToBookListing(item);
 
-//        public void DeleteBookListing(Guid bookId) => new BookDAO().DeleteBook(bookId);
+        //public void UpdateBookListing(BookListingManageDTOs item) => _sellRepository.UpdateBookListing(item);
 
-        public List<BookListing> GetBookListingById(Guid Id) => new SellDAO().GetBookListingById(Id);
-        public List<BookListing> GetBookListingByName(string listName) => new SellDAO().GetBookListingByName(listName);
-        public void AddToInventory(InventoryManageDTOs item) => new SellDAO().AddInventoryItem(item);
+        //public void RemoveFromBookListing(Guid itemId) => _sellRepository.RemoveFromBookListing(itemId);
 
-        public void UpdateInventoryItem(InventoryManageDTOs item) => new SellDAO().UpdateInventoryItem(item);
+        //public List<BookListing> GetBookListingById(Guid Id) => _sellRepository.GetBookListingById(Id);
+        //public List<BookListing> GetBookListingByName(string listName) => _sellRepository.GetBookListingByName(listName);
+        //// Inventory Services
+        //public void AddToInventory(InventoryManageDTOs item) => _sellRepository.AddToInventory(item);
 
-//        public void RemoveFromInventory(Guid itemId) => new InventoryDAO().DeleteInventoryItem(itemId);
+        //public void UpdateInventoryItem(InventoryManageDTOs item) => _sellRepository.UpdateInventoryItem(item);
 
-        public List<Inventory> GetInventoryItemsById(Guid Id) => new SellDAO().GetInventoryItemsById(Id);
-        public void AddToAds(AdsManageDTOs item) => new SellDAO().AddAds(item);
+        //public void RemoveFromInventory(Guid itemId) => _sellRepository.RemoveFromInventory(itemId);
 
-        public void UpdateAds(AdsManageDTOs item) => new SellDAO().UpdateAds(item);
+        //public List<Inventory> GetInventoryItemsById(Guid Id) => _sellRepository.GetInventoryItemsById(Id);
+        //// Ads Services
+        //public void AddToAds(AdsManageDTOs item) => _sellRepository.AddToAds(item);
 
-        public void RemoveFromAds(Guid itemId) => new SellDAO().DeleteAds(itemId);
+        //public void UpdateAds(AdsManageDTOs item) => _sellRepository.UpdateAds(item);
 
-        public List<Ads> GetAdsById(Guid Id) => new SellDAO().GetAdsById(Id);
-        public void SendMessage(MessageDTOs message) => new MessageDAO().SendMessage(message);
- 
-        public List<MessageDTOs> GetMessages(Guid senderId, Guid receiverId) => new MessageDAO().GetMessages(senderId, receiverId);
+        //public void RemoveFromAds(Guid itemId) => _sellRepository.RemoveFromAds(itemId);
+
+        //public List<Inventory> GetAdsById(Guid Id) => _sellRepository.GetAdsById(Id);
+        ////// Communication Services
+        //public void SendMessage(MessageDTOs message) => _sellRepository.SendMessage(message);
+
+        //public List<MessageDTOs> GetMessages(Guid senderId, Guid receiverId) => _sellRepository.GetMessages(senderId, receiverId);
+        // Order Processing Services
+        //public string ProcessOrder(Guid orderId) => _orderService.ProcessOrder(orderId);
+
+        //public string UpdateOrderStatus(Guid orderId, string newStatus) => _orderService.UpdateOrderStatus(orderId, newStatus);
+
+        //public string UpdateShippingInformation(Guid orderId, ShippingInfoDTO shippingInfo) => _orderService.UpdateShippingInformation(orderId, shippingInfo);
     }
 }
+
 

@@ -2,7 +2,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using BusinessObjects.Models.Utils;
-using BusinessObjects.Models.Utils;
 using Newtonsoft.Json;
 
 namespace BusinessObjects.Models.Creative
@@ -28,7 +27,6 @@ namespace BusinessObjects.Models.Creative
 
         public Guid AuthorId { get; set; }
         [ForeignKey("AuthorId"), JsonIgnore]
-        public virtual AppUser Author { get; set; } = null!;
         public virtual AppUser Author { get; set; } = null!;
 	}
 }

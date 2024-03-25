@@ -4,7 +4,6 @@ using System.Security.Claims;
 using System.Text;
 using APIs.DTO;
 using APIs.Services.Interfaces;
-using APIs.Services.Interfaces;
 using BusinessObjects.DTO;
 using BusinessObjects.Models;
 using DataAccess.DTO;
@@ -16,24 +15,19 @@ namespace APIs.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountController: ControllerBase
-	{
-		private readonly IAccountService _accService;
-        private readonly ICloudinaryService _cloudinaryService;
-		private readonly IAccountService _accService;
+    public class AccountController : ControllerBase
+    {
+        private readonly IAccountService _accService;
         private readonly ICloudinaryService _cloudinaryService;
 
         public AccountController(IAccountService service, ICloudinaryService cloudinaryService)
-        public AccountController(IAccountService service, ICloudinaryService cloudinaryService)
         {
-            _cloudinaryService = cloudinaryService;
-            _accService = service;
             _cloudinaryService = cloudinaryService;
             _accService = service;
         }
 
         [HttpPost("SignUp")]
-        public IActionResult SignUp([FromBody] RegisterDTO model)
+        public async Task<IActionResult> SignUp([FromBody] RegisterDTO model)
         {
             var status = new Status();
 
@@ -41,7 +35,6 @@ namespace APIs.Controllers
             {
                 status.StatusCode = 0;
                 status.Message = "Please pass all the required fields";
-                return BadRequest(status);
                 return BadRequest(status);
             }
             // check if users exists
@@ -70,10 +63,10 @@ namespace APIs.Controllers
             AppUser? user = await _accService.FindUserByEmailAsync(model.Email);
             if (user == null)
             {
-              return Unauthorized("User not found!");
+                return Unauthorized("User not found!");
             }
 
-            if(!user.IsBanned)
+            if (!user.IsBanned)
             {
                 byte[] salt = Convert.FromHexString(user.Salt);
                 if (!_accService.VerifyPassword(model.Password, user.Password, salt))
@@ -89,7 +82,7 @@ namespace APIs.Controllers
                 {
                     HttpOnly = true,
                     Expires = refreshToken.ExpiredDate,
-                    Secure = true 
+                    Secure = true
                 };
                 Response.Cookies.Append("refreshToken", refreshToken.Token, cookieOptions);
 
@@ -139,7 +132,7 @@ namespace APIs.Controllers
             {
                 HttpOnly = true,
                 Expires = newRefreshToken.ExpiredDate,
-                Secure = true 
+                Secure = true
             };
             Response.Cookies.Append("refreshToken", newRefreshToken.Token, cookieOptions);
 
@@ -159,7 +152,6 @@ namespace APIs.Controllers
                     return Ok(status);
                 }
                 if (_accService.GetRoleDetails(data.RoleName) is not null)
-                if (_accService.GetRoleDetails(data.RoleName) is not null)
                 {
                     return BadRequest("Role already existed");
                 }
@@ -170,10 +162,10 @@ namespace APIs.Controllers
                     Description = data.Description
                 };
 
-               await _accService.AddNewRole(role);
+                await _accService.AddNewRole(role);
                 return Ok("New role added");
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw new Exception(e.Message);
             }
@@ -186,14 +178,13 @@ namespace APIs.Controllers
             try
             {
                 Address? address = _accService.GetDefaultAddress(userId);
-                Address? address = _accService.GetDefaultAddress(userId);
                 if (address != null)
                 {
                     return Ok(address);
                 }
                 else return BadRequest("Default Address' not set!!!");
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw new Exception(e.Message);
             }
@@ -214,37 +205,38 @@ namespace APIs.Controllers
                     var userId = Guid.Parse(userIdClaim.Value);
                     //if (roleClaim != null)
                     //{
-                        if (usernameClaim != null)
+                    if (usernameClaim != null)
+                    {
+                        if (emailClaim != null)
                         {
-                            if (emailClaim != null)
+                            Address? address = _accService.GetDefaultAddress(userId);
+                            string rendez = string.Empty;
+
+                            if (address != null && address.Rendezvous != null)
                             {
-                                Address? address = _accService.GetDefaultAddress(userId);
-                                string rendez = string.Empty;
-
-                                if (address != null && address.Rendezvous != null)
-                                {
-                                    rendez = address.Rendezvous;
-                                }
-
-                                UserProfileDTO profile = new UserProfileDTO()
-                                {
-                                    UserId = userId,
-                                    Username = usernameClaim.Value,
-                                    //Role = roleClaim.Value,
-                                    Address = rendez,
-                                    Email = emailClaim.Value,
-                                    IsValidated = await _accService.IsUserValidated(userId),
-                                    //IsSeller = _accService.IsSeller(userId),
-                                    IsBanned = await _accService.IsBanned(userId),
-                                    Agencies = _accService.GetOwnerAgencies(userId)
-                                };
-                                return Ok(profile);
+                                rendez = address.Rendezvous;
                             }
-                            else return NotFound("Email claim not found!");
+
+                            UserProfileDTO profile = new UserProfileDTO()
+                            {
+                                UserId = userId,
+                                Username = usernameClaim.Value,
+                                //Role = roleClaim.Value,
+                                Address = rendez,
+                                Email = emailClaim.Value,
+                                IsValidated = await _accService.IsUserValidated(userId),
+                                //IsSeller = _accService.IsSeller(userId),
+                                IsBanned = await _accService.IsBanned(userId),
+                                Agencies = _accService.GetOwnerAgencies(userId)
+                            };
+                            return Ok(profile);
                         }
-                        else return NotFound("Username claim not found!!!");
+                        else return NotFound("Email claim not found!");
+                    }
+                    else return NotFound("Username claim not found!!!");
                     //} else return NotFound("Role claim not found!!!");
-                } else return NotFound("User ID claim not found!!!");
+                }
+                else return NotFound("User ID claim not found!!!");
             }
             catch (Exception e)
             {
@@ -265,7 +257,7 @@ namespace APIs.Controllers
                 }
                 return BadRequest("Model invalid");
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw new Exception(e.Message);
             }
@@ -303,9 +295,9 @@ namespace APIs.Controllers
                     else return BadRequest("Account's not validated!");
                 }
                 else return BadRequest("Model invalid!");
-               
+
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw new Exception(e.Message);
             }
@@ -320,7 +312,7 @@ namespace APIs.Controllers
                 IActionResult response = (result.AgencyName != null) ? Ok(result) : NotFound("Agency doesn't exist!");
                 return response;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw new Exception(e.Message);
             }
@@ -343,4 +335,3 @@ namespace APIs.Controllers
         }
     }
 }
-

@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using APIs.Services.Intefaces;
-using BusinessObjects.Models;
+﻿using BusinessObjects.Models;
 using DataAccess.DAO;
 using BusinessObjects.DTO;
 using BusinessObjects;
+using APIs.Services.Interfaces;
 
 namespace APIs.Services
 {
     public class BookService : IBookService
     {
-
 
         public List<Book> GetAllBook() => new BookDAO().GetAllBook();
 
@@ -20,8 +17,7 @@ namespace APIs.Services
 
         public void AddNewBook(Book book) => new BookDAO().AddNewBook(book);
 
-
-        public void UpdateBook(Book book) => new BookDAO().UpdateBook(book);
+        //public void UpdateBook(Book book) => new BookDAO().UpdateBook(book);
 
 
         public void DeleteBook(Guid bookId) => new BookDAO().DeleteBook(bookId);
@@ -118,6 +114,10 @@ namespace APIs.Services
 
             return filteredBooks;
         }
-        
+
+        public void UpdateBook(Book book)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

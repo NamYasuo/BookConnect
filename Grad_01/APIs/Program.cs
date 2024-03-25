@@ -62,7 +62,7 @@ builder.Services.AddScoped<ITestService, TestService>();
 
 //Repositories
 builder.Services.AddScoped<ICartRepository, CartRepository>();
-builder.Services.AddScoped<ISellRepository, SellRepository>();
+//builder.Services.AddScoped<ISellRepository, SellRepository>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
@@ -145,7 +145,6 @@ app.UseCors(builder =>
 {
     builder.AllowAnyOrigin()
     .AllowAnyMethod()
-    .AllowAnyHeader().WithExposedHeaders("X-Pagination");
     .AllowAnyHeader().WithExposedHeaders("X-Pagination");
 });
 //app.UseCors("CORSPolicy");

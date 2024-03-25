@@ -1,9 +1,7 @@
 ﻿using System;
 using BusinessObjects;
-using BusinessObjects.DTO;
 using BusinessObjects.Models;
-using BusinessObjects.Models.Ecom.Base;
-using BusinessObjects.Models.Ecom.Base;
+using BusinessObjects.Models.Ecom.Rating;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.DAO
@@ -139,31 +137,110 @@ namespace DataAccess.DAO
         /*-----------------END DELETE-------------------*/
 
         /*------------------------------------END APPUSER-------------------------------------------*/
+        public void UpdateUserProfile(Guid userId, string username, string? address = null)
+        {
+            try
+            {
+                using (var context = new AppDbContext())
+                {
+                    // Find the user by user ID
+                    var user = context.AppUsers.FirstOrDefault(u => u.UserId == userId);
+
+                    if (user != null)
+                    {
+                        // Update username if provided
+                        if (username != null)
+                        {
+                            user.Username = username;
+                        }
+
+                        // Address update (using address string)
+                        if (address != null)
+                        {
+
+                        }
+
+                        context.AppUsers.Update(user);
+                        context.SaveChanges();
+                    }
+                    else
+                    {
+                        // Throw an exception or handle the case where user not found
+                        throw new Exception("User not found");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
 
 
+        public void RateAndCommentProduct(Guid userId, Guid ratingId, int ratingPoint, string comment)
+        {
+            try
+            {
+                using (var context = new AppDbContext())
+                {
+                    // Check if the user has already rated the product
+                    var existingRatingRecord = context.RatingRecords
+                        .FirstOrDefault(record => record.UserId == userId && record.RatingId == ratingId);
 
+                    if (existingRatingRecord != null)
+                    {
+                        // Update existing rating record
+                        existingRatingRecord.RatingPoint = ratingPoint;
+                        existingRatingRecord.Comment = comment;
+                    }
+                    else
+                    {
+                        // Create a new rating record
+                        var newRatingRecord = new RatingRecord
+                        {
+                            RatingId = ratingId,
+                            UserId = userId,
+                            RatingPoint = ratingPoint,
+                            Comment = comment
+                        };
+                        context.RatingRecords.Add(newRatingRecord);
+                    }
 
+                    // Calculate the new overall rating for the Rating entity
+                    var ratingsForRatingId = context.RatingRecords.Where(record => record.RatingId == ratingId).ToList();
+                    double totalRatingPoints = ratingsForRatingId.Sum(record => record.RatingPoint);
+                    double averageRating = ratingsForRatingId.Count > 0 ? totalRatingPoints / ratingsForRatingId.Count : 0;
 
+                    // Update the OverallRating property in the Rating entity
+                    var ratingEntity = context.Ratings.FirstOrDefault(r => r.RatingId == ratingId);
+                    if (ratingEntity != null)
+                    {
+                        ratingEntity.OverallRating = averageRating;
+                    }
+                    else
+                    {
+                        // If RatingId not found, create a new Rating entity
+                        ratingEntity = new Rating { RatingId = ratingId, OverallRating = averageRating };
+                        context.Ratings.Add(ratingEntity);
+                    }
 
+                    // Save changes to the database
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                // Log the inner exception details along with the message
+                string errorMessage = $"Error rating and commenting product: {e.Message}";
+                if (e.InnerException != null)
+                {
+                    errorMessage += $"\nInner Exception: {e.InnerException.Message}";
+                }
+                throw new Exception(errorMessage);
+            }
 
+        }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    }
+       }
 }
 

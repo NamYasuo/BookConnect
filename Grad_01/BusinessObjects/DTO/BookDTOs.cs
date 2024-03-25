@@ -19,18 +19,19 @@ namespace BusinessObjects.DTO
     public class BookDetailsDTO
     {
         public Guid ProductId { get; set; }
-        public string Name { get; set; } = null!;
-        public string Description { get; set; } = null!;
-        public decimal Price { get; set; }
+        public string? Name { get; set; } = null!;
+        public string? Description { get; set; }
+        public decimal? Price { get; set; }
         public DateTime? CreatedDate { get; set; }
         public DateTime? PublishDate { get; set; }
-        public string Type { get; set; } = null!;
+        public string? Type { get; set; } = null!;
+        public int? Stock { get; set; }
+        public double? Rating { get; set; }
+        public Guid AgencyId { get; set; }
+        public string AgencyName { get; set; } = null!;
         public string Author { get; set; } = null!;
         public string? CoverDir { get; set; }
         public string? BackgroundDir { get; set; }
-        public double Rating { get; set; }
-        public Guid AgencyId { get; set; }
-        public string AgencyName { get; set; } = null!;
     }
 
     public class AddBookToCateDTO

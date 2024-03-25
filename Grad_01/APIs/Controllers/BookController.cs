@@ -1,12 +1,7 @@
-using System.Collections.Generic;
-using System.Linq;
-using BusinessObjects;
 using BusinessObjects.DTO;
 using BusinessObjects.Models;
-using APIs.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using APIs.Services.Intefaces;
+using APIs.Services.Interfaces;
 
 namespace APIs.Controllers
 {
@@ -31,7 +26,6 @@ namespace APIs.Controllers
             }
             catch (Exception ex)
             {
-                // Consider logging the exception and returning a more user-friendly error message
                 return StatusCode(500, "Internal Server Error");
             }
         }
@@ -96,7 +90,7 @@ namespace APIs.Controllers
             }
         }
 
-        [HttpGet("filter type")]
+        [HttpGet("filter-by-type")]
         public IActionResult GetBookByType(string type)
         {
             if (string.IsNullOrEmpty(type))

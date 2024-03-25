@@ -11,13 +11,12 @@ namespace APIs.Services.Interfaces
         public List<Book> GetAllBook();
         public BookDetailsDTO GetBookDetailsById(Guid bookId);
         public Book GetBookById(Guid bookId);
-        public Book GetBookByName(string name);
-        public void AddNewBook(Book item);
-        public void UpdateBook(Book item);
+
+        public void AddNewBook(Book book);
+        public void UpdateBook(Book book);
         public void DeleteBook(Guid bookId);
         public List<Book> GetBookListById(List<Guid> bookIds);
-        void UpdateBook(BookDetailsDTO item);
-        void AddNewBook(BookDetailsDTO item);
+
 
         List<SEODTO> ListSEO(string searchTerm);
 
@@ -26,7 +25,10 @@ namespace APIs.Services.Interfaces
         bool IsBookAlreadyInCate(Guid bookId, Guid cateId);
         int RemoveBookFromCate(Guid bookId, Guid cateId);
         List<Category> GetAllCategoryOfBook(Guid bookId);
-
+        List<Book> GetBookByName(string searchTerm);
+        public List<Book> GetBookByCategoryName(string[] cateName);
+        public List<Book> GetBookByType(string type);
+        public List<Book> FilterBooks(string searchTerm = null, string[] categoryNames = null, string type = null);
     }
 }
 

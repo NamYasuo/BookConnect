@@ -1,18 +1,11 @@
-﻿using System;
-using APIs.Services.Interfaces;
-using APIs.Utils.Paging;
-using BusinessObjects.DTO;
-using APIs.Services.Interfaces;
-using APIs.Utils.Paging;
+﻿using APIs.Services.Interfaces;
 using BusinessObjects.DTO;
 using BusinessObjects.Models.Creative;
 using DataAccess.DAO;
 using DataAccess.DAO.Creative;
-using DataAccess.DAO.Creative;
 
 namespace APIs.Services
 {
-	public class WorkService : IWorkService
 	public class WorkService : IWorkService
 	{
 		private readonly AccountDAO _accountDAO;

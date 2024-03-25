@@ -15,12 +15,10 @@ namespace BusinessObjects.Models
 		public string Rendezvous { get; set; } = null!;
 		public bool Default { get; set; } = false;
 		public Guid? UserId { get; set; }
-		public Guid? UserId { get; set; }
 
 		[ForeignKey("UserId"), JsonIgnore]
 		public AppUser? User { get; set; } 
 
-		public AppUser? User { get; set; } 
 
 	}
 }

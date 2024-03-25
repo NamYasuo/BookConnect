@@ -5,24 +5,11 @@ using APIs.Services.Interfaces;
 using BusinessObjects.DTO;
 using BusinessObjects.Models.Ecom;
 using BusinessObjects.Models.Ecom.Payment;
-using DataAccess.DAO;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using Newtonsoft.Json;
 
 namespace APIs.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class OrderController : ControllerBase
-    {
-        private readonly IOrderService _orderService;
-        private readonly ITransactionService _transactionService;
-        public OrderController(IOrderService orderService, ITransactionService transactionService)
-        {
-            _transactionService = transactionService;
-            _orderService = orderService;
-        }
     [Route("api/[controller]")]
     [ApiController]
     public class OrderController : ControllerBase
@@ -41,14 +28,15 @@ namespace APIs.Controllers
         {
 
             decimal totalAmount = _orderService.GetTotalAmount(request.Products);
-  
+
             Guid orderId = Guid.NewGuid();
             NewOrderDTO newOrder = new NewOrderDTO();
-           
+
 
             switch (request.PaymentMethod)
             {
-                case "VnPay": {
+                case "VnPay":
+                    {
                         newOrder.OrderId = orderId;
                         newOrder.CustomerId = request.CustomerId;
                         newOrder.Price = request.PaymentReturnDTO.Amount;
@@ -70,7 +58,7 @@ namespace APIs.Controllers
                         newOrder.AddressId = request.AddressId;
                         newOrder.TransactionId = null;
                     }
-                break;
+                    break;
             }
 
             string result = _orderService.CreateNewOrder(newOrder);
@@ -84,15 +72,15 @@ namespace APIs.Controllers
             return BadRequest(result);
         }
 
-       
+
         [HttpPost]
         [Route("check-out")]
         public async Task<IActionResult> CheckoutAsync([FromBody] PreCheckoutDTO dto)
         {
 
-            foreach(ProductOptionDTO p in dto.Products)
+            foreach (ProductOptionDTO p in dto.Products)
             {
-                if(_orderService.GetCurrentStock(p.ProductId) < p.Quantity)
+                if (_orderService.GetCurrentStock(p.ProductId) < p.Quantity)
                 {
                     return BadRequest("Can't purchase more product than inside stock!");
                 }
@@ -121,7 +109,7 @@ namespace APIs.Controllers
 
                 // Make the POST request and include the request content in the body
                 HttpResponseMessage response = await client.PostAsync("https://localhost:7138/api/Payment/vnpay/create-vnpay-link", content);
-;
+                ;
                 // Check the response status code
                 if (response.IsSuccessStatusCode)
                 {
@@ -138,7 +126,7 @@ namespace APIs.Controllers
                     return BadRequest("API request failed with status code: " + response.StatusCode);
                 }
             }
-            
+
             //Guid orderId = Guid.NewGuid();
             //NewOrderDTO dto = new NewOrderDTO()
             //{
@@ -170,10 +158,10 @@ namespace APIs.Controllers
             try
             {
                 TransactionRecord? record = _transactionService.GetTransactionId(refId);
-                if (record != null) return Ok(record); 
+                if (record != null) return Ok(record);
                 else return BadRequest("Not found!");
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw new Exception(e.Message);
             }

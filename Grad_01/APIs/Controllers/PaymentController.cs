@@ -20,12 +20,8 @@ namespace APIs.Controllers
         private readonly ITransactionService _transacService;
 
         public PaymentController(IVnPayService vnpService, ITransactionService transacService)
-        private readonly ITransactionService _transacService;
-
-        public PaymentController(IVnPayService vnpService, ITransactionService transacService)
         {
             _vnpService = vnpService;
-            _transacService = transacService;
             _transacService = transacService;
         }
 

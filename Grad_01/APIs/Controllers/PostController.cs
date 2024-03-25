@@ -24,9 +24,9 @@ namespace APIs.Controllers
         //---------------------------------------------POST-------------------------------------------------------//
         
         [HttpPost("add-new-post")]
-        public IActionResult AddNewPost([FromForm] AddPostDTOs dto)
+        public async Task<IActionResult> AddNewPost([FromForm] AddPostDTOs dto)
         {
-            string? userPost = _accountService.GetUsernameById(dto.UserId);
+            string? userPost = await _accountService.GetUsernameById(dto.UserId);
             string productDir = "";
             if (dto.ProductImgs != null)
             {
@@ -65,11 +65,11 @@ namespace APIs.Controllers
             }
         }
         [HttpPut("update posts")]
-        public IActionResult UpdatePost([FromForm] UpdatePostDTOs dto)
+        public async Task<IActionResult> UpdatePost([FromForm] UpdatePostDTOs dto)
         {
             try
             {
-                string? userPost = _accountService.GetUsernameById(dto.UserId);
+                string? userPost = await _accountService.GetUsernameById(dto.UserId);
                 string newImgPath = "";
                 if (ModelState.IsValid)
                 {

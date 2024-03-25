@@ -1,48 +1,26 @@
 {
   "format": 1,
   "restore": {
-<<<<<<< HEAD
-    "D:\\BookCo\\BookConnect\\BookConnect\\Grad_01\\BusinessObjects\\BusinessObjects.csproj": {}
+    "/Users/phamhung/Documents/GitHub/NamYasuo/BookConnect/Grad_01/BusinessObjects/BusinessObjects.csproj": {}
   },
   "projects": {
-    "D:\\BookCo\\BookConnect\\BookConnect\\Grad_01\\BusinessObjects\\BusinessObjects.csproj": {
+    "/Users/phamhung/Documents/GitHub/NamYasuo/BookConnect/Grad_01/BusinessObjects/BusinessObjects.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\BookCo\\BookConnect\\BookConnect\\Grad_01\\BusinessObjects\\BusinessObjects.csproj",
+        "projectUniqueName": "/Users/phamhung/Documents/GitHub/NamYasuo/BookConnect/Grad_01/BusinessObjects/BusinessObjects.csproj",
         "projectName": "BusinessObjects",
-        "projectPath": "D:\\BookCo\\BookConnect\\BookConnect\\Grad_01\\BusinessObjects\\BusinessObjects.csproj",
-        "packagesPath": "C:\\Users\\HI\\.nuget\\packages\\",
-        "outputPath": "D:\\BookCo\\BookConnect\\BookConnect\\Grad_01\\BusinessObjects\\obj\\",
-        "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
-        "configFilePaths": [
-          "C:\\Users\\HI\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-=======
-    "D:\\FA23\\Đồ án\\BookConnect\\Grad_01\\BusinessObjects\\BusinessObjects.csproj": {}
-  },
-  "projects": {
-    "D:\\FA23\\Đồ án\\BookConnect\\Grad_01\\BusinessObjects\\BusinessObjects.csproj": {
-      "version": "1.0.0",
-      "restore": {
-        "projectUniqueName": "D:\\FA23\\Đồ án\\BookConnect\\Grad_01\\BusinessObjects\\BusinessObjects.csproj",
-        "projectName": "BusinessObjects",
-        "projectPath": "D:\\FA23\\Đồ án\\BookConnect\\Grad_01\\BusinessObjects\\BusinessObjects.csproj",
-        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "D:\\FA23\\Đồ án\\BookConnect\\Grad_01\\BusinessObjects\\obj\\",
+        "projectPath": "/Users/phamhung/Documents/GitHub/NamYasuo/BookConnect/Grad_01/BusinessObjects/BusinessObjects.csproj",
+        "packagesPath": "/Users/phamhung/.nuget/packages/",
+        "outputPath": "/Users/phamhung/Documents/GitHub/NamYasuo/BookConnect/Grad_01/BusinessObjects/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
->>>>>>> origin/Nam
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/phamhung/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "/usr/local/share/dotnet/library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -109,7 +87,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.312/RuntimeIdentifierGraph.json"
         }
       }
     }

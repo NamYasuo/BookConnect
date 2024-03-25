@@ -1,39 +1,35 @@
 {
   "format": 1,
   "restore": {
-    "D:\\BookCo\\BookConnect\\BookConnect\\Grad_01\\APIs\\APIs.csproj": {}
+    "/Users/phamhung/Documents/GitHub/NamYasuo/BookConnect/Grad_01/APIs/APIs.csproj": {}
   },
   "projects": {
-    "D:\\BookCo\\BookConnect\\BookConnect\\Grad_01\\APIs\\APIs.csproj": {
+    "/Users/phamhung/Documents/GitHub/NamYasuo/BookConnect/Grad_01/APIs/APIs.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\BookCo\\BookConnect\\BookConnect\\Grad_01\\APIs\\APIs.csproj",
+        "projectUniqueName": "/Users/phamhung/Documents/GitHub/NamYasuo/BookConnect/Grad_01/APIs/APIs.csproj",
         "projectName": "APIs",
-        "projectPath": "D:\\BookCo\\BookConnect\\BookConnect\\Grad_01\\APIs\\APIs.csproj",
-        "packagesPath": "C:\\Users\\HI\\.nuget\\packages\\",
-        "outputPath": "D:\\BookCo\\BookConnect\\BookConnect\\Grad_01\\APIs\\obj\\",
+        "projectPath": "/Users/phamhung/Documents/GitHub/NamYasuo/BookConnect/Grad_01/APIs/APIs.csproj",
+        "packagesPath": "/Users/phamhung/.nuget/packages/",
+        "outputPath": "/Users/phamhung/Documents/GitHub/NamYasuo/BookConnect/Grad_01/APIs/obj/",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\HI\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/phamhung/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "/usr/local/share/dotnet/library-packs": {},
+          "/usr/local/share/dotnet/sdk/7.0.312/Sdks/Microsoft.NET.Sdk.Web/library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "D:\\BookCo\\BookConnect\\BookConnect\\Grad_01\\DataAccess\\DataAccess.csproj": {
-                "projectPath": "D:\\BookCo\\BookConnect\\BookConnect\\Grad_01\\DataAccess\\DataAccess.csproj"
+              "/Users/phamhung/Documents/GitHub/NamYasuo/BookConnect/Grad_01/DataAccess/DataAccess.csproj": {
+                "projectPath": "/Users/phamhung/Documents/GitHub/NamYasuo/BookConnect/Grad_01/DataAccess/DataAccess.csproj"
               }
             }
           }
@@ -54,7 +50,7 @@
             },
             "CloudinaryDotNet": {
               "target": "Package",
-              "version": "[1.26.2, )"
+              "version": "[1.26.1, )"
             },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
@@ -64,9 +60,17 @@
               "target": "Package",
               "version": "[7.0.14, )"
             },
+            "Microsoft.AspNetCore.OData": {
+              "target": "Package",
+              "version": "[7.7.4, )"
+            },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[7.0.12, )"
+            },
+            "Microsoft.AspNetCore.SignalR": {
+              "target": "Package",
+              "version": "[1.1.0, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
@@ -75,6 +79,10 @@
             "Swashbuckle.AspNetCore.Filters": {
               "target": "Package",
               "version": "[7.0.12, )"
+            },
+            "System.Text.Encoding.CodePages": {
+              "target": "Package",
+              "version": "[8.0.0, )"
             }
           },
           "imports": [
@@ -96,32 +104,27 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.312/RuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\BookCo\\BookConnect\\BookConnect\\Grad_01\\BusinessObjects\\BusinessObjects.csproj": {
+    "/Users/phamhung/Documents/GitHub/NamYasuo/BookConnect/Grad_01/BusinessObjects/BusinessObjects.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\BookCo\\BookConnect\\BookConnect\\Grad_01\\BusinessObjects\\BusinessObjects.csproj",
+        "projectUniqueName": "/Users/phamhung/Documents/GitHub/NamYasuo/BookConnect/Grad_01/BusinessObjects/BusinessObjects.csproj",
         "projectName": "BusinessObjects",
-        "projectPath": "D:\\BookCo\\BookConnect\\BookConnect\\Grad_01\\BusinessObjects\\BusinessObjects.csproj",
-        "packagesPath": "C:\\Users\\HI\\.nuget\\packages\\",
-        "outputPath": "D:\\BookCo\\BookConnect\\BookConnect\\Grad_01\\BusinessObjects\\obj\\",
+        "projectPath": "/Users/phamhung/Documents/GitHub/NamYasuo/BookConnect/Grad_01/BusinessObjects/BusinessObjects.csproj",
+        "packagesPath": "/Users/phamhung/.nuget/packages/",
+        "outputPath": "/Users/phamhung/Documents/GitHub/NamYasuo/BookConnect/Grad_01/BusinessObjects/obj/",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\HI\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/phamhung/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "/usr/local/share/dotnet/library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -188,40 +191,35 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.312/RuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\BookCo\\BookConnect\\BookConnect\\Grad_01\\DataAccess\\DataAccess.csproj": {
+    "/Users/phamhung/Documents/GitHub/NamYasuo/BookConnect/Grad_01/DataAccess/DataAccess.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\BookCo\\BookConnect\\BookConnect\\Grad_01\\DataAccess\\DataAccess.csproj",
+        "projectUniqueName": "/Users/phamhung/Documents/GitHub/NamYasuo/BookConnect/Grad_01/DataAccess/DataAccess.csproj",
         "projectName": "DataAccess",
-        "projectPath": "D:\\BookCo\\BookConnect\\BookConnect\\Grad_01\\DataAccess\\DataAccess.csproj",
-        "packagesPath": "C:\\Users\\HI\\.nuget\\packages\\",
-        "outputPath": "D:\\BookCo\\BookConnect\\BookConnect\\Grad_01\\DataAccess\\obj\\",
+        "projectPath": "/Users/phamhung/Documents/GitHub/NamYasuo/BookConnect/Grad_01/DataAccess/DataAccess.csproj",
+        "packagesPath": "/Users/phamhung/.nuget/packages/",
+        "outputPath": "/Users/phamhung/Documents/GitHub/NamYasuo/BookConnect/Grad_01/DataAccess/obj/",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\HI\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/phamhung/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "/usr/local/share/dotnet/library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "D:\\BookCo\\BookConnect\\BookConnect\\Grad_01\\BusinessObjects\\BusinessObjects.csproj": {
-                "projectPath": "D:\\BookCo\\BookConnect\\BookConnect\\Grad_01\\BusinessObjects\\BusinessObjects.csproj"
+              "/Users/phamhung/Documents/GitHub/NamYasuo/BookConnect/Grad_01/BusinessObjects/BusinessObjects.csproj": {
+                "projectPath": "/Users/phamhung/Documents/GitHub/NamYasuo/BookConnect/Grad_01/BusinessObjects/BusinessObjects.csproj"
               }
             }
           }
@@ -257,7 +255,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.312/RuntimeIdentifierGraph.json"
         }
       }
     }
