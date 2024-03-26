@@ -1,5 +1,7 @@
-﻿using APIs.Services.Interfaces;
+﻿using APIs.Services;
+using APIs.Services.Interfaces;
 using APIs.Utils.Paging;
+using BusinessObjects.DTO;
 using BusinessObjects.DTO.Trading;
 using BusinessObjects.Models.E_com.Trading;
 using BusinessObjects.Models.Trading;
@@ -22,7 +24,51 @@ namespace APIs.Controllers
             _accountService = accountService;
         }
         //---------------------------------------------POST-------------------------------------------------------//
-        
+
+        [HttpGet("get-all-post")]
+        public IActionResult GetAllPost([FromQuery] PagingParams @params)
+        {
+            try
+            {
+                var posts = _postService.GetAllPost(@params);
+
+
+                if (posts != null)
+                {
+                    var metadata = new
+                    {
+                        posts.TotalCount,
+                        posts.PageSize,
+                        posts.CurrentPage,
+                        posts.TotalPages,
+                        posts.HasNext,
+                        posts.HasPrevious
+                    };
+                    Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+                    return Ok(posts);
+                }
+                else return BadRequest("No chapter!!!");
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        // get post by id
+        [HttpGet("get-post-by-id")]
+        public IActionResult GetPostById(Guid postId)
+        {
+            try
+            {
+                return Ok(_postService.GetPostById(postId));
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
         [HttpPost("add-new-post")]
         public IActionResult AddNewPost([FromForm] AddPostDTOs dto)
         {
@@ -157,8 +203,10 @@ namespace APIs.Controllers
             }
         }
 
+
+
         //---------------------------------------------COMMENT-------------------------------------------------------//
-        
+
         [HttpGet("get-comment-by-post-id")]
         public IActionResult GetCommentByPostId(Guid postId, [FromQuery] PagingParams @params)
         {

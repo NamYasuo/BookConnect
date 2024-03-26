@@ -1,6 +1,7 @@
 ﻿using APIs.Services.Interfaces;
 using APIs.Utils.Paging;
 using BusinessObjects.DTO.Trading;
+using BusinessObjects.Models;
 using BusinessObjects.Models.Creative;
 using BusinessObjects.Models.E_com.Trading;
 using BusinessObjects.Models.Trading;
@@ -14,6 +15,11 @@ namespace APIs.Services
     public class PostService : IPostService
     {
         //---------------------------------------------POST-------------------------------------------------------//
+
+        public PagedList<Post> GetAllPost(PagingParams param)
+        {
+            return PagedList<Post>.ToPagedList(new PostDAO().GetAllPost().OrderBy(c => c.Title).AsQueryable(), param.PageNumber, param.PageSize);
+        }
 
         public int AddNewPost(Post post) => new PostDAO().AddNewPost(post);
 
