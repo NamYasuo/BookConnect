@@ -25,6 +25,8 @@ namespace APIs.Services
 
         public string GetOldImgPath(Guid postId) => new PostDAO().GetOldImgPath(postId);
 
+        public string GetOldVideoPath(Guid postId) => new PostDAO().GetOldVideoPath(postId);
+
         //---------------------------------------------COMMENT-------------------------------------------------------//
 
         public PagedList<Comment> GetCommentByPostId(Guid postId, PagingParams @params)

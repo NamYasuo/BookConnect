@@ -24,6 +24,7 @@ namespace APIs.Services
                  config.GetSection("Cloudinary")["ApiSerect"]
                 );
         }
+        //---------------------------------------------------------IMAGE---------------------------------------------------------//
 
         public CloudinaryResponseDTO UploadImage(IFormFile uFile, string dir)
         {
@@ -98,7 +99,84 @@ namespace APIs.Services
                 Message = "Delete successful!",
             };
         }
+        //---------------------------------------------------------VIDEO---------------------------------------------------------//
 
+        // Upload Video
+        public CloudinaryResponseDTO UploadVideo(IFormFile uFile, string dir)
+        {
+            var client = new Cloudinary(account);
+            var VideoUploadParams = new VideoUploadParams()
+            {
+                Folder = dir,
+                File = new FileDescription(uFile.FileName, uFile.OpenReadStream()),
+                DisplayName = uFile.FileName
+            };
+            var uploadResult = client.Upload(VideoUploadParams);
+            if (uploadResult.StatusCode != System.Net.HttpStatusCode.OK)
+            {
+                return new CloudinaryResponseDTO()
+                {
+                    StatusCode = (int)uploadResult.StatusCode,
+                    Message = uploadResult.Error.Message
+                };
+            }
+            if (uploadResult == null)
+            {
+                return new CloudinaryResponseDTO()
+                {
+                    StatusCode = (int)HttpStatusCode.InternalServerError,
+                    Message = "Undefied error!"
+                };
+            }
+            return new CloudinaryResponseDTO()
+            {
+                StatusCode = (int)HttpStatusCode.OK,
+                Message = "Upload successful!",
+                Data = uploadResult.SecureUrl.ToString()
+            };
+        }
+
+        //Check existed video
+        public bool IsVideoExisted(string vidUrl, string dir)
+        {
+            var client = new Cloudinary(account);
+            string publicId = Regex.Match(vidUrl, $@"{account.Cloud}/video/upload/v\d+/(.*)\.\w+").Groups[1].Value;
+            GetResourceResult resourceResult = client.GetResource(publicId);
+
+            return (resourceResult != null && resourceResult.StatusCode == HttpStatusCode.OK);
+        }
+
+        // Delete Video
+        public CloudinaryResponseDTO DeleteVideo(string vidUrl)
+        {
+            var client = new Cloudinary(account);
+            string publicId = Regex.Match(vidUrl, $@"{account.Cloud}/video/upload/v\d+/(.*)\.\w+").Groups[1].Value;
+
+            DeletionParams deletionParams = new DeletionParams(publicId);
+
+            var result = client.Destroy(deletionParams);
+            if (result.StatusCode != System.Net.HttpStatusCode.OK)
+            {
+                return new CloudinaryResponseDTO()
+                {
+                    StatusCode = (int)result.StatusCode,
+                    Message = result.Error.Message
+                };
+            }
+            if (result == null)
+            {
+                return new CloudinaryResponseDTO()
+                {
+                    StatusCode = (int)HttpStatusCode.InternalServerError,
+                    Message = "Undefied error!"
+                };
+            }
+            return new CloudinaryResponseDTO()
+            {
+                StatusCode = (int)result.StatusCode,
+                Message = "Delete successful!",
+            };
+        }
     }
 }
 

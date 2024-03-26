@@ -46,6 +46,7 @@ namespace BusinessObjects
         public virtual DbSet<Post> Posts { get; set; }
         public virtual DbSet<Comment> Comments { get; set; }
         public virtual DbSet<PostInterest> PostInterests { get; set; }
+        //public virtual DbSet<TradeDetail> TradeDetails { get; set; }
 
         //Utility DbSets
         public virtual DbSet<Role> Roles { get; set; }
@@ -112,8 +113,6 @@ namespace BusinessObjects
             .WithMany()
             .HasForeignKey(a => a.CommenterId)
             .OnDelete(DeleteBehavior.Restrict);
-
-            
         }
     }
 }

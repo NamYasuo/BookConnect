@@ -27,16 +27,29 @@ namespace APIs.Controllers
         public IActionResult AddNewPost([FromForm] AddPostDTOs dto)
         {
             string? userPost = _accountService.GetUsernameById(dto.UserId);
-            string productDir = "";
-            if (dto.ProductImgs != null)
+            string imageDir = "";
+            string videoDir = "";
+            //add image
+            if (dto.ProductImages != null)
             {
-                var saveProductResult = _cloudinaryService.UploadImage(dto.ProductImgs, "Post/" + userPost + "/" + dto.Title + "/Image");
+                var saveProductResult = _cloudinaryService.UploadImage(dto.ProductImages, "Post/" + userPost + "/" + dto.Title + "/Image");
                 if (saveProductResult.StatusCode != 200)
                 {
                     return BadRequest(saveProductResult.Message);
                 }
-                productDir = saveProductResult.Data;
+                imageDir = saveProductResult.Data;
             }
+            //add video
+            if (dto.ProductVideos != null)
+            {
+                var saveProductResult = _cloudinaryService.UploadVideo(dto.ProductVideos, "Post/" + userPost + "/" + dto.Title + "/Video");
+                if (saveProductResult.StatusCode != 200)
+                {
+                    return BadRequest(saveProductResult.Message);
+                }
+                videoDir = saveProductResult.Data;
+            }
+            // post element/parameter
             try
             {
                 if (ModelState.IsValid)
@@ -46,9 +59,10 @@ namespace APIs.Controllers
                         UserId = dto.UserId,
                         PostId = Guid.NewGuid(),
                         AuthorName = dto.AuthorName,
-                        ImgDir = productDir,
                         Title = dto.Title,
                         Content = dto.Content,
+                        ImageDir = imageDir,
+                        VideoDir = videoDir,
                         CreatedAt = DateTime.Now,
                     });
                     if (result > 0)
@@ -73,15 +87,15 @@ namespace APIs.Controllers
                 string newImgPath = "";
                 if (ModelState.IsValid)
                 {
-                    if (dto.ProductImgs != null)
+                    if (dto.ProductImages != null)
                     {
-                        string? oldImgPath = _postService.GetPostById(dto.PostId)?.ImgDir;
+                        string? oldImgPath = _postService.GetPostById(dto.PostId)?.ImageDir;
 
                         if (oldImgPath != null)
                         {
                             _cloudinaryService.DeleteImage(oldImgPath);
                         }
-                        var cloudResponse = _cloudinaryService.UploadImage(dto.ProductImgs, "Post/" + dto.Title + "/Image");
+                        var cloudResponse = _cloudinaryService.UploadImage(dto.ProductImages, "Post/" + dto.Title + "/Image");
                         if (cloudResponse.StatusCode != 200)
                         {
                             return BadRequest(cloudResponse.Message);
@@ -93,7 +107,7 @@ namespace APIs.Controllers
                         PostId = dto.PostId,
                         UserId = dto.UserId,
                         AuthorName = dto.AuthorName,
-                        ImgDir = newImgPath,
+                        ImageDir = newImgPath,
                         Title = dto.Title,
                         Content = dto.Content,
                         CreatedAt = DateTime.Now,
@@ -118,13 +132,21 @@ namespace APIs.Controllers
             try
             {
                 //string? userPost = _accountService.GetUsernameById(UserId);
+                string vidUrl = string.Empty;
                 string imgUrl = string.Empty;
+                string oldVid = _postService.GetOldVideoPath(postId);
                 string oldImg = _postService.GetOldImgPath(postId);
+
+                if (oldVid != "")
+                {
+                    _cloudinaryService.DeleteVideo(oldVid);
+                }
 
                 if (oldImg != "")
                 {
                     _cloudinaryService.DeleteImage(oldImg);
                 }
+
                 int changes = _postService.DeletePostById(postId);
                 IActionResult result = (changes > 0) ? Ok("Successful!") : BadRequest("Delete fail!");
                 return result;

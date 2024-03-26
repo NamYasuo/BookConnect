@@ -106,7 +106,7 @@ namespace DataAccess.DAO.E_com
             }
         }
 
-        // get old school
+        // get old school: Image
         public string GetOldImgPath(Guid postId)
         {
             try
@@ -114,8 +114,27 @@ namespace DataAccess.DAO.E_com
                 using (var context = new AppDbContext())
                 {
                     Post? post = context.Posts.Where(c => c.PostId == postId).SingleOrDefault();
-                    string result = (post != null && post.ImgDir != null) ?
-                        post.ImgDir : "";
+                    string result = (post != null && post.ImageDir != null) ?
+                        post.ImageDir : "";
+                    return result;
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        // get old school: Video
+        public string GetOldVideoPath(Guid postId)
+        {
+            try
+            {
+                using (var context = new AppDbContext())
+                {
+                    Post? post = context.Posts.Where(c => c.PostId == postId).SingleOrDefault();
+                    string result = (post != null && post.VideoDir != null) ?
+                        post.VideoDir : "";
                     return result;
                 }
             }

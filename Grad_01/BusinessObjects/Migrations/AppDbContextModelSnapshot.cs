@@ -390,14 +390,20 @@ namespace BusinessObjects.Migrations
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ImgDir")
+                    b.Property<string>("ImageDir")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PostStyle")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("VideoDir")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("PostId");
 

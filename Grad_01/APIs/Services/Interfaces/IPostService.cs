@@ -19,6 +19,8 @@ namespace APIs.Services.Interfaces
 
         string GetOldImgPath(Guid postId);
 
+        string GetOldVideoPath(Guid postId);
+
         //---------------------------------------------COMMENT-------------------------------------------------------//
 
         public PagedList<Comment> GetCommentByPostId(Guid postId, PagingParams @params);

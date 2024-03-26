@@ -8,13 +8,16 @@ using System.Threading.Tasks;
 namespace BusinessObjects.DTO.Trading
 {
 //-------------------------------------------------POST-----------------------------------------------------//
+ 
     public class AddPostDTOs
     {
         public Guid UserId { get; set; }
         public string? AuthorName { get; set; } = null!;
-        public IFormFile? ProductImgs { get; set; }
+        public IFormFile? ProductImages { get; set; }
+        public IFormFile? ProductVideos { get; set; }
         public string? Title { get; set; }
         public string? Content { get; set; }
+        public bool PostStyle { get; set; }
         //public List<AddPostDTOs> CateId { get; set; } = null!;
     }
 
@@ -23,13 +26,16 @@ namespace BusinessObjects.DTO.Trading
         public Guid PostId { get; set; }
         public Guid UserId { get; set; }
         public string? AuthorName { get; set; } = null!;
-        public IFormFile? ProductImgs { get; set; }
+        public IFormFile? ProductImages { get; set; }
+        public IFormFile? ProductVideos { get; set; }
         public string? Title { get; set; }
         public string? Content { get; set; }
+        public bool PostStyle { get; set; }
         //public List<AddPostDTOs> CateId { get; set; } = null!;
     }
 
     //-------------------------------------------------COMMENT-----------------------------------------------------//
+
     public class GetCommentByPostIdDTO
     {
         public Guid CommentId { get; set; }

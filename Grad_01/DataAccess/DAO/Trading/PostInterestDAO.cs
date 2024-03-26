@@ -6,11 +6,29 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BusinessObjects.Models.E_com.Trading;
+using BusinessObjects.Models.Creative;
 
 namespace DataAccess.DAO.Trading
 {
     public class PostInterestDAO
     {
+        // Get All PostInterest
+        public List<PostInterest> GetAllPostInterest()
+        {
+            List<PostInterest> postInterestList = new List<PostInterest>();
+            try
+            {
+                using (var context = new AppDbContext())
+                {
+                    postInterestList = context.PostInterests.ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            return postInterestList;
+        }
 
         //Get postInterest by post id
         public IEnumerable<PostInterest>? GetPostInterestByPostId(Guid postId)
