@@ -93,7 +93,7 @@ builder.Services.AddAuthentication().AddJwtBearer(options =>
         ValidateAudience = false,
         ValidateIssuer = false,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetSection("JWT:Pepper").Value)),
-         ClockSkew = TimeSpan.Zero
+        ClockSkew = TimeSpan.Zero
     };
     //options.Authority = "https://localhost:7138";
     //options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

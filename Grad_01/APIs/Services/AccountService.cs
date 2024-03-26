@@ -18,11 +18,13 @@ namespace APIs.Repositories.Interfaces
         private readonly IConfiguration _config;
 
         private readonly AccountDAO _accountDAO;
+        private readonly RoleDAO _roleDAO;
         private readonly RefreshTokenDAO _refreshTokenDAO;
 
         public AccountService(IConfiguration config)
         {
             _config = config;
+            _roleDAO = new RoleDAO();
             _accountDAO = new AccountDAO();
             _refreshTokenDAO = new RefreshTokenDAO();
         }
@@ -53,8 +55,10 @@ namespace APIs.Repositories.Interfaces
 
         public async Task<AppUser?> FindUserByIdAsync(Guid userId) => await _accountDAO.FindUserByIdAsync(userId);
 
-        public string CreateToken(AppUser user)
+        public async Task<string> CreateTokenAsync(AppUser user)
         {
+            Dictionary<Guid, string> roles = await _roleDAO.GetAllUserRolesAsync(user.UserId);
+
             List<Claim> claims = new List<Claim>()
             {
                 new Claim(ClaimTypes.Name, user.Username),
@@ -62,6 +66,12 @@ namespace APIs.Repositories.Interfaces
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim("userId", user.UserId.ToString()),
             };
+
+            foreach(var r in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, r.Value));
+            }
+
             string? pepper = _config.GetSection("JWT:Pepper").Value;
             if (pepper == null)
             {
@@ -130,9 +140,8 @@ namespace APIs.Repositories.Interfaces
             pwdHash = hash;
         }
 
-        public async Task<int> AddNewRole(Role role) => await _accountDAO.AddNewRole(role);
 
-        public async Task<Role?> GetRoleDetails(string roleName) => await _accountDAO.GetRolesDetails(roleName);
+        public async Task<Role?> GetRoleDetails(string roleName) => await _roleDAO.GetRolesDetails(roleName);
 
         public async Task<string?> GetUsernameById(Guid userId) => await _accountDAO.GetNameById(userId);
 

@@ -1,8 +1,5 @@
-﻿using System;
-using BusinessObjects;
-using BusinessObjects.DTO;
+﻿using BusinessObjects;
 using BusinessObjects.Models;
-using BusinessObjects.Models.Ecom.Base;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.DAO
@@ -25,10 +22,6 @@ namespace DataAccess.DAO
             string? salt = (user != null) ? user.Salt : null;
             return salt;
         }
-
-        public async Task<Role?> GetRolesDetails(string roleName)
-        => await _context.Roles.SingleOrDefaultAsync(r => r.RoleName.Equals(roleName));
-
         public async Task<AppUser?> FindUserByEmailAsync(string email)
         {
             AppUser? user =  (await CheckEmail(email)) ? await _context.AppUsers.SingleOrDefaultAsync(u => u.Email == email) : null;
@@ -41,9 +34,7 @@ namespace DataAccess.DAO
             string? name = (user != null) ? user.Username : null;
             return name;
         }
-
-        public async Task<Role?> GetRoleById(Guid roleId) => await _context.Roles.SingleOrDefaultAsync(r => r.RoleId == roleId);
-
+        
         public async Task<AppUser?> FindUserByIdAsync(Guid userId) => await _context.AppUsers.SingleOrDefaultAsync(u => u.UserId == userId);
         /*------------------END GET-------------------*/
 
@@ -101,16 +92,12 @@ namespace DataAccess.DAO
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<int> AddNewRole(Role role)
-        {
-           await _context.Roles.AddAsync(role);
-           return await _context.SaveChangesAsync();
-        }
 
         /*-----------------END POST-------------------*/
 
 
         /*---------------BEGIN PUT-------------------*/
+
         public async Task<int> SetIsAccountValid(bool choice, Guid userId)
         {
               AppUser? user = await _context.AppUsers.SingleOrDefaultAsync(u => u.UserId == userId);

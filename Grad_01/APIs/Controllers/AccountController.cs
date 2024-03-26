@@ -1,14 +1,9 @@
-﻿using System;
-using System.Net.NetworkInformation;
-using System.Security.Claims;
-using System.Text;
-using APIs.DTO;
+﻿using System.Security.Claims;
 using APIs.Services.Interfaces;
 using BusinessObjects.DTO;
 using BusinessObjects.Models;
 using DataAccess.DTO;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace APIs.Controllers
@@ -73,7 +68,7 @@ namespace APIs.Controllers
                 {
                     return Unauthorized("Wrong password");
                 }
-                string accessToken = _accService.CreateToken(user);
+                string accessToken = await _accService.CreateTokenAsync(user);
                 var refreshToken = await _accService.GenerateRefreshTokenAsync(user.UserId);
 
                 if (refreshToken == null) return BadRequest("Fail to create refresh token");
@@ -122,7 +117,7 @@ namespace APIs.Controllers
                 return Unauthorized("Invalid user");
             }
 
-            var accessToken = _accService.CreateToken(user);
+            var accessToken = await _accService.CreateTokenAsync(user);
 
             var newRefreshToken = await _accService.GenerateRefreshTokenAsync(user.UserId);
 
@@ -137,38 +132,6 @@ namespace APIs.Controllers
             Response.Cookies.Append("refreshToken", newRefreshToken.Token, cookieOptions);
 
             return Ok(new { AccessToken = accessToken });
-        }
-
-        [HttpPost("AddRole")]
-        public async Task<IActionResult> AddNewRole([FromBody] RoleDTO data)
-        {
-            try
-            {
-                var status = new Status();
-                if (!ModelState.IsValid)
-                {
-                    status.StatusCode = 0;
-                    status.Message = "Please pass all the required fields";
-                    return Ok(status);
-                }
-                if (_accService.GetRoleDetails(data.RoleName) is not null)
-                {
-                    return BadRequest("Role already existed");
-                }
-                Role role = new Role()
-                {
-                    RoleId = Guid.NewGuid(),
-                    RoleName = data.RoleName,
-                    Description = data.Description
-                };
-
-               await _accService.AddNewRole(role);
-                return Ok("New role added");
-            }
-            catch(Exception e)
-            {
-                throw new Exception(e.Message);
-            }
         }
 
         [HttpGet]
@@ -197,14 +160,22 @@ namespace APIs.Controllers
             try
             {
                 var userIdClaim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "userId");
-                //var roleClaim = HttpContext.User.FindFirst(ClaimTypes.Role);
+                var roleClaim1 = HttpContext.User.FindFirst(ClaimTypes.Role);
                 var usernameClaim = HttpContext.User.FindFirst(ClaimTypes.Name);
                 var emailClaim = HttpContext.User.FindFirst(ClaimTypes.Email);
+                List<string> roles = new List<string>();
+
+                var roleClaims = HttpContext.User.FindAll(ClaimTypes.Role);
+
                 if (userIdClaim != null)
                 {
                     var userId = Guid.Parse(userIdClaim.Value);
-                    //if (roleClaim != null)
-                    //{
+                    if (roleClaims.Count() > 0)
+                    {
+                        foreach(var r in roleClaims)
+                        {
+                            roles.Add(r.Value);
+                        }
                         if (usernameClaim != null)
                         {
                             if (emailClaim != null)
@@ -217,11 +188,12 @@ namespace APIs.Controllers
                                     rendez = address.Rendezvous;
                                 }
 
+
                                 UserProfileDTO profile = new UserProfileDTO()
                                 {
                                     UserId = userId,
                                     Username = usernameClaim.Value,
-                                    //Role = roleClaim.Value,
+                                    Roles = roles,
                                     Address = rendez,
                                     Email = emailClaim.Value,
                                     IsValidated = await _accService.IsUserValidated(userId),
@@ -234,7 +206,7 @@ namespace APIs.Controllers
                             else return NotFound("Email claim not found!");
                         }
                         else return NotFound("Username claim not found!!!");
-                    //} else return NotFound("Role claim not found!!!");
+                    } else return NotFound("Role claim not found!!!");
                 } else return NotFound("User ID claim not found!!!");
             }
             catch (Exception e)
@@ -316,6 +288,7 @@ namespace APIs.Controllers
                 throw new Exception(e.Message);
             }
         }
+
         [HttpPut("update-agency")]
         public IActionResult UpdateAgency([FromForm] AgencyUpdateDTO dto)
         {

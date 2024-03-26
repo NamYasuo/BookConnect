@@ -1,5 +1,6 @@
 ﻿using System.Reflection.Emit;
 using BusinessObjects.Models;
+using BusinessObjects.Models.Authorization;
 using BusinessObjects.Models.Creative;
 using BusinessObjects.Models.E_com.Trading;
 using BusinessObjects.Models.Ecom;
@@ -48,6 +49,7 @@ namespace BusinessObjects
 
         //Utility DbSets
         public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<RoleRecord> RoleRecords { get; set; }
         public virtual DbSet<RefreshToken> RefreshTokens { get; set; } 
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<CategoryList> CategoryLists { get; set; } 

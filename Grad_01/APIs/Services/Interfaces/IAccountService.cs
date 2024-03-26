@@ -14,9 +14,8 @@ namespace APIs.Services.Interfaces
         Task<AppUser?> FindUserByEmailAsync(string email);
         Task<AppUser> Register(RegisterDTO model);
         bool VerifyPassword(string pwd, string hash, byte[] salt);
-        string CreateToken(AppUser user);
+        Task<string> CreateTokenAsync(AppUser user);
         Task<RefreshToken?> GenerateRefreshTokenAsync(Guid userId);
-        Task<int> AddNewRole(Role role);
         Task<Role?> GetRoleDetails(string roleName);
         Task<string?> GetUsernameById(Guid userId);
         Task<bool> IsBanned(Guid userId);

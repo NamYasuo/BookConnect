@@ -1,5 +1,4 @@
-﻿using System;
-using BusinessObjects;
+﻿using BusinessObjects;
 using BusinessObjects.Models.Creative;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,56 +6,37 @@ namespace DataAccess.DAO.Creative
 {
 	public class ChapterDAO
 	{
-        public async Task<Chapter?> GetChapterById(Guid chapterId)
+        private readonly AppDbContext _context;
+        public ChapterDAO()
         {
-            using (var context = new AppDbContext())
-            {
-                return await context.Chapters.SingleOrDefaultAsync(c => c.ChapterId == chapterId);
-            }
+            _context = new AppDbContext();
         }
+
+        public async Task<Chapter?> GetChapterById(Guid chapterId)
+        => await _context.Chapters.SingleOrDefaultAsync(c => c.ChapterId == chapterId);
 
         public async Task<int> AddChapterAsync(Chapter chapter)
         {
-            using (var context = new AppDbContext())
-            {
-                context.Chapters.Add(chapter);
-                return await context.SaveChangesAsync();
-            }
+           await _context.Chapters.AddAsync(chapter);
+           return await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Chapter>> GetWorkChaptersAsync(Guid workId)
-        {
-            using (var context = new AppDbContext())
-            {
-                return await context.Chapters.Where(c => c.WorkId == workId).ToListAsync();
-            }
-        }
+        => await _context.Chapters.Where(c => c.WorkId == workId).ToListAsync();
+        
 
         public async Task<int> UpdateChapterAsync(Chapter chapter)
         {
-            using (var context = new AppDbContext())
-            {
-                context.Update(chapter);
-                return await context.SaveChangesAsync();
-            }
+           _context.Update(chapter);
+           return await _context.SaveChangesAsync();
         }
 
         public async Task<int> DeleteChapterByIdAsync(Guid chapterId)
         {
-            using (var context = new AppDbContext())
-            {
-                Chapter? chapter = await context.Chapters.FirstOrDefaultAsync(c => c.ChapterId == chapterId);
-                if (chapter != null)
-                {
-                    context.Chapters.Remove(chapter);
-                    return await context.SaveChangesAsync();
-                }
-                return 0;
-            }
+              Chapter? chapter = await _context.Chapters.FirstOrDefaultAsync(c => c.ChapterId == chapterId);
+              if (chapter != null) _context.Chapters.Remove(chapter);
+              return await _context.SaveChangesAsync();
         }
-
-
-
     }
 }
 

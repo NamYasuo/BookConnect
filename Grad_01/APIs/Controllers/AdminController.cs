@@ -1,10 +1,13 @@
 ﻿using System;
+using APIs.DTO;
 using APIs.Services;
 using APIs.Services.Interfaces;
 using APIs.Utils.Paging;
 using BusinessObjects.DTO;
+using BusinessObjects.Models;
 using BusinessObjects.Models.Creative;
 using BusinessObjects.Models.Ecom.Base;
+using DataAccess.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -120,11 +123,11 @@ namespace APIs.Controllers
         }
 
         [HttpGet("get-all-role")]
-        public IActionResult GetAllRole([FromQuery] PagingParams param)
+        public async Task<IActionResult> GetAllRoleAsync([FromQuery] PagingParams param)
         {
             try
             {
-                var results = _adminService.GetAllRole(param);
+                var results = await _adminService.GetAllRoleAsync(param);
 
                 if (results != null)
                 {
@@ -148,12 +151,44 @@ namespace APIs.Controllers
             }
         }
 
-        [HttpDelete("delete-role")]
-        public IActionResult DeleteRole(Guid roleId)
+        [HttpPost("AddRole")]
+        public async Task<IActionResult> AddNewRole([FromBody] RoleDTO data)
         {
             try
             {
-                int changes = _adminService.DeleteRole(roleId);
+                var status = new Status();
+                if (!ModelState.IsValid)
+                {
+                    status.StatusCode = 0;
+                    status.Message = "Please pass all the required fields";
+                    return Ok(status);
+                }
+                if ((await _adminService.GetRoleDetails(data.RoleName)) != null)
+                {
+                    return BadRequest("Role already existed");
+                }
+                Role role = new Role()
+                {
+                    RoleId = Guid.NewGuid(),
+                    RoleName = data.RoleName,
+                    Description = data.Description
+                };
+
+                await _adminService.AddNewRole(role);
+                return Ok("New role added");
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        [HttpDelete("delete-role")]
+        public async Task<IActionResult> DeleteRole(Guid roleId)
+        {
+            try
+            {
+                int changes = await _adminService.DeleteRoleAsync(roleId);
                 IActionResult result = (changes > 0) ? Ok("Successful!") : Ok("Fail!");
                 return result;
             }
@@ -163,20 +198,37 @@ namespace APIs.Controllers
             }
         }
 
-        //[HttpPut("change-user-role")]
-        //public IActionResult ChangeAccountRole([FromBody] ChangeRoleDTO dto)
-        //{
-        //    try
-        //    {
-        //        int changes = _adminService.ChangeAccountRole(dto.UserId, dto.RoleId);
-        //        IActionResult result = (changes > 0) ? Ok("Successful!") : Ok("Fail!");
-        //        return result;
-        //    }
-        //    catch(Exception e)
-        //    {
-        //        throw new Exception(e.Message);
-        //    }
-        //}
+        [HttpGet("get-all-roles-of-user")]
+        public async Task<IActionResult> GetAllUserRolesAsync(Guid userId)
+        {
+            Dictionary<Guid, string> roles = await _adminService.GetAllUserRolesAsync(userId);
+            List<Role> results = new List<Role>();
+            foreach(var v in roles)
+            {
+                results.Add(new Role
+                {
+                    RoleId = v.Key,
+                    RoleName = v.Value
+                });
+            }
+            return Ok(results);
+        }
+
+        [HttpPost("set-new-role-to-user")]
+        public async Task<IActionResult> AddUserNewRoleAsync([FromBody] RoleRecordDTO dto)
+        {
+            int changes = await _adminService.SetUserNewRoleAsync(dto.UserId, dto.RoleId);
+            IActionResult result = (changes > 0) ? Ok("Successful!") : Ok("No changes!");
+            return result;
+        }
+
+        [HttpDelete("remove-user-from-role")]
+        public async Task<IActionResult> RemoveUserRoleAsync([FromBody] RoleRecordDTO dto)
+        {
+            int changes = await _adminService.RemoveUserRoleAsync(dto.UserId, dto.RoleId);
+            IActionResult result = (changes > 0) ? Ok("Successful!") : Ok("No changes!");
+            return result;
+        }
     }
 }
 
