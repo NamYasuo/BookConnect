@@ -7,6 +7,9 @@ using APIs.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using APIs.Services.Intefaces;
+using APIs.Utils.Paging;
+using Newtonsoft.Json;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace APIs.Controllers
 {
@@ -22,102 +25,132 @@ namespace APIs.Controllers
         }
 
         [HttpGet("all")] // Adjusted route for clarity
-        public IActionResult GetAllBooks()
+        public IActionResult GetAllBooks([FromQuery] PagingParams @params)
         {
             try
             {
-                List<Book> allBooks = _bookService.GetAllBook();
-                return Ok(allBooks);
+                var allbook = _bookService.GetAllBook(@params);
+
+
+                if (allbook != null)
+                {
+                    var metadata = new
+                    {
+                        allbook.TotalCount,
+                        allbook.PageSize,
+                        allbook.CurrentPage,
+                        allbook.TotalPages,
+                        allbook.HasNext,
+                        allbook.HasPrevious
+                    };
+                    Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+                    return Ok(allbook);
+                }
+                else return BadRequest("No Books!!!");
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                // Consider logging the exception and returning a more user-friendly error message
-                return StatusCode(500, "Internal Server Error");
+                throw new Exception(e.Message);
             }
         }
 
         [HttpGet("search")]
-        public IActionResult SearchProductsByName([FromQuery] string searchTerm)
+        public IActionResult GetBooksByName([FromQuery] string searchTerm, [FromQuery] PagingParams param)
         {
-            if (string.IsNullOrEmpty(searchTerm))
+          try
             {
-                return BadRequest("Search term cannot be empty.");
-            }
-
-            try
-            {
-                List<Book> searchResult = _bookService.GetBookByName(searchTerm);
-
-                if (searchResult.Count == 0)
+                var search = _bookService.GetAllBook(param);
+                if(searchTerm != null && searchTerm != "")
                 {
-                    return NotFound("No products found with the provided search term.");
+                    search = _bookService.GetBookByName(searchTerm, param);
                 }
-
-                return Ok(searchResult);
+                if(search != null)
+                {
+                    var metadata = new
+                    {
+                        search.TotalCount,
+                        search.PageSize,
+                        search.CurrentPage,
+                        search.TotalPages,
+                        search.HasNext,
+                        search.HasPrevious
+                    };
+                    Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+                    return Ok(search);
+                }
+                return Ok(search);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                return StatusCode(500, ex.Message); // Internal Server Error with message
+                throw new Exception(e.Message);
             }
         }
 
-        [HttpGet("search-by-cateName")]
-        public IActionResult GetBookByCategory([FromQuery] string[] cateName)
-        {
-            if (cateName == null || cateName.Length == 0)
-            {
-                try
-                {
-                    // Delegate to the BookService to retrieve all books
-                    List<Book> allBooks = _bookService.GetAllBook();
-                    return Ok(allBooks);
-                }
-                catch (Exception ex)
-                {
-                    // Consider logging the exception and returning a more user-friendly error message
-                    return StatusCode(500, "Internal Server Error");
-                }
-            }
 
-            try
-            {
-                List<Book> booksByCategory = _bookService.GetBookByCategoryName(cateName);
+        //[HttpGet("search-by-cateName")]
+        //public IActionResult GetBookByCategory([FromQuery] string[] cateName)
+        //{
+        //    if (cateName == null || cateName.Length == 0)
+        //    {
+        //        try
+        //        {
+        //            // Delegate to the BookService to retrieve all books
+        //            List<Book> allBooks = _bookService.GetAllBook();
+        //            return Ok(allBooks);
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            // Consider logging the exception and returning a more user-friendly error message
+        //            return StatusCode(500, "Internal Server Error");
+        //        }
+        //    }
 
-                if (booksByCategory.Count == 0)
-                {
-                    return NotFound($"No books found in the categories '{string.Join(", ", cateName)}'.");
-                }
+        //    try
+        //    {
+        //        List<Book> booksByCategory = _bookService.GetBookByCategoryName(cateName);
 
-                return Ok(booksByCategory);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message); // Internal Server Error with message
-            }
-        }
+        //        if (booksByCategory.Count == 0)
+        //        {
+        //            return NotFound($"No books found in the categories '{string.Join(", ", cateName)}'.");
+        //        }
+
+        //        return Ok(booksByCategory);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(500, ex.Message); // Internal Server Error with message
+        //    }
+        //}
 
         [HttpGet("filter type")]
-        public IActionResult GetBookByType(string type)
+        public IActionResult GetBookByType([FromQuery] string type, [FromQuery] PagingParams param)
         {
-            if (string.IsNullOrEmpty(type))
-            {
-                return BadRequest("Type parameter cannot be empty.");
-            }
-
             try
             {
-                List<Book> booksByType = _bookService.GetBookByType(type);
-
-                if (booksByType.Count == 0)
+                var types = _bookService.GetAllBook(param);
+                if (type != null && type != "")
                 {
-                    return NotFound($"No books found of type '{type}'.");
+                    types = _bookService.GetBookByName(type, param);
                 }
-
-                return Ok(booksByType);
+                if (types != null)
+                {
+                    var metadata = new
+                    {
+                        types.TotalCount,
+                        types.PageSize,
+                        types.CurrentPage,
+                        types.TotalPages,
+                        types.HasNext,
+                        types.HasPrevious
+                    };
+                    Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+                    return Ok(types);
+                }
+                return Ok(types);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                return StatusCode(500, ex.Message); // Internal Server Error with message
+                throw new Exception(e.Message);
             }
         }
         [HttpGet("filter")]

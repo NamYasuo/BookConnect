@@ -5,6 +5,7 @@ using BusinessObjects.Models;
 using DataAccess.DAO;
 using BusinessObjects.DTO;
 using BusinessObjects;
+using APIs.Utils.Paging;
 
 namespace APIs.Services
 {
@@ -12,7 +13,10 @@ namespace APIs.Services
     {
 
 
-        public List<Book> GetAllBook() => new BookDAO().GetAllBook();
+        public PagedList<Book> GetAllBook(PagingParams param)
+        {
+            return PagedList<Book>.ToPagedList(new BookDAO().GetAllBook().OrderBy(c => c.Name).AsQueryable(), param.PageNumber, param.PageSize);
+        }
 
 
         public Book GetBookById(Guid bookId) => new BookDAO().GetBookById(bookId);
@@ -85,39 +89,56 @@ namespace APIs.Services
             }
         }
 
-        public List<Book> GetBookByType(string type) => new BookDAO().GetBookByType(type);
-        
+        public PagedList<Book> GetBookByType(string type, PagingParams param)
+        {
+            return PagedList<Book>.ToPagedList(new BookDAO().GetBookByType(type).OrderBy(c => c.Name).AsQueryable(), param.PageNumber, param.PageSize);
+        }
 
-        public List<Book> GetBookByName(string searchTerm) => new BookDAO().GetBookByName(searchTerm);
+
+
+
+        public PagedList<Book> GetBookByName(string searchTerm, PagingParams param)
+        {
+            return PagedList<Book>.ToPagedList(new BookDAO().GetBookByName(searchTerm).OrderBy(c => c.Name).AsQueryable(), param.PageNumber, param.PageSize);
+
+        }
 
         public List<Book> FilterBooks(string searchTerm = null, string[] categoryNames = null, string type = null)
         {
-            List<Book> filteredBooks = new List<Book>();
-
-            // Filter by name (optional)
-            if (!string.IsNullOrEmpty(searchTerm))
-            {
-                filteredBooks = GetBookByName(searchTerm);
-            }
-            else
-            {
-                filteredBooks = GetAllBook(); // Get all books if no search term
-            }
-
-            // Filter by category names (optional)
-            if (categoryNames != null && categoryNames.Any())
-            {
-                filteredBooks = GetBookByCategoryName(categoryNames).Intersect(filteredBooks).ToList();
-            }
-
-            // Filter by type (optional)
-            if (type != null && (type == "OLD" || type == "NEW"))
-            {
-                filteredBooks = GetBookByType(type).Intersect(filteredBooks).ToList();
-            }
-
-            return filteredBooks;
+            throw new NotImplementedException();
         }
+
+       
+    }
+
+        //public List<Book> FilterBooks(string searchTerm = null, string[] categoryNames = null, string type = null)
+        //{
+        //    List<Book> filteredBooks = new List<Book>();
+
+        //    // Filter by name (optional)
+        //    if (!string.IsNullOrEmpty(searchTerm))
+        //    {
+        //        filteredBooks = GetBookByName(searchTerm);
+        //    }
+        //    else
+        //    {
+        //        filteredBooks = GetAllBook(); // Get all books if no search term
+        //    }
+
+        //    // Filter by category names (optional)
+        //    if (categoryNames != null && categoryNames.Any())
+        //    {
+        //        filteredBooks = GetBookByCategoryName(categoryNames).Intersect(filteredBooks).ToList();
+        //    }
+
+        //    // Filter by type (optional)
+        //    if (type != null && (type == "OLD" || type == "NEW"))
+        //    {
+        //        filteredBooks = GetBookByType(type).Intersect(filteredBooks).ToList();
+        //    }
+
+        //    return filteredBooks;
+        //}
         
     }
-}
+
