@@ -32,7 +32,7 @@ namespace APIs.Services.Intefaces
 
         public List<Book> GetBookByCategoryName(string[] cateName);
 
-        PagedList<Book> GetBookByType(string type, PagingParams param);
+        PagedList <Book> GetBookByType(string type, PagingParams param);
         public List<Book> FilterBooks(string searchTerm = null, string[] categoryNames = null, string type = null);
 
 

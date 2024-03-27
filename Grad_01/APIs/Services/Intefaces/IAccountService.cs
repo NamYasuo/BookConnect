@@ -39,7 +39,7 @@ namespace APIs.Services.Intefaces
         public void UpdateAddress(Guid userId, Guid? addressId, string cityProvince, string district, string subDistrict, string rendezvous, bool isDefault);
 
         public void RateAndCommentProduct(Guid userId, Guid ratingId, int ratingPoint, string comment);
-
+        public void UpdateUsernameAndAddress(Guid userId, string username, string cityProvince, string district, string subDistrict, string rendezvous, bool isDefault);
     }
 }
 

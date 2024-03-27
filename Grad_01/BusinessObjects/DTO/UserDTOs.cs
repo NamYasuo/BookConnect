@@ -26,8 +26,18 @@ namespace BusinessObjects.DTO
     public class BanUserDTO
     {
         public Guid UserId { get; set; }
-        public string Reason{ get; set; } = null!;
+        public string Reason { get; set; } = null!;
         public TimeSpan? Duration { get; set; }
+    }
+    public class UserProfile
+    {
+        public Guid UserId { get; set; }
+        public string Username { get; set; }
+        public string CityProvince { get; set; }
+        public string District { get; set; }
+        public string SubDistrict { get; set; }
+        public string Rendezvous { get; set; }
+        public bool IsDefault { get; set; }
     }
 }
 

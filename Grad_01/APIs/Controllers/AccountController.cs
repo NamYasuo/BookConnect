@@ -347,7 +347,19 @@ namespace APIs.Controllers
         }
 
 
-
+        [HttpPost("updateUsernameAndAddress")]
+        public IActionResult UpdateUsernameAndAddress([FromBody] UserProfile request)
+        {
+            try
+            {
+                _accService.UpdateUsernameAndAddress(request.UserId, request.Username, request.CityProvince, request.District, request.SubDistrict, request.Rendezvous, request.IsDefault);
+                return Ok("Username and address updated successfully.");
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, "Error updating username and address: " + e.Message);
+            }
+        }
         //[HttpGet, Authorize]
         //[Route("get-user-profile")]
         //public async Task<IActionResult> GetUserProfile()

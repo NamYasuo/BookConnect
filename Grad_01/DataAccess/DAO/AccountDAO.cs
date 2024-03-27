@@ -472,6 +472,52 @@ namespace DataAccess.DAO
                 throw new Exception(errorMessage);
             }
         }
+        public void UpdateUsernameAndAddress(Guid userId, string username, string cityProvince, string district, string subDistrict, string rendezvous, bool isDefault)
+        {
+            try
+            {
+                using (var context = new AppDbContext())
+                {
+                    // Update user profile
+                    UpdateUserProfile(userId, username);
+
+                    // Find existing address
+                    var existingAddress = context.Addresses.FirstOrDefault(a => a.UserId == userId);
+
+                    if (existingAddress != null)
+                    {
+                        // Update existing address
+                        existingAddress.City_Province = cityProvince;
+                        existingAddress.District = district;
+                        existingAddress.SubDistrict = subDistrict;
+                        existingAddress.Rendezvous = rendezvous;
+                        existingAddress.Default = isDefault;
+                    }
+                    else
+                    {
+                        // Create new address
+                        var newAddress = new Address
+                        {
+                            AddressId = Guid.NewGuid(),
+                            UserId = userId,
+                            City_Province = cityProvince,
+                            District = district,
+                            SubDistrict = subDistrict,
+                            Rendezvous = rendezvous,
+                            Default = isDefault
+                        };
+
+                        context.Addresses.Add(newAddress);
+                    }
+
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error updating username and address: " + e.Message);
+            }
+        }
 
 
 

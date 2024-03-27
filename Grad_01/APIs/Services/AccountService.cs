@@ -231,6 +231,9 @@ namespace APIs.Services.Interfaces
 
         public void RateAndCommentProduct(Guid userId, Guid ratingId, int ratingPoint, string comment)
        => new AccountDAO().RateAndCommentProduct(userId, ratingId, ratingPoint, comment);
+
+        public void UpdateUsernameAndAddress(Guid userId, string username, string cityProvince, string district, string subDistrict, string rendezvous, bool isDefault)
+        => new AccountDAO().UpdateUsernameAndAddress(userId,username, cityProvince, district, subDistrict, rendezvous, isDefault);
     }
 }
 
