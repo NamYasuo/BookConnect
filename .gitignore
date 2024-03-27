@@ -1,0 +1,16 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/Grad_01/APIs/obj/Debug/net7.0/APIs.AssemblyInfoInputs.cache
+/Grad_01/APIs/obj/Debug/net7.0/APIs.dll
+/Grad_01/APIs/obj/Debug/net7.0/APIs.pdb
+/Grad_01/APIs/obj/Debug/net7.0/APIs.sourcelink.json
+/Grad_01/APIs/obj/Debug/net7.0/apphost.exe
+/Grad_01/APIs/obj/Debug/net7.0/APIs.AssemblyInfo.cs
+/Grad_01/APIs/bin/Debug/net7.0/APIs.dll
+/Grad_01/APIs/bin/Debug/net7.0/APIs.exe
+/Grad_01/APIs/bin/Debug/net7.0/APIs.pdb
+/Grad_01/.vs/Grad_01/v17/.suo
+/Grad_01/APIs/obj/Debug/net7.0/ref/APIs.dll
+/Grad_01/APIs/obj/Debug/net7.0/refint/APIs.dll
