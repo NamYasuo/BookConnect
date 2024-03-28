@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Text.RegularExpressions;
-using APIs.Services.Intefaces;
 using APIs.Services.Interfaces;
 using APIs.Utils.Base;
 using APIs.Utils.Paging;
@@ -157,12 +156,12 @@ namespace APIs.Controllers
                 if (work.BackgroundDir != null && work.BackgroundDir != "")
 				{
 					//_fileSaver.FileDelete(work.BackgroundDir);
-					_cloudinaryService.DeleteImage(work.BackgroundDir, "Works/" + work.Author + "/" + work.Title + "/Background");
+					_cloudinaryService.DeleteImage(work.BackgroundDir);
 				}
 				if (work.CoverDir != null && work.CoverDir != "")
 				{
                     //_fileSaver.FileDelete(work.CoverDir);
-                    _cloudinaryService.DeleteImage(work.CoverDir, "Works/" + work.Author + "/" + work.Title + "/Cover");
+                    _cloudinaryService.DeleteImage(work.CoverDir);
                 }
 				int result = _workService.DeleteWorkById(workId);
 				if (result > 0) return Ok("Successful!");

@@ -125,6 +125,12 @@ namespace BusinessObjects.Migrations
 
             modelBuilder.Entity("BusinessObjects.Models.Basket", b =>
                 {
+
+                    b.Property<Guid>("BasketId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+
                     b.Property<DateTime>("AddedDate")
                         .HasColumnType("datetime2");
 
@@ -142,6 +148,10 @@ namespace BusinessObjects.Migrations
 
                     b.Property<decimal?>("Stored_Price")
                         .HasColumnType("decimal(18,2)");
+
+
+                    b.HasKey("BasketId");
+
 
                     b.HasIndex("CartId");
 
@@ -384,11 +394,24 @@ namespace BusinessObjects.Migrations
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime2");
 
+
+                    b.Property<string>("ImageDir")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PostStyle")
+                        .HasColumnType("bit");
+
+
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
+
+
+                    b.Property<string>("VideoDir")
+                        .HasColumnType("nvarchar(max)");
+
 
                     b.HasKey("PostId");
 
@@ -546,19 +569,32 @@ namespace BusinessObjects.Migrations
 
             modelBuilder.Entity("BusinessObjects.Models.Ecom.Rating.RatingRecord", b =>
                 {
+
                     b.Property<Guid>("RatingId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("UserId")
+
+                    b.Property<Guid>("RatingRecordId")
+                        .ValueGeneratedOnAdd()
+
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Comment")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)");           
+                    b.Property<Guid>("RatingId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("RatingPoint")
                         .HasColumnType("int");
 
-                    b.HasKey("RatingId", "UserId");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("RatingRecordId");
+
+                    b.HasIndex("RatingId");
+
 
                     b.HasIndex("UserId");
 
@@ -567,6 +603,12 @@ namespace BusinessObjects.Migrations
 
             modelBuilder.Entity("BusinessObjects.Models.Inventory", b =>
                 {
+
+                    b.Property<Guid>("InventoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+
                     b.Property<Guid>("AgencyId")
                         .HasColumnType("uniqueidentifier");
 
@@ -575,6 +617,10 @@ namespace BusinessObjects.Migrations
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
+
+
+                    b.HasKey("InventoryId");
+
 
                     b.HasIndex("AgencyId");
 
@@ -637,6 +683,57 @@ namespace BusinessObjects.Migrations
                     b.ToTable("TokenInfos");
                 });
 
+
+            modelBuilder.Entity("BusinessObjects.Models.Trading.Comment", b =>
+                {
+                    b.Property<Guid>("CommentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CommenterId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("PostId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("CommentId");
+
+                    b.HasIndex("CommenterId");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("Comments");
+                });
+
+            modelBuilder.Entity("BusinessObjects.Models.Trading.PostInterest", b =>
+                {
+                    b.Property<Guid>("PostInterestId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("InteresterId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("PostId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("PostInterestId");
+
+                    b.HasIndex("InteresterId");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("PostInterests");
+                });
+
+
             modelBuilder.Entity("BusinessObjects.Models.Utils.CICMedia", b =>
                 {
                     b.Property<string>("Directory")
@@ -662,6 +759,11 @@ namespace BusinessObjects.Migrations
 
                     b.Property<Guid>("CategoryId")
                         .HasColumnType("uniqueidentifier");
+
+
+                    b.Property<Guid>("CategoryListId")
+                        .HasColumnType("uniqueidentifier");
+
 
                     b.Property<Guid?>("WorkId")
                         .HasColumnType("uniqueidentifier");
@@ -945,6 +1047,46 @@ namespace BusinessObjects.Migrations
 
                     b.Navigation("AppUser");
                 });
+
+
+            modelBuilder.Entity("BusinessObjects.Models.Trading.Comment", b =>
+                {
+                    b.HasOne("BusinessObjects.Models.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("CommenterId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("BusinessObjects.Models.E_com.Trading.Post", "Post")
+                        .WithMany()
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Post");
+                });
+
+            modelBuilder.Entity("BusinessObjects.Models.Trading.PostInterest", b =>
+                {
+                    b.HasOne("BusinessObjects.Models.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("InteresterId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("BusinessObjects.Models.E_com.Trading.Post", "Post")
+                        .WithMany()
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Post");
+                });
+
 
             modelBuilder.Entity("BusinessObjects.Models.Utils.CICMedia", b =>
                 {

@@ -2,6 +2,7 @@
 using APIs.Repositories.Interfaces;
 using APIs.Services.Interfaces;
 using BusinessObjects.DTO;
+
 using BusinessObjects.Models.Ecom;
 using BusinessObjects.Models.Ecom.Payment;
 using DataAccess.DAO;
@@ -125,7 +126,10 @@ namespace APIs.Controllers
                     return BadRequest("API request failed with status code: " + response.StatusCode);
                 }
             }
-            
+
+
+
+
             //Guid orderId = Guid.NewGuid();
             //NewOrderDTO dto = new NewOrderDTO()
             //{
@@ -165,6 +169,7 @@ namespace APIs.Controllers
                 throw new Exception(e.Message);
             }
         }
+
         [HttpGet("user/{userId}/orders")]
         public IActionResult GetUserOrders(Guid userId)
         {
@@ -178,5 +183,6 @@ namespace APIs.Controllers
                 return StatusCode(500, e.Message);
             }
         }
+
     }
 }

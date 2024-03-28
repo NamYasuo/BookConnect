@@ -11,13 +11,14 @@ using APIs.Utils.Extensions;
 using BusinessObjects.DTO;
 using Azure.Core;
 using Microsoft.AspNetCore.Authorization;
+using Newtonsoft.Json;
 
 namespace APIs.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PaymentController: ControllerBase
-	{
+    public class PaymentController : ControllerBase
+    {
         private readonly IVnPayService _vnpService;
         private readonly ITransactionService _transacService;
 
@@ -33,7 +34,7 @@ namespace APIs.Controllers
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public IActionResult Create([FromBody] NewTransactionDTO request)
         {
-            var response = new PaymentLinkDTO();                        
+            var response = new PaymentLinkDTO();
             response.PaymentId = DateTime.Now.Ticks.ToString();
             response.PaymentUrl = _vnpService.NewTransaction(request);
             return Ok(response);
@@ -42,7 +43,7 @@ namespace APIs.Controllers
 
         [HttpGet]
         [Route("vnpay/VnPayIPN")]
-        public IActionResult VnpayIpnReturnAsync([FromQuery] VnPayResponseDTO response)
+        public async Task<IActionResult> VnpayIpnReturnAsync([FromQuery] VnPayResponseDTO response)
         {
             //string returnUrl = string.Empty;
             var returnModel = new PaymentReturnDTO();
@@ -61,21 +62,36 @@ namespace APIs.Controllers
                 Amount = dto.Amount,
                 Signature = dto.Signature
             };
+            int changes = _transacService.AddTransactionRecord(transaction);
 
-            _transacService.AddTransactionRecord(transaction);
             if (processResult.Success)
             {
                 returnModel = processResult.Data.Item1;
-                //returnUrl = processResult.Data.Item2;
 
-                string redirectUrl = "http://localhost:5000/checkout-result?refId=" + returnModel.PaymentRefId;  // Replace with your desired URL
+                string redirectUrl = "http://localhost:5000/checkout-result?refId=" + returnModel.PaymentRefId;
                 return Redirect(redirectUrl);
             }
-     
+
             return BadRequest(returnModel);
         }
 
+        [HttpPost("save-transactor"), Authorize]
+        public IActionResult SaveTransactor(Guid transactionId)
+        {
+            try
+            {
+                var userIdClaim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "userId");
+                Guid userId = (userIdClaim != null) ? Guid.Parse(userIdClaim.Value) : Guid.Empty;
 
+                int changes = _transacService.IdentifyTransactor(transactionId, userId);
+                IActionResult result = (changes > 0) ? Ok() : BadRequest("Fail to identify transactor!");
+                return result;
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
     }
 }
 

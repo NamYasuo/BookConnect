@@ -1,9 +1,8 @@
-﻿using System.Text;
+using System.Text;
 using APIs.Config;
 using APIs.Repositories;
 using APIs.Repositories.Interfaces;
 using APIs.Services;
-using APIs.Services.Intefaces;
 using APIs.Services.Interfaces;
 using APIs.Services.Payment;
 using BusinessObjects;
@@ -34,6 +33,7 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IVnPayService, VnPayService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<IWorkService, WorkService>();
 builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();

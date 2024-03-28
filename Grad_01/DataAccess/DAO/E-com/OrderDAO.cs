@@ -81,7 +81,7 @@ namespace DataAccess.DAO
 
                                 int clear = temp.Quantity - dto.Quantity;
 
-                                hihi = "IN CART:" + temp.Quantity.ToString() + " | CHECKOUT: " + dto.Quantity.ToString();
+                                hihi = "IN CART:" + temp.Quantity.ToString() +" | CHECKOUT: " + dto.Quantity.ToString();
 
                                 if (clear <= 0)
                                 {
@@ -94,15 +94,15 @@ namespace DataAccess.DAO
                                 }
                             }
                         }
-                        //int result = context.Baskets.Where(o => o.OrderId == orderId).Count();
-                        //if (result == 1)
-                        //{
-                        //return "Successfully!";
-                        return hihi;
-                        //}
-                        //else return "Add Fail!";
+                            //int result = context.Baskets.Where(o => o.OrderId == orderId).Count();
+                            //if (result == 1)
+                            //{
+                                //return "Successfully!";
+                                return hihi;
+                            //}
+                            //else return "Add Fail!";
                     }
-                    return "Cart doesn't existed!!!";
+                     return "Cart doesn't existed!!!";
                 }
             }
             catch (Exception e)
@@ -131,7 +131,7 @@ namespace DataAccess.DAO
                         PaymentMethod = data.PaymentMethod,
                         TransactionId = data.TransactionId,
                         AddressId = data.AddressId
-                    };
+                };
                     context.Orders.Add(newOrder);
                     int result = context.SaveChanges();
                     if (result == 1)
@@ -146,41 +146,26 @@ namespace DataAccess.DAO
                 throw new Exception(e.Message);
             }
         }
-        public List<Order> GetUserOrders(Guid userId)
-        {
-            try
-            {
-                using (var context = new AppDbContext())
-                {
-                    return context.Orders
-                        .Where(o => o.CustomerId == userId)
-                        .ToList();
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-        }
+
         public decimal GetTotalAmount(List<ProductOptionDTO> dto)
         {
             try
             {
                 decimal result = 0;
-                using (var context = new AppDbContext())
+                using(var context = new AppDbContext())
                 {
-                    foreach (ProductOptionDTO c in dto)
+                    foreach(ProductOptionDTO c in dto)
                     {
-                        Book? temp = context.Books.Where(b => b.ProductId == c.ProductId).FirstOrDefault();
-                        if (temp != null)
+                       Book? temp = context.Books.Where(b => b.ProductId == c.ProductId).FirstOrDefault();
+                        if(temp != null)
                         {
-                            result += temp.Price * c.Quantity;
+                            result += temp.Price*c.Quantity;
                         }
                     }
                 }
                 return result;
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 throw new Exception(e.Message);
             }

@@ -10,11 +10,13 @@ using DataAccess.DAO;
 using DataAccess.DAO.Ecom;
 using DataAccess.DTO;
 using Microsoft.AspNetCore.Identity;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.IdentityModel.Tokens;
 
 namespace APIs.Services.Interfaces
+
 {
     public class AccountService : IAccountService
     {
@@ -191,11 +193,13 @@ namespace APIs.Services.Interfaces
             Guid addressId = Guid.Empty;
 
             Address? oldAddress = agencyDAO.GetCurrentAddress(updatedData.AgencyId);
-            if (oldAddress != null) addressId = oldAddress.AddressId;
+
+            if(oldAddress != null) addressId = oldAddress.AddressId;
 
             if (oldAddress != null && oldAddress.Rendezvous != null && updatedData.PostAddress != null)
             {
-                if (!oldAddress.Rendezvous.Equals(updatedData.PostAddress))
+                if(!oldAddress.Rendezvous.Equals(updatedData.PostAddress))
+
                 {
                     Address newAddress = new Address
                     {
@@ -222,6 +226,7 @@ namespace APIs.Services.Interfaces
             });
         }
 
+
         public void UpdateUserProfile(Guid userId, string username, string? address = null)
         => new AccountDAO().UpdateUserProfile(userId, username, address);
 
@@ -234,6 +239,7 @@ namespace APIs.Services.Interfaces
 
         public void UpdateUsernameAndAddress(Guid userId, string username, string cityProvince, string district, string subDistrict, string rendezvous, bool isDefault)
         => new AccountDAO().UpdateUsernameAndAddress(userId,username, cityProvince, district, subDistrict, rendezvous, isDefault);
+
     }
 }
 

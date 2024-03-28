@@ -209,17 +209,16 @@ namespace DataAccess.DAO
         {
             try
             {
-                using (var context = new AppDbContext())
+                using(var context = new AppDbContext())
                 {
                     return context.Carts.Any(c => c.CustomerId == userId);
                 }
 
-            }
-            catch (Exception e)
+            }catch(Exception e)
             {
                 throw new Exception(e.Message);
             }
-        }
+        } 
     }
 }
 

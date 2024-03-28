@@ -7,6 +7,8 @@ namespace BusinessObjects.Models
 {
 	public class Inventory
 	{
+		[Key]
+		public Guid InventoryId { get; set; }
 		public Guid AgencyId { get; set; }
 		public Guid BookId { get; set; }
 		public int Quantity { get; set; }

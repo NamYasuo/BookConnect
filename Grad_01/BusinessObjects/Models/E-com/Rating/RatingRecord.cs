@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
 
@@ -6,6 +7,8 @@ namespace BusinessObjects.Models.Ecom.Rating
 {
 	public class RatingRecord
 	{
+		[Key]
+		public Guid RatingRecordId { get; set; }
 		public Guid RatingId { get; set; }
 		public Guid UserId { get; set; }
 		public int RatingPoint { get; set; }

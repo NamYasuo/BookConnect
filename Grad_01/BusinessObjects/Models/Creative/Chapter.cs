@@ -19,7 +19,6 @@ namespace BusinessObjects.Models.Creative
 		public string Type { get; set; } = null!; //Values: Public or Private
 		public string Status { get; set; } = null!; //Values: Published or not
 		//public Guid StatId { get; set; } 
-
 		[ForeignKey("WorkId"), JsonIgnore]
 		public virtual Work Work { get; set; } = null!;
 

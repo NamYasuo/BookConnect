@@ -16,9 +16,11 @@ namespace APIs.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountController : ControllerBase
-    {
-        private readonly IAccountService _accService;
+
+    public class AccountController: ControllerBase
+	{
+		private readonly IAccountService _accService;
+
         private readonly ICloudinaryService _cloudinaryService;
 
         public AccountController(IAccountService service, ICloudinaryService cloudinaryService)
@@ -67,7 +69,9 @@ namespace APIs.Controllers
                 return BadRequest("User not found!");
             }
 
-            if (!user.IsBanned)
+
+            if(!user.IsBanned)
+
             {
                 byte[] salt = Convert.FromHexString(user.Salt);
                 if (!_accService.VerifyPassword(model.Password, user.Password, salt, out byte[] result))
@@ -116,7 +120,9 @@ namespace APIs.Controllers
                 _accService.AddNewRole(role);
                 return Ok("New role added");
             }
+
             catch (Exception e)
+
             {
                 throw new Exception(e.Message);
             }
@@ -135,7 +141,9 @@ namespace APIs.Controllers
                 }
                 else return BadRequest("Default Address' not set!!!");
             }
+
             catch (Exception e)
+
             {
                 throw new Exception(e.Message);
             }
@@ -210,10 +218,10 @@ namespace APIs.Controllers
                             else return NotFound("Email claim not found!");
                         }
                         else return NotFound("Username claim not found!!!");
-                    }
-                    else return NotFound("Role claim not found!!!");
-                }
-                else return NotFound("User ID claim not found!!!");
+
+                    } else return NotFound("Role claim not found!!!");
+                } else return NotFound("User ID claim not found!!!");
+
             }
             catch (Exception e)
             {
@@ -234,7 +242,9 @@ namespace APIs.Controllers
                 }
                 return BadRequest("Model invalid");
             }
+
             catch (Exception e)
+
             {
                 throw new Exception(e.Message);
             }
@@ -273,8 +283,9 @@ namespace APIs.Controllers
                 }
                 else return BadRequest("Model invalid!");
 
+               
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 throw new Exception(e.Message);
             }
@@ -289,7 +300,9 @@ namespace APIs.Controllers
                 IActionResult response = (result.AgencyName != null) ? Ok(result) : NotFound("Agency doesn't exist!");
                 return response;
             }
-            catch (Exception e)
+
+            catch(Exception e)
+
             {
                 throw new Exception(e.Message);
             }
@@ -310,6 +323,7 @@ namespace APIs.Controllers
             IActionResult response = (changes > 0) ? Ok("Successful!") : Ok("No changes");
             return response;
         }
+
         [HttpPut]
         [Route("UpdateAddress")]
         public IActionResult UpdateAddress(Guid userId, Guid? addressId, string cityProvince, string district, string subDistrict, string rendezvous, bool isDefault)
@@ -397,6 +411,7 @@ namespace APIs.Controllers
         //        throw new Exception(e.Message);
         //    }
         //}
+
     }
 }
 

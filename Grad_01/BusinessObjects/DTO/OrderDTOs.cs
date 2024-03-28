@@ -20,7 +20,6 @@ namespace BusinessObjects.DTO
         //AddressId
         public Guid AddressId { get; set; }
     }
-
     public class CheckoutDTO
     {
         public Guid AddressId { get; set; }

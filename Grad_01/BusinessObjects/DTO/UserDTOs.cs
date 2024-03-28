@@ -26,6 +26,9 @@ namespace BusinessObjects.DTO
     public class BanUserDTO
     {
         public Guid UserId { get; set; }
+          public string Reason{ get; set; } = null!;
+        public TimeSpan? Duration { get; set; }
+    }
         public string Reason { get; set; } = null!;
         public TimeSpan? Duration { get; set; }
     }
@@ -39,5 +42,6 @@ namespace BusinessObjects.DTO
         public string Rendezvous { get; set; }
         public bool IsDefault { get; set; }
     }
+
 }
 

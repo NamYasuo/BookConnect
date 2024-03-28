@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 D:\GitHub\BookConnect\Grad_01\DataAccess\bin\Debug\net7.0\DataAccess.deps.json
 D:\GitHub\BookConnect\Grad_01\DataAccess\bin\Debug\net7.0\DataAccess.dll
 D:\GitHub\BookConnect\Grad_01\DataAccess\bin\Debug\net7.0\DataAccess.pdb
@@ -46,3 +47,21 @@ D:\BookCo\BookConnect\BookConnect\Grad_01\DataAccess\obj\Debug\net7.0\DataAccess
 D:\BookCo\BookConnect\BookConnect\Grad_01\DataAccess\obj\Debug\net7.0\refint\DataAccess.dll
 D:\BookCo\BookConnect\BookConnect\Grad_01\DataAccess\obj\Debug\net7.0\DataAccess.pdb
 D:\BookCo\BookConnect\BookConnect\Grad_01\DataAccess\obj\Debug\net7.0\ref\DataAccess.dll
+=======
+D:\FA23\Đồ án\BookConnect\Grad_01\DataAccess\bin\Debug\net7.0\DataAccess.deps.json
+D:\FA23\Đồ án\BookConnect\Grad_01\DataAccess\bin\Debug\net7.0\DataAccess.dll
+D:\FA23\Đồ án\BookConnect\Grad_01\DataAccess\bin\Debug\net7.0\DataAccess.pdb
+D:\FA23\Đồ án\BookConnect\Grad_01\DataAccess\bin\Debug\net7.0\BusinessObjects.dll
+D:\FA23\Đồ án\BookConnect\Grad_01\DataAccess\bin\Debug\net7.0\BusinessObjects.pdb
+D:\FA23\Đồ án\BookConnect\Grad_01\DataAccess\obj\Debug\net7.0\DataAccess.csproj.AssemblyReference.cache
+D:\FA23\Đồ án\BookConnect\Grad_01\DataAccess\obj\Debug\net7.0\DataAccess.GeneratedMSBuildEditorConfig.editorconfig
+D:\FA23\Đồ án\BookConnect\Grad_01\DataAccess\obj\Debug\net7.0\DataAccess.AssemblyInfoInputs.cache
+D:\FA23\Đồ án\BookConnect\Grad_01\DataAccess\obj\Debug\net7.0\DataAccess.AssemblyInfo.cs
+D:\FA23\Đồ án\BookConnect\Grad_01\DataAccess\obj\Debug\net7.0\DataAccess.csproj.CoreCompileInputs.cache
+D:\FA23\Đồ án\BookConnect\Grad_01\DataAccess\obj\Debug\net7.0\DataAccess.sourcelink.json
+D:\FA23\Đồ án\BookConnect\Grad_01\DataAccess\obj\Debug\net7.0\DataAccess.csproj.CopyComplete
+D:\FA23\Đồ án\BookConnect\Grad_01\DataAccess\obj\Debug\net7.0\DataAccess.dll
+D:\FA23\Đồ án\BookConnect\Grad_01\DataAccess\obj\Debug\net7.0\refint\DataAccess.dll
+D:\FA23\Đồ án\BookConnect\Grad_01\DataAccess\obj\Debug\net7.0\DataAccess.pdb
+D:\FA23\Đồ án\BookConnect\Grad_01\DataAccess\obj\Debug\net7.0\ref\DataAccess.dll
+>>>>>>> origin/Nam

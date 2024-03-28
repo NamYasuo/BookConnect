@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using APIs.Services.Intefaces;
+
 using BusinessObjects.Models;
 using DataAccess.DAO;
 using BusinessObjects.DTO;
 using BusinessObjects;
 using APIs.Utils.Paging;
-
 namespace APIs.Services
 {
     public class BookService : IBookService
     {
+
 
 
         public PagedList<Book> GetAllBook(PagingParams param)
@@ -18,8 +20,16 @@ namespace APIs.Services
             return PagedList<Book>.ToPagedList(new BookDAO().GetAllBook().OrderBy(c => c.Name).AsQueryable(), param.PageNumber, param.PageSize);
         }
 
+        public List<Book> GetAllBook() => new BookDAO().GetAllBook();
+
+
 
         public Book GetBookById(Guid bookId) => new BookDAO().GetBookById(bookId);
+
+
+
+        public Book GetBookByName(string name) => new BookDAO().GetBookByName(name);
+
 
 
         public void AddNewBook(Book book) => new BookDAO().AddNewBook(book);
@@ -73,6 +83,7 @@ namespace APIs.Services
 
 
         public List<Category> GetAllCategoryOfBook(Guid bookId) => new BookDAO().GetAllCategoryOfBook(bookId);
+
 
 
         public List<Book> GetBookByCategoryName(string[] cateName)
@@ -141,4 +152,5 @@ namespace APIs.Services
         //}
         
     }
+
 

@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 
 namespace BusinessObjects.Models
 {
+
     public class AppUser
     {
         [Key]

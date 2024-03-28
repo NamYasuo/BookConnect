@@ -1,3 +1,4 @@
+
 ﻿using System.Collections.Generic;
 using System.Linq;
 using BusinessObjects;
@@ -11,6 +12,9 @@ using APIs.Utils.Paging;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Http.HttpResults;
 
+
+
+
 namespace APIs.Controllers
 {
     [ApiController]
@@ -23,6 +27,7 @@ namespace APIs.Controllers
         {
             _bookService = bookService;
         }
+
 
         [HttpGet("all")] // Adjusted route for clarity
         public IActionResult GetAllBooks([FromQuery] PagingParams @params)
@@ -164,12 +169,44 @@ namespace APIs.Controllers
                     return NotFound("No books found matching the applied filters.");
                 }
                 return Ok(filteredBooks);
+
             }
             catch (Exception ex)
             {
                 return StatusCode(500, ex.Message); // Internal Server Error with message
             }
         }
+
+
+        [HttpGet("get-all-book")]
+        public IActionResult GetAllBook()
+        {
+            List<Book> result = new List<Book>();
+            try
+            {
+                result = _bookService.GetAllBook();
+                return Ok(result);
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        [HttpGet("get-product-by-id")]
+        public IActionResult GetBookDetailsById(Guid bookId)
+        {
+            try
+            {
+                return Ok(_bookService.GetBookDetailsById(bookId));
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+
         //-----------------------------------Book category------------------------------------------------//
         [HttpPost("category/add-book-to-category")]
         public IActionResult AddBookToCate(AddBookToCateDTO dto)
@@ -186,7 +223,9 @@ namespace APIs.Controllers
                             validCates.Add(id);
                         }
                     }
-                    if (validCates.Count == 0)
+
+                    if(validCates.Count == 0)
+
                     {
                         return Ok("This book's already in these/this cart(s)");
                     }
@@ -197,7 +236,9 @@ namespace APIs.Controllers
                 return BadRequest("Model invalid!");
 
             }
-            catch (Exception e)
+
+            catch(Exception e)
+
             {
                 throw new Exception(e.Message);
             }
@@ -225,11 +266,14 @@ namespace APIs.Controllers
             {
                 return Ok(_bookService.GetAllCategoryOfBook(bookId));
             }
-            catch (Exception e)
+
+            catch(Exception e)
+
             {
                 throw new Exception(e.Message);
             }
         }
+
 
 
         /*    [HttpGet("search all")]
@@ -245,6 +289,7 @@ namespace APIs.Controllers
                     throw new Exception(ex.Message);
                 }
             }*/
+
 
     }
 }

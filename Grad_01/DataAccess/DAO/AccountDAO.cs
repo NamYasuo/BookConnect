@@ -5,6 +5,7 @@ using BusinessObjects.DTO;
 using BusinessObjects.Models;
 using BusinessObjects.Models.Ecom.Rating;
 using Microsoft.Data.SqlClient;
+using BusinessObjects.Models.Ecom.Base;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.DAO
@@ -115,7 +116,9 @@ namespace DataAccess.DAO
                 }
                 return result;
             }
-            catch (Exception e)
+
+            catch(Exception e)
+
             {
                 throw new Exception(e.Message);
             }
@@ -214,7 +217,9 @@ namespace DataAccess.DAO
                     .Select(r => r.UnbannedDate)
                     .FirstOrDefault();
 
-                    if (latestUnbannedDate < DateTime.Now)
+
+                    if(latestUnbannedDate < DateTime.Now)
+
                     {
                         AppUser? user = context.AppUsers.Where(u => u.UserId == userId).SingleOrDefault();
                         if (user != null)
@@ -286,17 +291,18 @@ namespace DataAccess.DAO
         {
             try
             {
-                using (var context = new AppDbContext())
+
+                using(var context = new AppDbContext())
                 {
                     AppUser? record = context.AppUsers.Where(u => u.UserId == userId).SingleOrDefault();
-                    if (record != null)
+                    if(record != null)
                     {
                         record.RoleId = roleId;
-                    }
-                    return context.SaveChanges();
+                    } return context.SaveChanges();
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
+
             {
                 throw new Exception(e.Message);
             }
@@ -370,6 +376,7 @@ namespace DataAccess.DAO
         /*-----------------END DELETE-------------------*/
 
         /*------------------------------------END APPUSER-------------------------------------------*/
+
         public void UpdateUserProfile(Guid userId, string username, string? address = null)
         {
             try
@@ -518,6 +525,7 @@ namespace DataAccess.DAO
                 throw new Exception("Error updating username and address: " + e.Message);
             }
         }
+
 
 
 
