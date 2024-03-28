@@ -7,7 +7,7 @@ using BusinessObjects.Models.E_com.Trading;
 using BusinessObjects.Models.Trading;
 using DataAccess.DAO;
 using DataAccess.DAO.Creative;
-using DataAccess.DAO.E_com;
+using DataAccess.DAO.Ecom;
 using DataAccess.DAO.Trading;
 
 namespace APIs.Services

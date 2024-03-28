@@ -170,19 +170,19 @@ namespace APIs.Controllers
             }
         }
 
-        [HttpGet("user/{userId}/orders")]
-        public IActionResult GetUserOrders(Guid userId)
-        {
-            try
-            {
-                List<Order> orders = _orderService.GetUserOrders(userId);
-                return Ok(orders);
-            }
-            catch (Exception e)
-            {
-                return StatusCode(500, e.Message);
-            }
-        }
+        //[HttpGet("user/{userId}/orders")]
+        //public IActionResult GetUserOrders(Guid userId)
+        //{
+        //    try
+        //    {
+        //        List<Order> orders = _orderService.GetUserOrders(userId);
+        //        return Ok(orders);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return StatusCode(500, e.Message);
+        //    }
+        //}
 
     }
 }

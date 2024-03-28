@@ -86,7 +86,11 @@ namespace BusinessObjects.Migrations
             modelBuilder.Entity("BusinessObjects.Models.AppUser", b =>
                 {
                     b.Property<Guid>("UserId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AvatarDir")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -103,6 +107,9 @@ namespace BusinessObjects.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("RoleId")
@@ -125,14 +132,11 @@ namespace BusinessObjects.Migrations
 
             modelBuilder.Entity("BusinessObjects.Models.Basket", b =>
                 {
-
-                    b.Property<Guid>("BasketId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-
                     b.Property<DateTime>("AddedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<Guid>("BasketId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("CartId")
                         .HasColumnType("uniqueidentifier");
@@ -148,10 +152,6 @@ namespace BusinessObjects.Migrations
 
                     b.Property<decimal?>("Stored_Price")
                         .HasColumnType("decimal(18,2)");
-
-
-                    b.HasKey("BasketId");
-
 
                     b.HasIndex("CartId");
 
@@ -394,13 +394,11 @@ namespace BusinessObjects.Migrations
                     b.Property<DateTime?>("CreatedAt")
                         .HasColumnType("datetime2");
 
-
                     b.Property<string>("ImageDir")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("PostStyle")
                         .HasColumnType("bit");
-
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
@@ -408,10 +406,8 @@ namespace BusinessObjects.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
-
                     b.Property<string>("VideoDir")
                         .HasColumnType("nvarchar(max)");
-
 
                     b.HasKey("PostId");
 
@@ -569,32 +565,22 @@ namespace BusinessObjects.Migrations
 
             modelBuilder.Entity("BusinessObjects.Models.Ecom.Rating.RatingRecord", b =>
                 {
-
                     b.Property<Guid>("RatingId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("UserId")
-
-                    b.Property<Guid>("RatingRecordId")
-                        .ValueGeneratedOnAdd()
-
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Comment")
-                        .HasColumnType("nvarchar(max)");           
-                    b.Property<Guid>("RatingId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RatingPoint")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid>("RatingRecordId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("RatingRecordId");
-
-                    b.HasIndex("RatingId");
-
+                    b.HasKey("RatingId", "UserId");
 
                     b.HasIndex("UserId");
 
@@ -603,24 +589,17 @@ namespace BusinessObjects.Migrations
 
             modelBuilder.Entity("BusinessObjects.Models.Inventory", b =>
                 {
-
-                    b.Property<Guid>("InventoryId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-
                     b.Property<Guid>("AgencyId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("BookId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("InventoryId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
-
-
-                    b.HasKey("InventoryId");
-
 
                     b.HasIndex("AgencyId");
 
@@ -683,7 +662,6 @@ namespace BusinessObjects.Migrations
                     b.ToTable("TokenInfos");
                 });
 
-
             modelBuilder.Entity("BusinessObjects.Models.Trading.Comment", b =>
                 {
                     b.Property<Guid>("CommentId")
@@ -733,7 +711,6 @@ namespace BusinessObjects.Migrations
                     b.ToTable("PostInterests");
                 });
 
-
             modelBuilder.Entity("BusinessObjects.Models.Utils.CICMedia", b =>
                 {
                     b.Property<string>("Directory")
@@ -760,10 +737,8 @@ namespace BusinessObjects.Migrations
                     b.Property<Guid>("CategoryId")
                         .HasColumnType("uniqueidentifier");
 
-
                     b.Property<Guid>("CategoryListId")
                         .HasColumnType("uniqueidentifier");
-
 
                     b.Property<Guid?>("WorkId")
                         .HasColumnType("uniqueidentifier");
@@ -1048,7 +1023,6 @@ namespace BusinessObjects.Migrations
                     b.Navigation("AppUser");
                 });
 
-
             modelBuilder.Entity("BusinessObjects.Models.Trading.Comment", b =>
                 {
                     b.HasOne("BusinessObjects.Models.AppUser", "AppUser")
@@ -1086,7 +1060,6 @@ namespace BusinessObjects.Migrations
 
                     b.Navigation("Post");
                 });
-
 
             modelBuilder.Entity("BusinessObjects.Models.Utils.CICMedia", b =>
                 {

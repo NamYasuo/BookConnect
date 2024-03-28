@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BusinessObjects.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -97,9 +97,11 @@ namespace BusinessObjects.Migrations
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Salt = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsValidated = table.Column<bool>(type: "bit", nullable: false),
                     IsSeller = table.Column<bool>(type: "bit", nullable: false),
                     IsBanned = table.Column<bool>(type: "bit", nullable: false),
+                    AvatarDir = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
@@ -228,15 +230,15 @@ namespace BusinessObjects.Migrations
                 name: "RatingRecords",
                 columns: table => new
                 {
-                    RatingRecordId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RatingId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RatingRecordId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RatingPoint = table.Column<int>(type: "int", nullable: false),
                     Comment = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RatingRecords", x => x.RatingRecordId);
+                    table.PrimaryKey("PK_RatingRecords", x => new { x.RatingId, x.UserId });
                     table.ForeignKey(
                         name: "FK_RatingRecords_AppUsers_UserId",
                         column: x => x.UserId,
@@ -571,7 +573,6 @@ namespace BusinessObjects.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Inventories", x => x.InventoryId);
                     table.ForeignKey(
                         name: "FK_Inventories_Agencies_AgencyId",
                         column: x => x.AgencyId,
@@ -600,7 +601,6 @@ namespace BusinessObjects.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Baskets", x => x.BasketId);
                     table.ForeignKey(
                         name: "FK_Baskets_Books_ProductId",
                         column: x => x.ProductId,
@@ -743,11 +743,6 @@ namespace BusinessObjects.Migrations
                 name: "IX_Posts_UserId",
                 table: "Posts",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RatingRecords_RatingId",
-                table: "RatingRecords",
-                column: "RatingId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RatingRecords_UserId",

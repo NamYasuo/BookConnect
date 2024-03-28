@@ -10,7 +10,7 @@ using BusinessObjects.Models;
 using BusinessObjects.Models.E_com.Trading;
 using Microsoft.Extensions.Caching.Memory;
 
-namespace DataAccess.DAO.E_com
+namespace DataAccess.DAO.Trading
 {
     public class PostDAO
     {
@@ -44,7 +44,7 @@ namespace DataAccess.DAO.E_com
 
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
 
             {
                 throw new Exception(e.Message);
@@ -114,7 +114,7 @@ namespace DataAccess.DAO.E_com
                 using (var context = new AppDbContext())
                 {
                     Post? post = context.Posts.Where(c => c.PostId == postId).SingleOrDefault();
-                    string result = (post != null && post.ImageDir != null) ?
+                    string result = post != null && post.ImageDir != null ?
                         post.ImageDir : "";
                     return result;
                 }
@@ -133,7 +133,7 @@ namespace DataAccess.DAO.E_com
                 using (var context = new AppDbContext())
                 {
                     Post? post = context.Posts.Where(c => c.PostId == postId).SingleOrDefault();
-                    string result = (post != null && post.VideoDir != null) ?
+                    string result = post != null && post.VideoDir != null ?
                         post.VideoDir : "";
                     return result;
                 }

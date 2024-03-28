@@ -24,7 +24,7 @@ namespace APIs.Services
         public int GetCurrentStock(Guid productId) => new AgencyDAO().GetProductStock(productId);
 
 
-        public List<Order> GetUserOrders(Guid userId) => new OrderDAO().GetUserOrders(userId);
+        //public List<Order> GetUserOrders(Guid userId) => new OrderDAO().GetUserOrders(userId);
         
 
     }
