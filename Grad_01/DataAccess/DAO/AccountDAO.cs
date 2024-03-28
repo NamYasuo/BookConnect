@@ -7,6 +7,7 @@ using BusinessObjects.Models.Ecom.Rating;
 using Microsoft.Data.SqlClient;
 using BusinessObjects.Models.Ecom.Base;
 using Microsoft.EntityFrameworkCore;
+using BusinessObjects.Models.E_com.Trading;
 
 namespace DataAccess.DAO
 {
@@ -377,156 +378,79 @@ namespace DataAccess.DAO
 
         /*------------------------------------END APPUSER-------------------------------------------*/
 
-        public void UpdateUserProfile(Guid userId, string username, string? address = null)
+
+
+
+
+        public async Task<int> UpdateProfileAsync(AppUser user)
         {
+            try
+            {
+                using (var _context = new AppDbContext())
+                {
+                    var existingUser = await _context.AppUsers.FindAsync(user.UserId);
+                    if (existingUser != null)
+                    {
+                        // Update the properties of the existing user with the values of the new user
+                        _context.Entry(existingUser).CurrentValues.SetValues(new ProfileUserDTO
+                        {
+                            UserId = user.UserId,
+                            Username = user.Username,
+                            AvatarDir = user.AvatarDir,
+                            Email = user.Email,
+                            Phone = user.Phone,
+                        });
+
+                        // Save changes to the database asynchronously
+                        return await _context.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        // Handle the case where the user doesn't exist
+                        // You might want to throw an exception or return a specific error code
+                        return 0; // Indicate that no changes were made
+                    }
+
+                }
+            }
+            catch (DbUpdateException ex)
+            {
+                // Log the exception details for debugging
+                Console.WriteLine($"DbUpdateException occurred while updating the user profile: {ex.Message}");
+                // You can also log the inner exception if it exists
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine($"Inner exception: {ex.InnerException.Message}");
+                }
+                throw;
+            }
+            catch (Exception e)
+            {
+                // Log any other unexpected exceptions
+                Console.WriteLine($"An unexpected error occurred while updating the user profile: {e.Message}");
+                throw;
+            }
+        }
+
+        public AppUser GetUserById(Guid userId)
+        {
+            AppUser? user = new AppUser();
             try
             {
                 using (var context = new AppDbContext())
                 {
-                    // Find the user by user ID
-                    var user = context.AppUsers.FirstOrDefault(u => u.UserId == userId);
+                    user = context.AppUsers.Where(p => p.UserId == userId).FirstOrDefault();
 
-                    if (user != null)
-                    {
-                        // Update username if provided
-                        if (username != null)
-                        {
-                            user.Username = username;
-                        }
-
-                        // Address update (using address string)
-                        if (address != null)
-                        {
-                            
-                        }
-
-                        context.AppUsers.Update(user);
-                        context.SaveChanges();
-                    }
-                    else
-                    {
-                        // Throw an exception or handle the case where user not found
-                        throw new Exception("User not found");
-                    }
                 }
             }
             catch (Exception e)
+
             {
                 throw new Exception(e.Message);
             }
+            if (user != null) return user;
+            else throw new NullReferenceException();
         }
-
-
-        public void RateAndCommentProduct(Guid userId, Guid ratingId, int ratingPoint, string comment)
-        {
-            try
-            {
-                using (var context = new AppDbContext())
-                {
-                    // Check if the user has already rated the product
-                    var existingRatingRecord = context.RatingRecords
-                        .FirstOrDefault(record => record.UserId == userId && record.RatingId == ratingId);
-
-                    if (existingRatingRecord != null)
-                    {
-                        // Update existing rating record
-                        existingRatingRecord.RatingPoint = ratingPoint;
-                        existingRatingRecord.Comment = comment;
-                    }
-                    else
-                    {
-                        // Create a new rating record
-                        var newRatingRecord = new RatingRecord
-                        {
-                            RatingId = ratingId,
-                            UserId = userId,
-                            RatingPoint = ratingPoint,
-                            Comment = comment
-                        };
-                        context.RatingRecords.Add(newRatingRecord);
-                    }
-
-                    // Calculate the new overall rating for the Rating entity
-                    var ratingsForRatingId = context.RatingRecords.Where(record => record.RatingId == ratingId).ToList();
-                    double totalRatingPoints = ratingsForRatingId.Sum(record => record.RatingPoint);
-                    double averageRating = ratingsForRatingId.Count > 0 ? totalRatingPoints / ratingsForRatingId.Count : 0;
-
-                    // Update the OverallRating property in the Rating entity
-                    var ratingEntity = context.Ratings.FirstOrDefault(r => r.RatingId == ratingId);
-                    if (ratingEntity != null)
-                    {
-                        ratingEntity.OverallRating = averageRating;
-                    }
-                    else
-                    {
-                        // If RatingId not found, create a new Rating entity
-                        ratingEntity = new Rating { RatingId = ratingId, OverallRating = averageRating };
-                        context.Ratings.Add(ratingEntity);
-                    }
-
-                    // Save changes to the database
-                    context.SaveChanges();
-                }
-            }
-            catch (Exception e)
-            {
-                // Log the inner exception details along with the message
-                string errorMessage = $"Error rating and commenting product: {e.Message}";
-                if (e.InnerException != null)
-                {
-                    errorMessage += $"\nInner Exception: {e.InnerException.Message}";
-                }
-                throw new Exception(errorMessage);
-            }
-        }
-        public void UpdateUsernameAndAddress(Guid userId, string username, string cityProvince, string district, string subDistrict, string rendezvous, bool isDefault)
-        {
-            try
-            {
-                using (var context = new AppDbContext())
-                {
-                    // Update user profile
-                    UpdateUserProfile(userId, username);
-
-                    // Find existing address
-                    var existingAddress = context.Addresses.FirstOrDefault(a => a.UserId == userId);
-
-                    if (existingAddress != null)
-                    {
-                        // Update existing address
-                        existingAddress.City_Province = cityProvince;
-                        existingAddress.District = district;
-                        existingAddress.SubDistrict = subDistrict;
-                        existingAddress.Rendezvous = rendezvous;
-                        existingAddress.Default = isDefault;
-                    }
-                    else
-                    {
-                        // Create new address
-                        var newAddress = new Address
-                        {
-                            AddressId = Guid.NewGuid(),
-                            UserId = userId,
-                            City_Province = cityProvince,
-                            District = district,
-                            SubDistrict = subDistrict,
-                            Rendezvous = rendezvous,
-                            Default = isDefault
-                        };
-
-                        context.Addresses.Add(newAddress);
-                    }
-
-                    context.SaveChanges();
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Error updating username and address: " + e.Message);
-            }
-        }
-
-
 
 
 

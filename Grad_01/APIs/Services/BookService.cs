@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using APIs.Services.Intefaces;
+using APIs.Services.Interfaces;
 
 using BusinessObjects.Models;
 using DataAccess.DAO;
@@ -26,9 +26,6 @@ namespace APIs.Services
 
         public Book GetBookById(Guid bookId) => new BookDAO().GetBookById(bookId);
 
-
-
-        public Book GetBookByName(string name) => new BookDAO().GetBookByName(name);
 
 
 

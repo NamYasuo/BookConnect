@@ -2,6 +2,8 @@
 using APIs.DTO;
 using BusinessObjects.DTO;
 using BusinessObjects.Models;
+using BusinessObjects.Models.E_com.Trading;
+using BusinessObjects.Models.Ecom.Rating;
 using DataAccess.DTO;
 using Microsoft.AspNetCore.Identity;
 
@@ -35,6 +37,10 @@ namespace APIs.Services.Interfaces
         bool IsSeller(Guid userId);
         Agency GetAgencyById(Guid agencyId);
         int UpdateAgency(AgencyUpdateDTO updatedData, string? logoUrl);
+
+        public  Task<int> UpdateProfile(AppUser appUser);
+        public AppUser? GetUserById(Guid userId);
+        public int RateAndComment(RatingRecord ratingRecord);
     }
 }
 

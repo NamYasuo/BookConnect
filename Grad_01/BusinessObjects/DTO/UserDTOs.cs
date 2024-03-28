@@ -1,5 +1,6 @@
 ﻿using System;
 using BusinessObjects.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace BusinessObjects.DTO
 {
@@ -29,19 +30,24 @@ namespace BusinessObjects.DTO
           public string Reason{ get; set; } = null!;
         public TimeSpan? Duration { get; set; }
     }
-        public string Reason { get; set; } = null!;
-        public TimeSpan? Duration { get; set; }
-    }
+    
     public class UserProfile
     {
         public Guid UserId { get; set; }
+        public string Email { get; set; }
         public string Username { get; set; }
-        public string CityProvince { get; set; }
-        public string District { get; set; }
-        public string SubDistrict { get; set; }
-        public string Rendezvous { get; set; }
-        public bool IsDefault { get; set; }
-    }
+        public string? Phone { get; set; }
 
+        public IFormFile? AvatarDir { get; set; }
+    }
+    public class ProfileUserDTO
+    {
+        public Guid UserId { get; set; }
+        public string Email { get; set; }
+        public string Username { get; set; }
+        public string? Phone { get; set; }
+
+        public string AvatarDir { get; set; }
+    }
 }
 

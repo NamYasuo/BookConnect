@@ -8,6 +8,7 @@ namespace BusinessObjects.DTO
 {
     public class RatingRecordDTO
     {
+        public Guid RatingRecordId { get; set; }
         public Guid RatingId { get; set; }
         public Guid UserId { get; set; }
         public int RatingPoint { get; set; }

@@ -111,23 +111,7 @@ namespace DataAccess.DAO
         }
 
         //Get book by name
-        public Book GetBookByName(string name)
-        {
-            Book? book = new Book();
-            try
-            {
-                using (var context = new AppDbContext())
-                {
-                    book = context.Books.Where(b => b.Name == name).FirstOrDefault();
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-            if (book != null) return book;
-            else throw new NullReferenceException();
-        }
+       
 
 		//Add new book
 		public void AddNewBook(Book book)
@@ -212,7 +196,7 @@ namespace DataAccess.DAO
         {
             if (string.IsNullOrEmpty(searchTerm))
             {
-                throw new ArgumentException("Search term cannot be empty.");
+                return GetAllBook();
             }
 
             try

@@ -1,6 +1,7 @@
 ﻿using System;
 using BusinessObjects;
 using BusinessObjects.Models.Ecom.Rating;
+using BusinessObjects.Models.Trading;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.DAO.Ecom
@@ -28,6 +29,22 @@ namespace DataAccess.DAO.Ecom
 				throw new Exception(e.Message);
 			}
 		}
-	}
+
+        public int RateAndComment(RatingRecord ratingRecord)
+        {
+            try
+            {
+                using (var context = new AppDbContext())
+                {
+                    context.RatingRecords.Add(ratingRecord);
+                    return context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+    }
 }
 

@@ -2,12 +2,15 @@
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using APIs.Services.Intefaces;
+using APIs.Services.Interfaces;
 using BusinessObjects;
 using BusinessObjects.DTO;
 using BusinessObjects.Models;
+using BusinessObjects.Models.E_com.Trading;
+using BusinessObjects.Models.Ecom.Rating;
 using DataAccess.DAO;
 using DataAccess.DAO.Ecom;
+using DataAccess.DAO.Trading;
 using DataAccess.DTO;
 using Microsoft.AspNetCore.Identity;
 
@@ -47,7 +50,7 @@ namespace APIs.Services.Interfaces
                 Username = model.Username,
                 Email = model.Email,
                 Password = Convert.ToHexString(pwdHash),
-                Salt = Convert.ToHexString(salt),
+                Salt = Convert.ToHexString(salt),               
                 IsValidated = false,
                 RoleId = GetRoleDetails("BaseUser").RoleId,
             };
@@ -227,19 +230,22 @@ namespace APIs.Services.Interfaces
         }
 
 
-        public void UpdateUserProfile(Guid userId, string username, string? address = null)
-        => new AccountDAO().UpdateUserProfile(userId, username, address);
+       
 
         //public AppUser GetUserProfile(Guid userId) => new AccountDAO().GetUserProfile(userId);
         public void UpdateAddress(Guid userId, Guid? addressId, string cityProvince, string district, string subDistrict, string rendezvous, bool isDefault)
         => new AddressDAO().UpdateAddress(userId, addressId, cityProvince, district, subDistrict, rendezvous, isDefault);
 
-        public void RateAndCommentProduct(Guid userId, Guid ratingId, int ratingPoint, string comment)
-       => new AccountDAO().RateAndCommentProduct(userId, ratingId, ratingPoint, comment);
+        
 
-        public void UpdateUsernameAndAddress(Guid userId, string username, string cityProvince, string district, string subDistrict, string rendezvous, bool isDefault)
-        => new AccountDAO().UpdateUsernameAndAddress(userId,username, cityProvince, district, subDistrict, rendezvous, isDefault);
+  
 
+        public async Task<int> UpdateProfile(AppUser user) => (await new AccountDAO().UpdateProfileAsync(user));
+
+        public AppUser GetUserById(Guid userId) => new AccountDAO().GetUserById(userId);
+
+        public int RateAndComment(RatingRecord ratingRecord) => new RatingDAO().RateAndComment(ratingRecord);
+       
     }
 }
 

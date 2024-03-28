@@ -67,7 +67,8 @@ namespace BusinessObjects
 
 
         //Creative services DbSet
-<
+
+        
         public virtual DbSet<Chapter> Chapters { get; set; }
         public virtual DbSet<Work> Works { get; set; }
 

@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Trading\**" />
+    <EmbeddedResource Remove="Trading\**" />
+    <None Remove="Trading\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\BusinessObjects\BusinessObjects.csproj" />
   </ItemGroup>
 

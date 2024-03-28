@@ -3,10 +3,14 @@ using System.Net.NetworkInformation;
 using System.Security.Claims;
 using System.Text;
 using APIs.DTO;
-using APIs.Services.Intefaces;
+using APIs.Services;
 using APIs.Services.Interfaces;
+using BusinessObjects;
 using BusinessObjects.DTO;
+using BusinessObjects.DTO.Trading;
 using BusinessObjects.Models;
+using BusinessObjects.Models.E_com.Trading;
+using BusinessObjects.Models.Ecom.Rating;
 using DataAccess.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -19,7 +23,7 @@ namespace APIs.Controllers
 
     public class AccountController: ControllerBase
 	{
-		private readonly IAccountService _accService;
+        private readonly IAccountService _accService;
 
         private readonly ICloudinaryService _cloudinaryService;
 
@@ -324,94 +328,222 @@ namespace APIs.Controllers
             return response;
         }
 
-        [HttpPut]
-        [Route("UpdateAddress")]
-        public IActionResult UpdateAddress(Guid userId, Guid? addressId, string cityProvince, string district, string subDistrict, string rendezvous, bool isDefault)
-        {
-            try
-            {
-                // Call the service method to update or create the address
-                _accService.UpdateAddress(userId, addressId, cityProvince, district, subDistrict, rendezvous, isDefault);
-
-                return Ok("Address updated successfully");
-            }
-            catch (Exception e)
-            {
-                return StatusCode(500, $"An error occurred: {e.Message}");
-            }
-        }
-
-
-
-        [HttpPost]
-        [Route("rate-and-comment")]
-        public IActionResult RateAndCommentProduct(Guid userId, Guid ratingId, int ratingPoint, string comment)
-        {
-            try
-            {
-                // Call the service method to rate and comment the product
-                _accService.RateAndCommentProduct(userId, ratingId, ratingPoint, comment);
-
-                return Ok("Product rated and commented successfully");
-            }
-            catch (Exception e)
-            {
-                return StatusCode(500, $"An error occurred: {e.Message}");
-            }
-        }
-
-
-        [HttpPost("updateUsernameAndAddress")]
-        public IActionResult UpdateUsernameAndAddress([FromBody] UserProfile request)
-        {
-            try
-            {
-                _accService.UpdateUsernameAndAddress(request.UserId, request.Username, request.CityProvince, request.District, request.SubDistrict, request.Rendezvous, request.IsDefault);
-                return Ok("Username and address updated successfully.");
-            }
-            catch (Exception e)
-            {
-                return StatusCode(500, "Error updating username and address: " + e.Message);
-            }
-        }
-        //[HttpGet, Authorize]
-        //[Route("get-user-profile")]
-        //public async Task<IActionResult> GetUserProfile()
+        //[HttpPut]
+        //[Route("UpdateAddress")]
+        //public IActionResult UpdateAddress(Guid userId, Guid? addressId, string cityProvince, string district, string subDistrict, string rendezvous, bool isDefault)
         //{
         //    try
         //    {
-        //        var userIdClaim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "userId");
-        //        var roleClaim = HttpContext.User.FindFirst(ClaimTypes.Role);
-        //        var usernameClaim = HttpContext.User.FindFirst(ClaimTypes.Name);
-        //        var emailClaim = HttpContext.User.FindFirst(ClaimTypes.Email);
-        //        if (userIdClaim != null)
-        //        {
-        //            var userId = Guid.Parse(userIdClaim.Value);
-        //            if (roleClaim != null)
-        //            {
-        //                if (usernameClaim != null)
-        //                {
-        //                  Address address = accService.GetDefaultAddress(userId);
-        //                    UserProfile profile = new UserProfile()
-        //                    {
-        //                        UserId = userId,
-        //                        Username = usernameClaim.Value,
-        //                        Role = roleClaim.Value,
-        //                        Address = address.Rendezvous,
-        //                        Email = emailClaim.Value
-        //                    };
-        //                    return Ok(profile);
-        //                }
-        //                else return BadRequest("Username claim not found!!!");
-        //            } else return BadRequest("Role claim not found!!!");
-        //        } else return BadRequest("User ID claim not found!!!");
+        //        // Call the service method to update or create the address
+        //        _accService.UpdateAddress(userId, addressId, cityProvince, district, subDistrict, rendezvous, isDefault);
+
+        //        return Ok("Address updated successfully");
         //    }
         //    catch (Exception e)
         //    {
-        //        throw new Exception(e.Message);
+        //        return StatusCode(500, $"An error occurred: {e.Message}");
         //    }
         //}
 
+
+
+        //[HttpPost]
+        //[Route("rate-and-comment")]
+        //public IActionResult RateAndCommentProduct(Guid userId, Guid ratingId, int ratingPoint, string comment)
+        //{
+        //    try
+        //    {
+        //        // Call the service method to rate and comment the product
+        //        _accService.RateAndCommentProduct(userId, ratingId, ratingPoint, comment);
+
+        //        return Ok("Product rated and commented successfully");
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return StatusCode(500, $"An error occurred: {e.Message}");
+        //    }
+        //}
+
+
+        [HttpPut("update-user-profile")]
+        public async Task<IActionResult> UpdateUserProfile([FromQuery] UserProfile profile)
+        {
+            try
+            {
+                string? userpro = _accService.GetUsernameById(profile.UserId);
+                string newImgPath = "";
+                if (ModelState.IsValid)
+                {
+                    if (profile.AvatarDir != null)
+                    {
+                        string? oldImgPath = _accService.GetUserById(profile.UserId)?.AvatarDir;
+
+                        if (oldImgPath != null)
+                        {
+                            _cloudinaryService.DeleteImage(oldImgPath);
+                        }
+                        var cloudResponse = _cloudinaryService.UploadImage(profile.AvatarDir, "UserProfile/" + profile.Username + "/Image");
+                        if (cloudResponse.StatusCode != 200)
+                        {
+                            return BadRequest(cloudResponse.Message);
+                        }
+                        newImgPath = cloudResponse.Data;
+                    }
+                    AppUser updateData = new AppUser
+                    {
+                        
+                        UserId = profile.UserId,
+                        Username = profile.Username,
+                        AvatarDir = newImgPath,
+                        Email = profile.Email,
+                        Phone = profile.Phone,
+
+                    };
+                    if (await _accService.UpdateProfile(updateData) > 0)
+                    {
+                        return Ok("Successful");
+                    }
+                    return BadRequest("Update fail");
+                }
+                return BadRequest("Model state invalid");
+            }
+            catch (Exception e)
+            {
+                // Include the caught exception's details and the inner exception's details in the message
+                string errorMessage = $"An error occurred while updating the user profile: {e.Message}. Inner exception: {e.InnerException?.Message}. Stack trace: {e.StackTrace}";
+
+                // Throw a new exception with the detailed error message
+                throw new Exception(errorMessage);
+            }
+
+
+        }
+        [HttpGet("get-user-by-id")]
+        public IActionResult GetPostById(Guid userId)
+        {
+            try
+            {
+                return Ok(_accService.GetUserById(userId));
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+        [HttpPost("rate-and-comment")]
+        public IActionResult RateAndCommentProduct([FromForm] RatingRecordDTO ratingRecordDTO)
+        {
+            try
+            {
+                using (var context = new AppDbContext())
+                {
+                    // Check if the user has already rated the product
+                    var existingRatingRecord = context.RatingRecords
+                        .FirstOrDefault(record => record.UserId == ratingRecordDTO.UserId && record.RatingId == ratingRecordDTO.RatingRecordId);
+
+                    if (existingRatingRecord != null)
+                    {
+                        // Update existing rating record
+                        existingRatingRecord.RatingPoint = ratingRecordDTO.RatingPoint;
+                        existingRatingRecord.Comment = ratingRecordDTO.Comment;
+                    }
+                    else
+                    {
+                        // Create a new rating record
+                        var newRatingRecord = new RatingRecord
+                        {
+                            RatingRecordId = Guid.NewGuid(),
+                            RatingId = ratingRecordDTO.RatingId,
+                            UserId = ratingRecordDTO.UserId,
+                            RatingPoint = ratingRecordDTO.RatingPoint,
+                            Comment = ratingRecordDTO.Comment
+                        };
+                        _accService.RateAndComment(newRatingRecord);
+                    }
+
+                    // Save changes to the database
+                    context.SaveChanges();
+
+                    // Calculate the new overall rating for the Rating entity
+                    var ratingsForRatingId = context.RatingRecords.Where(record => record.RatingId == ratingRecordDTO.RatingId).ToList();
+                    double totalRatingPoints = ratingsForRatingId.Sum(record => record.RatingPoint);
+                    double averageRating = ratingsForRatingId.Count > 0 ? totalRatingPoints / ratingsForRatingId.Count : 0;
+
+                    // Update the OverallRating property in the Rating entity
+                    var ratingEntity = context.Ratings.FirstOrDefault(r => r.RatingId == ratingRecordDTO.RatingId);
+                    if (ratingEntity != null)
+                    {
+                        ratingEntity.OverallRating = averageRating;
+                    }
+                    else
+                    {
+                        // If RatingId not found, create a new Rating entity
+                        ratingEntity = new Rating { RatingId = ratingRecordDTO.RatingId, OverallRating = averageRating };
+                        context.Ratings.Add(ratingEntity);
+                    }
+
+                    // Save changes to the database
+                    context.SaveChanges();
+
+                    // Return a success response
+                    return Ok("Product rated and commented successfully");
+                }
+            }
+            catch (Exception e)
+            {
+                // Log the error message along with the inner exception details
+                string errorMessage = $"An error occurred while rating and commenting product: {e.Message}. Inner exception: {e.InnerException?.Message}. Stack Trace: {e.StackTrace}";
+                Console.WriteLine(errorMessage);
+
+                // Return the error message along with status code 500 and inner exception details
+                return StatusCode(500, errorMessage);
+            }
+        }
+
+
+
     }
+
+
+
+    //[HttpGet, Authorize]
+    //[Route("get-user-profile")]
+    //public async Task<IActionResult> GetUserProfile()
+    //{
+    //    try
+    //    {
+    //        var userIdClaim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "userId");
+    //        var roleClaim = HttpContext.User.FindFirst(ClaimTypes.Role);
+    //        var usernameClaim = HttpContext.User.FindFirst(ClaimTypes.Name);
+    //        var emailClaim = HttpContext.User.FindFirst(ClaimTypes.Email);
+    //        if (userIdClaim != null)
+    //        {
+    //            var userId = Guid.Parse(userIdClaim.Value);
+    //            if (roleClaim != null)
+    //            {
+    //                if (usernameClaim != null)
+    //                {
+    //                  Address address = accService.GetDefaultAddress(userId);
+    //                    UserProfile profile = new UserProfile()
+    //                    {
+    //                        UserId = userId,
+    //                        Username = usernameClaim.Value,
+    //                        Role = roleClaim.Value,
+    //                        Address = address.Rendezvous,
+    //                        Email = emailClaim.Value
+    //                    };
+    //                    return Ok(profile);
+    //                }
+    //                else return BadRequest("Username claim not found!!!");
+    //            } else return BadRequest("Role claim not found!!!");
+    //        } else return BadRequest("User ID claim not found!!!");
+    //    }
+    //    catch (Exception e)
+    //    {
+    //        throw new Exception(e.Message);
+    //    }
+    //}
+
+
 }
 

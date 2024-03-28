@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using BusinessObjects.Models;
 using BusinessObjects.DTO;
 using Microsoft.AspNetCore.Identity;
+using APIs.Utils.Paging;
 
 namespace APIs.Services.Interfaces
 {
     public interface IBookService
     {
+        PagedList<Book> GetAllBook(PagingParams param);
         public List<Book> GetAllBook();
         public BookDetailsDTO GetBookDetailsById(Guid bookId);
         public Book GetBookById(Guid bookId);
-        public Book GetBookByName(string name);
         public void AddNewBook(Book book);
         public void UpdateBook(Book book);
         public void DeleteBook(Guid bookId);
@@ -26,6 +27,9 @@ namespace APIs.Services.Interfaces
         int RemoveBookFromCate(Guid bookId, Guid cateId);
         List<Category> GetAllCategoryOfBook(Guid bookId);
 
+        PagedList<Book> GetBookByType(string type, PagingParams param);
+        public List<Book> FilterBooks(string searchTerm = null, string[] categoryNames = null, string type = null);
+        PagedList<Book> GetBookByName(string searchTerm, PagingParams param);
     }
 }
 
